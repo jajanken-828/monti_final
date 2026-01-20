@@ -18,7 +18,8 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->enum('role', ['hrm', 'scm'])->default('hrm'); // Matches form values
+            $table->enum('role', ['hrm', 'scm'])->default('hrm');
+            $table->enum('position', ['staff', 'manager'])->default('staff');
             $table->boolean('newsletter_opt_in')->default(false);
             $table->rememberToken();
             $table->timestamps();

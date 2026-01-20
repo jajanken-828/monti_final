@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Time & Attendance - Monti Textile HRM</title>
+    <title>Payroll Management - Monti Textile HRM</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -392,21 +392,21 @@
     
     
     <nav class="flex-1 space-y-1">
-        <a href="{{ route('hrm.dashboard') }}" class="sidebar-item flex items-center space-x-3 py-3 px-4 rounded-xl text-gray-600 dark:text-gray-300 hover:text-blue-theme">
+        <a href="{{ route('hrm.staff.dashboard') }}" class="sidebar-item flex items-center space-x-3 py-3 px-4 rounded-xl text-gray-600 dark:text-gray-300 hover:text-blue-theme">
             <div class="sidebar-icon w-6 text-center">
                 <i class="fas fa-home"></i>
             </div>
             <span class="sidebar-text font-medium">Employee Information</span>
         </a>
         
-        <a href="{{ route('hrm.payroll') }}" class="sidebar-item  flex items-center space-x-3 py-3 px-4 rounded-xl text-gray-600 dark:text-gray-300 hover:text-blue-theme">
+        <a href="{{ route('hrm.staff.payroll') }}" class="sidebar-item active flex items-center space-x-3 py-3 px-4 rounded-xl text-blue-theme">
             <div class="sidebar-icon w-6 text-center">
                 <i class="fas fa-money-check-alt"></i>
             </div>
             <span class="sidebar-text font-medium">Payroll Management</span>
         </a>
         
-        <a href="{{ route('hrm.leave') }}" class="sidebar-item flex items-center space-x-3 py-3 px-4 rounded-xl text-gray-600 dark:text-gray-300 hover:text-blue-theme">
+        <a href="{{ route('hrm.staff.leave') }}" class="sidebar-item flex items-center space-x-3 py-3 px-4 rounded-xl text-gray-600 dark:text-gray-300 hover:text-blue-theme">
             <div class="sidebar-icon w-6 text-center">
                 <i class="fas fa-calendar-alt"></i>
             </div>
@@ -414,14 +414,14 @@
             <span class="ml-auto bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 text-xs font-medium px-2 py-0.5 rounded-full">3</span>
         </a>
         
-        <a href="{{ route('hrm.attendance') }}" class="sidebar-item active flex items-center space-x-3 py-3 px-4 rounded-xl text-blue-theme">
+        <a href="{{ route('hrm.staff.attendance') }}" class="sidebar-item flex items-center space-x-3 py-3 px-4 rounded-xl text-gray-600 dark:text-gray-300 hover:text-blue-theme">
             <div class="sidebar-icon w-6 text-center">
                 <i class="fas fa-clock"></i>
             </div>
             <span class="sidebar-text font-medium">Time and Attendance</span>
         </a>
         
-        <a href="{{ route('hrm.training') }}" class="sidebar-item flex items-center space-x-3 py-3 px-4 rounded-xl text-gray-600 dark:text-gray-300 hover:text-blue-theme">
+        <a href="{{ route('hrm.staff.training') }}" class="sidebar-item flex items-center space-x-3 py-3 px-4 rounded-xl text-gray-600 dark:text-gray-300 hover:text-blue-theme">
             <div class="sidebar-icon w-6 text-center">
                 <i class="fas fa-chalkboard-teacher"></i>
             </div>
@@ -467,15 +467,26 @@
         <header class="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 py-4 px-8 flex items-center justify-between sticky top-0 z-10">
             <div class="header-content flex items-center justify-between w-full">
                 <div>
-                    <h1 class="text-2xl font-bold text-gray-900 dark:text-white header-title">Time & Attendance Management</h1>
-                    <p class="text-gray-500 dark:text-gray-400 hidden md:block">Employee Attendance Tracking & Schedule Management</p>
+                    <h1 class="text-2xl font-bold text-gray-900 dark:text-white header-title">Payroll Management System</h1>
+                    <p class="text-gray-500 dark:text-gray-400 hidden md:block">Salary Processing & Compensation Management</p>
                 </div>
                 
                 <div class="flex items-center space-x-4 header-actions">
+                    {{-- <div class="relative hidden md:block">
+                        <div class="relative">
+                            <input type="text" placeholder="Search courses, resources..." class="search-input input-field w-80 pl-10 pr-4">
+                            <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                        </div>
+                    </div> --}}
+                    
                     <div class="flex items-center space-x-3">
+                        <button class="md:hidden p-2.5 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-600 text-gray-600 dark:text-gray-300" id="mobile-search-toggle">
+                            <i class="fas fa-search"></i>
+                        </button>
+                        
                         <button class="relative p-2.5 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-600 text-gray-600 dark:text-gray-300">
                             <i class="fas fa-bell"></i>
-                            <span class="notification-badge">5</span>
+                            <span class="notification-badge">3</span>
                         </button>
                         
                         <button class="md:hidden p-2.5 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-600 text-gray-600 dark:text-gray-300" id="mobile-menu-toggle">
@@ -483,34 +494,40 @@
                         </button>
                         
                         <div class="w-10 h-10 rounded-xl bg-blue-100 dark:bg-blue-900 flex items-center justify-center text-blue-700 dark:text-blue-300 font-medium hidden md:flex">
-                            TA
+                            PM
                         </div>
                     </div>
                 </div>
             </div>
+            
+            <!-- Mobile Search Bar -->
+            {{-- <div class="relative w-full mt-2 md:hidden hidden" id="mobile-search-bar">
+                <input type="text" placeholder="Search courses, resources..." class="search-input input-field w-full pl-10 pr-4">
+                <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+            </div> --}}
         </header>
 
         <!-- Content -->
         <main class="flex-1 p-8 overflow-y-auto custom-scrollbar">
-            <!-- Attendance Stats Overview -->
+            <!-- Payroll Stats Overview -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8 stats-grid">
                 <div class="card p-6 flex items-center">
                     <div class="w-12 h-12 rounded-xl bg-green-100 dark:bg-green-900 flex items-center justify-center mr-4">
-                        <i class="fas fa-user-check text-green-600 dark:text-green-300 text-xl"></i>
+                        <i class="fas fa-money-bill-wave text-green-600 dark:text-green-300 text-xl"></i>
                     </div>
                     <div>
-                        <div class="text-gray-500 dark:text-gray-400 text-sm">Present Today</div>
-                        <div class="text-2xl font-bold text-gray-900 dark:text-white">218</div>
+                        <div class="text-gray-500 dark:text-gray-400 text-sm">Total Monthly Payroll</div>
+                        <div class="text-2xl font-bold text-gray-900 dark:text-white">₱850,250</div>
                     </div>
                 </div>
                 
                 <div class="card p-6 flex items-center">
-                    <div class="w-12 h-12 rounded-xl bg-red-100 dark:bg-red-900 flex items-center justify-center mr-4">
-                        <i class="fas fa-user-times text-red-600 dark:text-red-300 text-xl"></i>
+                    <div class="w-12 h-12 rounded-xl bg-blue-100 dark:bg-blue-900 flex items-center justify-center mr-4">
+                        <i class="fas fa-users text-blue-600 dark:text-blue-300 text-xl"></i>
                     </div>
                     <div>
-                        <div class="text-gray-500 dark:text-gray-400 text-sm">Absent Today</div>
-                        <div class="text-2xl font-bold text-gray-900 dark:text-white">12</div>
+                        <div class="text-gray-500 dark:text-gray-400 text-sm">Employees to Pay</div>
+                        <div class="text-2xl font-bold text-gray-900 dark:text-white">245</div>
                     </div>
                 </div>
                 
@@ -519,18 +536,18 @@
                         <i class="fas fa-clock text-yellow-600 dark:text-yellow-300 text-xl"></i>
                     </div>
                     <div>
-                        <div class="text-gray-500 dark:text-gray-400 text-sm">Late Arrivals</div>
-                        <div class="text-2xl font-bold text-gray-900 dark:text-white">8</div>
+                        <div class="text-gray-500 dark:text-gray-400 text-sm">Pending Processing</div>
+                        <div class="text-2xl font-bold text-gray-900 dark:text-white">18</div>
                     </div>
                 </div>
                 
                 <div class="card p-6 flex items-center">
-                    <div class="w-12 h-12 rounded-xl bg-blue-100 dark:bg-blue-900 flex items-center justify-center mr-4">
-                        <i class="fas fa-percentage text-blue-600 dark:text-blue-300 text-xl"></i>
+                    <div class="w-12 h-12 rounded-xl bg-purple-100 dark:bg-purple-900 flex items-center justify-center mr-4">
+                        <i class="fas fa-percentage text-purple-600 dark:text-purple-300 text-xl"></i>
                     </div>
                     <div>
-                        <div class="text-gray-500 dark:text-gray-400 text-sm">Attendance Rate</div>
-                        <div class="text-2xl font-bold text-gray-900 dark:text-white">94.8%</div>
+                        <div class="text-gray-500 dark:text-gray-400 text-sm">Tax Deductions</div>
+                        <div class="text-2xl font-bold text-gray-900 dark:text-white">₱127,538</div>
                     </div>
                 </div>
             </div>
@@ -538,30 +555,30 @@
            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 main-grid">
     <!-- Left Column -->
     <div class="lg:col-span-2 space-y-8">
-        <!-- Attendance Welcome Banner -->
+        <!-- Payroll Welcome Banner -->
         <div class="featured-banner">
             <div class="p-8">
                 <div class="flex flex-col md:flex-row items-center justify-between">
                     <div class="featured-banner-content mb-6 md:mb-0">
-                        <h2 class="text-2xl font-bold mb-3 text-white">Attendance Tracking Dashboard</h2>
-                        <p class="text-blue-100 mb-6 max-w-lg">Monitor employee attendance, track working hours, and manage schedules efficiently.</p>
+                        <h2 class="text-2xl font-bold mb-3 text-white">Payroll Processing Dashboard</h2>
+                        <p class="text-blue-100 mb-6 max-w-lg">Manage salaries, deductions, bonuses, and generate payslips for all employees efficiently.</p>
                         <button class="px-6 py-3 bg-yellow-theme hover:bg-yellow-600 text-gray-900 font-semibold rounded-xl transition-colors shadow-md flex items-center featured-banner-button">
-                            Generate Attendance Report <i class="fas fa-file-export ml-2"></i>
+                            Process Payroll Run <i class="fas fa-play-circle ml-2"></i>
                         </button>
                     </div>
                     <div class="featured-banner-image animate-float">
-                        <div class="w-48 h-32 bg-gradient-to-r from-blue-400 to-blue-300 dark:from-blue-500 dark:to-blue-400 rounded-lg shadow-xl flex items-center justify-center">
-                            <i class="fas fa-clock text-white text-4xl"></i>
+                        <div class="w-48 h-32 bg-gradient-to-r from-green-400 to-green-300 dark:from-green-500 dark:to-green-400 rounded-lg shadow-xl flex items-center justify-center">
+                            <i class="fas fa-calculator text-white text-4xl"></i>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Attendance Management Tools -->
+        <!-- Payroll Management Tools -->
         <div class="card p-6">
             <div class="flex justify-between items-center mb-6">
-                <h3 class="font-bold text-xl text-gray-900 dark:text-white">Attendance Management</h3>
+                <h3 class="font-bold text-xl text-gray-900 dark:text-white">Payroll Processing Tools</h3>
                 <a href="#" class="text-blue-theme font-medium flex items-center hover:text-blue-700 dark:hover:text-blue-400 text-sm">
                     All Functions <i class="fas fa-chevron-right ml-2 text-xs"></i>
                 </a>
@@ -570,53 +587,53 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <div class="bg-gray-50 dark:bg-gray-700 rounded-xl p-4 border border-gray-200 dark:border-gray-600 hover:border-blue-300 dark:hover:border-blue-500 transition-colors">
                     <div class="flex items-start justify-between mb-4">
-                        <div class="w-12 h-12 rounded-lg bg-blue-theme flex items-center justify-center">
-                            <i class="fas fa-fingerprint text-white text-xl"></i>
+                        <div class="w-12 h-12 rounded-lg bg-green-theme flex items-center justify-center">
+                            <i class="fas fa-file-invoice-dollar text-white text-xl"></i>
                         </div>
-                        <span class="bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 text-xs font-medium px-2 py-1 rounded">REALTIME</span>
+                        <span class="bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 text-xs font-medium px-2 py-1 rounded">MONTHLY</span>
                     </div>
-                    <h4 class="font-bold text-gray-900 dark:text-white text-lg mb-1">Biometric Tracking</h4>
-                    <p class="text-gray-500 dark:text-gray-400 text-sm mb-4">Live attendance monitoring</p>
+                    <h4 class="font-bold text-gray-900 dark:text-white text-lg mb-1">Salary Processing</h4>
+                    <p class="text-gray-500 dark:text-gray-400 text-sm mb-4">Calculate & distribute salaries</p>
                     
                     <div class="mb-3">
                         <div class="flex justify-between text-sm mb-1">
-                            <span class="text-gray-600 dark:text-gray-300">System Uptime</span>
-                            <span class="text-blue-theme font-medium">99.2%</span>
+                            <span class="text-gray-600 dark:text-gray-300">Current Month Progress</span>
+                            <span class="text-blue-theme font-medium">75%</span>
                         </div>
                         <div class="course-progress">
-                            <div class="course-progress-fill" style="width: 99.2%"></div>
+                            <div class="course-progress-fill" style="width: 75%"></div>
                         </div>
                     </div>
                     
                     <div class="flex justify-between text-xs text-gray-500 dark:text-gray-400">
-                        <span>6 Devices Active</span>
-                        <span>0 Issues</span>
+                        <span>184 Processed</span>
+                        <span>61 Pending</span>
                     </div>
                 </div>
                 
                 <div class="bg-gray-50 dark:bg-gray-700 rounded-xl p-4 border border-gray-200 dark:border-gray-600 hover:border-blue-300 dark:hover:border-blue-500 transition-colors">
                     <div class="flex items-start justify-between mb-4">
                         <div class="w-12 h-12 rounded-lg bg-purple-600 flex items-center justify-center">
-                            <i class="fas fa-calendar-alt text-white text-xl"></i>
+                            <i class="fas fa-chart-pie text-white text-xl"></i>
                         </div>
-                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs font-medium px-2 py-1 rounded">SCHEDULE</span>
+                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs font-medium px-2 py-1 rounded">REPORT</span>
                     </div>
-                    <h4 class="font-bold text-gray-900 dark:text-white text-lg mb-1">Shift Management</h4>
-                    <p class="text-gray-500 dark:text-gray-400 text-sm mb-4">Employee schedules & rotations</p>
+                    <h4 class="font-bold text-gray-900 dark:text-white text-lg mb-1">Payroll Reports</h4>
+                    <p class="text-gray-500 dark:text-gray-400 text-sm mb-4">Generate detailed analytics</p>
                     
                     <div class="mb-3">
                         <div class="flex justify-between text-sm mb-1">
-                            <span class="text-gray-600 dark:text-gray-300">Schedule Compliance</span>
-                            <span class="text-blue-theme font-medium">96%</span>
+                            <span class="text-gray-600 dark:text-gray-300">Report Completion</span>
+                            <span class="text-blue-theme font-medium">92%</span>
                         </div>
                         <div class="course-progress">
-                            <div class="course-progress-fill" style="width: 96%"></div>
+                            <div class="course-progress-fill" style="width: 92%"></div>
                         </div>
                     </div>
                     
                     <div class="flex justify-between text-xs text-gray-500 dark:text-gray-400">
-                        <span>14 Active Shifts</span>
-                        <span>3 Rotations</span>
+                        <span>12 Reports</span>
+                        <span>2 Due</span>
                     </div>
                 </div>
             </div>
@@ -625,69 +642,56 @@
     
     <!-- Right Column -->
     <div class="space-y-8">
-        <!-- Attendance Officer Profile Card -->
+        <!-- Payroll Officer Profile Card -->
         <div class="card p-6">
             <div class="flex flex-col items-center text-center">
                 <div class="relative mb-4">
-                    <div class="profile-image w-20 h-20 rounded-full bg-blue-theme flex items-center justify-center text-white text-2xl font-bold">
-                        TA
+                    <div class="profile-image w-20 h-20 rounded-full bg-green-theme flex items-center justify-center text-white text-2xl font-bold">
+                        PO
                     </div>
                     <div class="absolute bottom-0 right-0 w-7 h-7 rounded-full bg-blue-theme flex items-center justify-center border-2 border-white dark:border-gray-800 cursor-pointer hover:bg-blue-700">
                         <i class="fas fa-pen text-xs text-white"></i>
                     </div>
                 </div>
                 
-                <h2 class="font-bold text-lg text-gray-900 dark:text-white">Attendance Officer</h2>
+                <h2 class="font-bold text-lg text-gray-900 dark:text-white">Payroll Officer</h2>
                 <p class="text-gray-500 dark:text-gray-400 text-sm mt-1 flex items-center justify-center">
                     <i class="fas fa-building mr-1.5 text-blue-theme"></i> 
-                    Operations Department
+                    Finance & Accounting Department
                 </p>
                 
                 <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5 mt-5">
-                    <div class="bg-blue-theme h-2.5 rounded-full" style="width: 92%"></div>
+                    <div class="bg-green-theme h-2.5 rounded-full" style="width: 95%"></div>
                 </div>
                 <div class="w-full flex justify-between text-sm text-gray-500 dark:text-gray-400 mt-2">
-                    <span>Data Accuracy</span>
-                    <span class="text-gray-900 dark:text-white font-medium">92%</span>
+                    <span>Payroll Accuracy</span>
+                    <span class="text-gray-900 dark:text-white font-medium">95%</span>
                 </div>
                 
                 <a href="#" class="w-full mt-5">
                     <button class="w-full py-3 bg-blue-theme hover:bg-blue-700 text-white rounded-xl font-medium transition-colors px-4">
-                        View Today's Logs
+                        Run Payroll Summary
                     </button>
                 </a>
             </div>
         </div>
         
-        <!-- Upcoming Shift Changes -->
+        <!-- Upcoming Payroll Deadlines -->
         <div class="card p-6">
             <div class="flex justify-between items-center mb-5">
-                <h3 class="font-semibold text-gray-900 dark:text-white">Upcoming Shift Changes</h3>
-                <a href="#" class="text-blue-theme text-sm font-medium hover:text-blue-700 dark:hover:text-blue-400">View All</a>
+                <h3 class="font-semibold text-gray-900 dark:text-white">Payroll Schedule</h3>
+                <a href="#" class="text-blue-theme text-sm font-medium hover:text-blue-700 dark:hover:text-blue-400">View Calendar</a>
             </div>
             
             <div class="space-y-4">
                 <div class="flex items-center justify-between p-3 rounded-xl bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600">
                     <div class="flex items-center">
                         <div class="w-10 h-10 rounded-lg bg-green-100 dark:bg-green-900 flex items-center justify-center mr-3">
-                            <i class="fas fa-exchange-alt text-green-600 dark:text-green-300"></i>
+                            <i class="fas fa-money-check-alt text-green-600 dark:text-green-300"></i>
                         </div>
                         <div>
-                            <h4 class="font-medium text-gray-900 dark:text-white">SHIFT ROTATION</h4>
-                            <p class="text-gray-500 dark:text-gray-400 text-xs">Morning to Afternoon</p>
-                        </div>
-                    </div>
-                    <span class="text-gray-500 dark:text-gray-400 text-sm font-medium">Today</span>
-                </div>
-                
-                <div class="flex items-center justify-between p-3 rounded-xl bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600">
-                    <div class="flex items-center">
-                        <div class="w-10 h-10 rounded-lg bg-yellow-100 dark:bg-yellow-900 flex items-center justify-center mr-3">
-                            <i class="fas fa-calendar-plus text-yellow-600 dark:text-yellow-300"></i>
-                        </div>
-                        <div>
-                            <h4 class="font-medium text-gray-900 dark:text-white">OVERTIME SCHEDULE</h4>
-                            <p class="text-gray-500 dark:text-gray-400 text-xs">Weekend Production</p>
+                            <h4 class="font-medium text-gray-900 dark:text-white">REGULAR PAYROLL</h4>
+                            <p class="text-gray-500 dark:text-gray-400 text-xs">Monthly Salary Distribution</p>
                         </div>
                     </div>
                     <span class="text-gray-500 dark:text-gray-400 text-sm font-medium">Nov 25</span>
@@ -696,31 +700,101 @@
                 <div class="flex items-center justify-between p-3 rounded-xl bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600">
                     <div class="flex items-center">
                         <div class="w-10 h-10 rounded-lg bg-blue-100 dark:bg-blue-900 flex items-center justify-center mr-3">
-                            <i class="fas fa-user-clock text-blue-600 dark:text-blue-300"></i>
+                            <i class="fas fa-gift text-blue-600 dark:text-blue-300"></i>
                         </div>
                         <div>
-                            <h4 class="font-medium text-gray-900 dark:text-white">HOLIDAY SCHEDULE</h4>
-                            <p class="text-gray-500 dark:text-gray-400 text-xs">Christmas Season</p>
+                            <h4 class="font-medium text-gray-900 dark:text-white">13TH MONTH PAY</h4>
+                            <p class="text-gray-500 dark:text-gray-400 text-xs">Year-end Bonus Release</p>
                         </div>
                     </div>
-                    <span class="text-gray-500 dark:text-gray-400 text-sm font-medium">Dec 24-26</span>
+                    <span class="text-gray-500 dark:text-gray-400 text-sm font-medium">Dec 15</span>
+                </div>
+                
+                <div class="flex items-center justify-between p-3 rounded-xl bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600">
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 rounded-lg bg-red-100 dark:bg-red-900 flex items-center justify-center mr-3">
+                            <i class="fas fa-file-alt text-red-600 dark:text-red-300"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-medium text-gray-900 dark:text-white">TAX FILING</h4>
+                            <p class="text-gray-500 dark:text-gray-400 text-xs">BIR 2316 Submission</p>
+                        </div>
+                    </div>
+                    <span class="text-gray-500 dark:text-gray-400 text-sm font-medium">Jan 31</span>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Today's Attendance Log -->
+<!-- Payroll Team Section -->
+<div class="mt-8">
+    <div class="flex justify-between items-center mb-6">
+        <h3 class="font-bold text-xl text-gray-900 dark:text-white">Payroll & Finance Team</h3>
+        <a href="#" class="text-blue-theme font-medium flex items-center hover:text-blue-700 dark:hover:text-blue-400 text-sm">
+            View All <i class="fas fa-chevron-right ml-2 text-xs"></i>
+        </a>
+    </div>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 instructors-grid">
+        <div class="card p-5 flex flex-col items-center text-center">
+            <div class="rounded-full w-16 h-16 bg-green-100 dark:bg-green-900 flex items-center justify-center text-green-600 dark:text-green-300 text-xl font-bold mb-4">
+                AG
+            </div>
+            <h4 class="font-bold text-gray-900 dark:text-white">Anna Gomez</h4>
+            <p class="text-gray-500 dark:text-gray-400 text-sm mt-1">Payroll Manager</p>
+            <div class="mt-3 flex items-center text-xs">
+                <span class="status-indicator status-online mr-2"></span>
+                <span class="text-green-600 dark:text-green-400 font-medium">Available</span>
+            </div>
+        </div>
+        
+        <div class="card p-5 flex flex-col items-center text-center">
+            <div class="rounded-full w-16 h-16 bg-green-100 dark:bg-green-900 flex items-center justify-center text-green-600 dark:text-green-300 text-xl font-bold mb-4">
+                MR
+            </div>
+            <h4 class="font-bold text-gray-900 dark:text-white">Mark Reyes</h4>
+            <p class="text-gray-500 dark:text-gray-400 text-sm mt-1">Tax Specialist</p>
+            <div class="mt-3 flex items-center text-xs">
+                <span class="status-indicator status-offline mr-2"></span>
+                <span class="text-gray-500 dark:text-gray-400 font-medium">On Leave</span>
+            </div>
+        </div>
+        
+        <div class="card p-5 flex flex-col items-center text-center">
+            <div class="rounded-full w-16 h-16 bg-green-100 dark:bg-green-900 flex items-center justify-center text-green-600 dark:text-green-300 text-xl font-bold mb-4">
+                LC
+            </div>
+            <h4 class="font-bold text-gray-900 dark:text-white">Lisa Cruz</h4>
+            <p class="text-gray-500 dark:text-gray-400 text-sm mt-1">Benefits Administrator</p>
+            <div class="mt-3 flex items-center text-xs">
+                <span class="status-indicator status-online mr-2"></span>
+                <span class="text-green-600 dark:text-green-400 font-medium">Available</span>
+            </div>
+        </div>
+        
+        <div class="card p-5 flex flex-col items-center text-center">
+            <div class="rounded-full w-16 h-16 bg-green-100 dark:bg-green-900 flex items-center justify-center text-green-600 dark:text-green-300 text-xl font-bold mb-4">
+                DP
+            </div>
+            <h4 class="font-bold text-gray-900 dark:text-white">David Park</h4>
+            <p class="text-gray-500 dark:text-gray-400 text-sm mt-1">Audit Officer</p>
+            <div class="mt-3 flex items-center text-xs">
+                <span class="status-indicator status-offline mr-2"></span>
+                <span class="text-gray-500 dark:text-gray-400 font-medium">In Meeting</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Recent Payroll Transactions -->
 <div class="mt-8">
     <div class="card p-6">
         <div class="flex justify-between items-center mb-6">
-            <h3 class="font-bold text-xl text-gray-900 dark:text-white">Today's Attendance Log</h3>
-            <div class="flex items-center space-x-4">
-                <span class="text-gray-500 dark:text-gray-400 text-sm">{{ now()->format('F d, Y') }}</span>
-                <a href="#" class="text-blue-theme font-medium flex items-center hover:text-blue-700 dark:hover:text-blue-400 text-sm">
-                    Export Data <i class="fas fa-download ml-2 text-xs"></i>
-                </a>
-            </div>
+            <h3 class="font-bold text-xl text-gray-900 dark:text-white">Recent Payroll Transactions</h3>
+            <a href="#" class="text-blue-theme font-medium flex items-center hover:text-blue-700 dark:hover:text-blue-400 text-sm">
+                View All Transactions <i class="fas fa-chevron-right ml-2 text-xs"></i>
+            </a>
         </div>
         
         <div class="overflow-x-auto">
@@ -728,11 +802,10 @@
                 <thead>
                     <tr class="bg-gray-50 dark:bg-gray-700">
                         <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Employee</th>
-                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Shift</th>
-                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Time In</th>
-                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Time Out</th>
+                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Department</th>
+                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Net Salary</th>
                         <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Status</th>
-                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Hours</th>
+                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Payment Date</th>
                     </tr>
                 </thead>
                 <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
@@ -748,15 +821,14 @@
                                 </div>
                             </div>
                         </td>
-                        <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">Morning (7AM-3PM)</td>
-                        <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">06:58 AM</td>
-                        <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">03:05 PM</td>
+                        <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">Production</td>
+                        <td class="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">₱18,500</td>
                         <td class="px-4 py-4 whitespace-nowrap">
                             <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300">
-                                Present
+                                Paid
                             </span>
                         </td>
-                        <td class="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">8.1 hrs</td>
+                        <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">Nov 15, 2023</td>
                     </tr>
                     <tr>
                         <td class="px-4 py-4 whitespace-nowrap">
@@ -770,20 +842,19 @@
                                 </div>
                             </div>
                         </td>
-                        <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">Afternoon (3PM-11PM)</td>
-                        <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">02:55 PM</td>
-                        <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">--:--</td>
+                        <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">Quality Control</td>
+                        <td class="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">₱21,300</td>
                         <td class="px-4 py-4 whitespace-nowrap">
-                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300">
-                                On Duty
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300">
+                                Pending
                             </span>
                         </td>
-                        <td class="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">--</td>
+                        <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">Nov 20, 2023</td>
                     </tr>
                     <tr>
                         <td class="px-4 py-4 whitespace-nowrap">
                             <div class="flex items-center">
-                                <div class="flex-shrink-0 h-10 w-10 rounded-full bg-red-100 dark:bg-red-900 flex items-center justify-center text-red-600 dark:text-red-300 font-medium">
+                                <div class="flex-shrink-0 h-10 w-10 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center text-green-600 dark:text-green-300 font-medium">
                                     RG
                                 </div>
                                 <div class="ml-4">
@@ -792,131 +863,17 @@
                                 </div>
                             </div>
                         </td>
-                        <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">Morning (7AM-3PM)</td>
-                        <td class="px-4 py-4 whitespace-nowrap text-sm text-red-600 dark:text-red-400">08:25 AM</td>
-                        <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">03:10 PM</td>
+                        <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">Maintenance</td>
+                        <td class="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">₱16,800</td>
                         <td class="px-4 py-4 whitespace-nowrap">
-                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300">
-                                Late
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300">
+                                Paid
                             </span>
                         </td>
-                        <td class="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">6.8 hrs</td>
-                    </tr>
-                    <tr>
-                        <td class="px-4 py-4 whitespace-nowrap">
-                            <div class="flex items-center">
-                                <div class="flex-shrink-0 h-10 w-10 rounded-full bg-gray-100 dark:bg-gray-900 flex items-center justify-center text-gray-600 dark:text-gray-300 font-medium">
-                                    AP
-                                </div>
-                                <div class="ml-4">
-                                    <div class="text-sm font-medium text-gray-900 dark:text-white">Ana Perez</div>
-                                    <div class="text-sm text-gray-500 dark:text-gray-400">EMP-2023-112</div>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">Morning (7AM-3PM)</td>
-                        <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">--:--</td>
-                        <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">--:--</td>
-                        <td class="px-4 py-4 whitespace-nowrap">
-                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300">
-                                Absent
-                            </span>
-                        </td>
-                        <td class="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">0 hrs</td>
+                        <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">Nov 15, 2023</td>
                     </tr>
                 </tbody>
             </table>
-        </div>
-    </div>
-</div>
-
-<!-- Attendance Summary Charts -->
-<div class="mt-8">
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <div class="card p-6">
-            <h3 class="font-bold text-xl text-gray-900 dark:text-white mb-6">Weekly Attendance Trend</h3>
-            <div class="flex items-center justify-between mb-4">
-                <div>
-                    <div class="text-2xl font-bold text-gray-900 dark:text-white">94.2%</div>
-                    <div class="text-gray-500 dark:text-gray-400 text-sm">Average Attendance</div>
-                </div>
-                <div class="text-green-600 dark:text-green-400 flex items-center">
-                    <i class="fas fa-arrow-up mr-1"></i>
-                    <span>2.1% from last week</span>
-                </div>
-            </div>
-            <div class="h-48 flex items-end space-x-2">
-                <div class="flex-1 flex flex-col items-center">
-                    <div class="w-full bg-green-200 dark:bg-green-900 rounded-t-lg" style="height: 80%"></div>
-                    <div class="text-xs text-gray-500 dark:text-gray-400 mt-2">Mon</div>
-                </div>
-                <div class="flex-1 flex flex-col items-center">
-                    <div class="w-full bg-green-300 dark:bg-green-800 rounded-t-lg" style="height: 85%"></div>
-                    <div class="text-xs text-gray-500 dark:text-gray-400 mt-2">Tue</div>
-                </div>
-                <div class="flex-1 flex flex-col items-center">
-                    <div class="w-full bg-green-400 dark:bg-green-700 rounded-t-lg" style="height: 92%"></div>
-                    <div class="text-xs text-gray-500 dark:text-gray-400 mt-2">Wed</div>
-                </div>
-                <div class="flex-1 flex flex-col items-center">
-                    <div class="w-full bg-green-500 dark:bg-green-600 rounded-t-lg" style="height: 88%"></div>
-                    <div class="text-xs text-gray-500 dark:text-gray-400 mt-2">Thu</div>
-                </div>
-                <div class="flex-1 flex flex-col items-center">
-                    <div class="w-full bg-green-600 dark:bg-green-500 rounded-t-lg" style="height: 95%"></div>
-                    <div class="text-xs text-gray-500 dark:text-gray-400 mt-2">Fri</div>
-                </div>
-                <div class="flex-1 flex flex-col items-center">
-                    <div class="w-full bg-green-400 dark:bg-green-700 rounded-t-lg" style="height: 72%"></div>
-                    <div class="text-xs text-gray-500 dark:text-gray-400 mt-2">Sat</div>
-                </div>
-                <div class="flex-1 flex flex-col items-center">
-                    <div class="w-full bg-green-300 dark:bg-green-800 rounded-t-lg" style="height: 65%"></div>
-                    <div class="text-xs text-gray-500 dark:text-gray-400 mt-2">Sun</div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="card p-6">
-            <h3 class="font-bold text-xl text-gray-900 dark:text-white mb-6">Department Attendance Rate</h3>
-            <div class="space-y-4">
-                <div>
-                    <div class="flex justify-between mb-1">
-                        <span class="text-sm font-medium text-gray-900 dark:text-white">Production</span>
-                        <span class="text-sm font-medium text-gray-900 dark:text-white">96.5%</span>
-                    </div>
-                    <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                        <div class="bg-green-500 h-2 rounded-full" style="width: 96.5%"></div>
-                    </div>
-                </div>
-                <div>
-                    <div class="flex justify-between mb-1">
-                        <span class="text-sm font-medium text-gray-900 dark:text-white">Quality Control</span>
-                        <span class="text-sm font-medium text-gray-900 dark:text-white">94.2%</span>
-                    </div>
-                    <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                        <div class="bg-blue-500 h-2 rounded-full" style="width: 94.2%"></div>
-                    </div>
-                </div>
-                <div>
-                    <div class="flex justify-between mb-1">
-                        <span class="text-sm font-medium text-gray-900 dark:text-white">Maintenance</span>
-                        <span class="text-sm font-medium text-gray-900 dark:text-white">92.8%</span>
-                    </div>
-                    <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                        <div class="bg-yellow-500 h-2 rounded-full" style="width: 92.8%"></div>
-                    </div>
-                </div>
-                <div>
-                    <div class="flex justify-between mb-1">
-                        <span class="text-sm font-medium text-gray-900 dark:text-white">Administration</span>
-                        <span class="text-sm font-medium text-gray-900 dark:text-white">98.1%</span>
-                    </div>
-                    <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                        <div class="bg-purple-500 h-2 rounded-full" style="width: 98.1%"></div>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 </div>
@@ -965,6 +922,11 @@
         sidebarToggle.addEventListener('click', toggleSidebar);
         mobileMenuToggle.addEventListener('click', toggleSidebar);
         mobileOverlay.addEventListener('click', closeSidebar);
+        
+        // Toggle mobile search
+        mobileSearchToggle.addEventListener('click', () => {
+            mobileSearchBar.classList.toggle('hidden');
+        });
         
         // Initialize progress animations
         document.addEventListener('DOMContentLoaded', () => {

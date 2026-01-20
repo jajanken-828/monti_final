@@ -3,11 +3,14 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Dashboard - iLearn</title>
+    <title>Teacher Dashboard - iLearn</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <!-- Styles / Scripts -->
     @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
@@ -279,6 +282,62 @@
             background: linear-gradient(135deg, #1e3a8a 0%, #1d4ed8 100%);
         }
         
+        /* Teacher-specific styles */
+        .subject-item {
+            border-left: 4px solid #3b82f6;
+            transition: all 0.3s ease;
+        }
+        
+        .section-item {
+            border-left: 3px solid #10b981;
+            background-color: #f9fafb;
+        }
+        
+        .dark .section-item {
+            background-color: #374151;
+        }
+        
+        .activity-item {
+            border-left: 2px solid #f59e0b;
+        }
+        
+        .collapsible-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        
+        .collapsible-content.expanded {
+            max-height: 1000px;
+        }
+        
+        .form-card {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+        }
+        
+        .dark .form-card {
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+        }
+        
+        .type-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        
+        .type-lecture { background-color: #dbeafe; color: #1e40af; }
+        .dark .type-lecture { background-color: #1e3a8a; color: #dbeafe; }
+        
+        .type-assignment { background-color: #fef3c7; color: #92400e; }
+        .dark .type-assignment { background-color: #92400e; color: #fef3c7; }
+        
+        .type-quiz { background-color: #fce7f3; color: #be185d; }
+        .dark .type-quiz { background-color: #be185d; color: #fce7f3; }
+        
+        .type-project { background-color: #dcfce7; color: #166534; }
+        .dark .type-project { background-color: #166534; color: #dcfce7; }
+        
         /* Responsive Design */
         @media (max-width: 1024px) {
             .sidebar {
@@ -340,18 +399,10 @@
             .featured-banner img {
                 display: none;
             }
-            
-            .instructors-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
         }
         
         @media (max-width: 640px) {
             .stats-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .instructors-grid {
                 grid-template-columns: 1fr;
             }
             
@@ -366,6 +417,10 @@
             .featured-banner-button {
                 width: 100%;
             }
+            
+            .subject-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -374,92 +429,85 @@
     <div class="mobile-sidebar-overlay" id="mobile-overlay"></div>
 
     <!-- Sidebar -->
-<div class="sidebar bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 flex flex-col py-6 px-4 fixed h-full z-10" id="sidebar">
-    <div class="flex items-center justify-between px-2 mb-8">
-        <div class="flex items-center space-x-3">
-            <div class="w-10 h-10 rounded-xl bg-blue-theme flex items-center justify-center">
-                <i class="fas fa-graduation-cap text-white text-xl"></i>
+    <div class="sidebar bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 flex flex-col py-6 px-4 fixed h-full z-10" id="sidebar">
+        <div class="flex items-center justify-between px-2 mb-8">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-blue-theme flex items-center justify-center">
+                    <i class="fas fa-chalkboard-teacher text-white text-xl"></i>
+                </div>
+                <span class="font-bold text-xl text-gray-900 dark:text-white">iLearn Teacher</span>
             </div>
-            <span class="font-bold text-xl text-gray-900 dark:text-white">Monti Textile</span>
-            
-        </div>
-        
-        <button class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-400" id="sidebar-toggle">
-            <i class="fas fa-bars"></i>
-        </button>
-        
-    </div>
-    
-    
-    <nav class="flex-1 space-y-1">
-        <a href="{{ route('hrm.dashboard') }}" class="sidebar-item active flex items-center space-x-3 py-3 px-4 rounded-xl text-blue-theme  ">
-            <div class="sidebar-icon w-6 text-center">
-                <i class="fas fa-home"></i>
-            </div>
-            <span class="sidebar-text font-medium">Employee Information</span>
-        </a>
-        
-        <a href="{{ route('hrm.payroll') }}" class="sidebar-item  flex items-center space-x-3 py-3 px-4 rounded-xl  text-gray-600 dark:text-gray-300 hover:text-blue-theme">
-            <div class="sidebar-icon w-6 text-center">
-                <i class="fas fa-money-check-alt"></i>
-            </div>
-            <span class="sidebar-text font-medium">Payroll Management</span>
-        </a>
-        
-        <a href="{{ route('hrm.leave') }}" class="sidebar-item flex items-center space-x-3 py-3 px-4 rounded-xl text-gray-600 dark:text-gray-300 hover:text-blue-theme">
-            <div class="sidebar-icon w-6 text-center">
-                <i class="fas fa-calendar-alt"></i>
-            </div>
-            <span class="sidebar-text font-medium">Leave Request</span>
-            <span class="ml-auto bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 text-xs font-medium px-2 py-0.5 rounded-full">3</span>
-        </a>
-        
-        <a href="{{ route('hrm.attendance') }}" class="sidebar-item flex items-center space-x-3 py-3 px-4 rounded-xl text-gray-600 dark:text-gray-300 hover:text-blue-theme">
-            <div class="sidebar-icon w-6 text-center">
-                <i class="fas fa-clock"></i>
-            </div>
-            <span class="sidebar-text font-medium">Time and Attendance</span>
-        </a>
-        
-        <a href="{{ route('hrm.training') }}" class="sidebar-item flex items-center space-x-3 py-3 px-4 rounded-xl text-gray-600 dark:text-gray-300 hover:text-blue-theme">
-            <div class="sidebar-icon w-6 text-center">
-                <i class="fas fa-chalkboard-teacher"></i>
-            </div>
-            <span class="sidebar-text font-medium">Training Records</span>
-        </a>
-        
-        
-        <div class="py-4 px-4">
-            <div class="border-t border-gray-200 dark:border-gray-700"></div>
-        </div>
-        
-        <a href="#" class="sidebar-item flex items-center space-x-3 py-3 px-4 rounded-xl text-gray-600 dark:text-gray-300 hover:text-blue-theme">
-            <div class="sidebar-icon w-6 text-center">
-                <i class="fas fa-cog"></i>
-            </div>
-            <span class="sidebar-text font-medium">Settings</span>
-        </a>
-        
-        <!-- Updated Logout Button -->
-        <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" 
-           class="sidebar-item flex items-center space-x-3 py-3 px-4 rounded-xl text-gray-600 dark:text-gray-300 hover:text-blue-theme">
-            <div class="sidebar-icon w-6 text-center">
-                <i class="fas fa-sign-out-alt"></i>
-            </div>
-            <span class="sidebar-text font-medium">Logout</span>
-        </a>
-    </nav>
-    
-    <div class="px-4 pt-6 border-t border-gray-200 dark:border-gray-700">
-        <div class="bg-blue-50 dark:bg-blue-900 rounded-xl p-4">
-            <div class="text-blue-800 dark:text-blue-200 font-medium text-sm mb-2">Need help?</div>
-            <p class="text-blue-600 dark:text-blue-300 text-xs mb-3">Contact our Tech support team for assistance</p>
-            <button class="w-full bg-blue-theme hover:bg-blue-700 text-white py-2 rounded-lg text-xs font-medium transition-colors">
-                Get Help
+            <button class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-400" id="sidebar-toggle">
+                <i class="fas fa-bars"></i>
             </button>
         </div>
+        
+        <nav class="flex-1 space-y-1">
+            <a href="{{ route('scm.staff.dashboard') }}" class="sidebar-item active flex items-center space-x-3 py-3 px-4 rounded-xl text-blue-theme">
+                <div class="sidebar-icon w-6 text-center">
+                    <i class="fas fa-tachometer-alt"></i>
+                </div>
+                <span class="sidebar-text font-medium">Dashboard</span>
+            </a>
+            
+            {{-- <a href="{{ route('teacher.subjects') }}" class="sidebar-item flex items-center space-x-3 py-3 px-4 rounded-xl text-gray-600 dark:text-gray-300 hover:text-blue-theme">
+                <div class="sidebar-icon w-6 text-center">
+                    <i class="fas fa-book"></i>
+                </div>
+                <span class="sidebar-text font-medium">My Subjects</span>
+            </a>
+            
+            <a href="{{ route('teacher.students') }}" class="sidebar-item flex items-center space-x-3 py-3 px-4 rounded-xl text-gray-600 dark:text-gray-300 hover:text-blue-theme">
+                <div class="sidebar-icon w-6 text-center">
+                    <i class="fas fa-users"></i>
+                </div>
+                <span class="sidebar-text font-medium">Students</span>
+                <span class="ml-auto bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 text-xs font-medium px-2 py-0.5 rounded-full">42</span>
+            </a>
+            
+            <a href="{{ route('teacher.gradebook') }}" class="sidebar-item flex items-center space-x-3 py-3 px-4 rounded-xl text-gray-600 dark:text-gray-300 hover:text-blue-theme">
+                <div class="sidebar-icon w-6 text-center">
+                    <i class="fas fa-tasks"></i>
+                </div>
+                <span class="sidebar-text font-medium">Gradebook</span>
+            </a>
+            
+            <a href="{{ route('teacher.messages') }}" class="sidebar-item flex items-center space-x-3 py-3 px-4 rounded-xl text-gray-600 dark:text-gray-300 hover:text-blue-theme">
+                <div class="sidebar-icon w-6 text-center">
+                    <i class="fas fa-comments"></i>
+                </div>
+                <span class="sidebar-text font-medium">Messages</span>
+                <span class="ml-auto bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 text-xs font-medium px-2 py-0.5 rounded-full">5</span>
+            </a> --}}
+            
+            <div class="py-4 px-4">
+                <div class="border-t border-gray-200 dark:border-gray-700"></div>
+            </div>
+            
+            <a href="#" class="sidebar-item flex items-center space-x-3 py-3 px-4 rounded-xl text-gray-600 dark:text-gray-300 hover:text-blue-theme">
+                <div class="sidebar-icon w-6 text-center">
+                    <i class="fas fa-cog"></i>
+                </div>
+                <span class="sidebar-text font-medium">Settings</span>
+            </a>
+            
+            <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" 
+               class="sidebar-item flex items-center space-x-3 py-3 px-4 rounded-xl text-gray-600 dark:text-gray-300 hover:text-blue-theme">
+                <div class="sidebar-icon w-6 text-center">
+                    <i class="fas fa-sign-out-alt"></i>
+                </div>
+                <span class="sidebar-text font-medium">Logout</span>
+            </a>
+        </nav>
+        
+        <div class="px-4 pt-6 border-t border-gray-200 dark:border-gray-700">
+            <div class="bg-green-50 dark:bg-green-900 rounded-xl p-4">
+                <div class="text-green-800 dark:text-green-200 font-medium text-sm mb-2">Quick Stats</div>
+                <p class="text-green-600 dark:text-green-300 text-xs mb-1">3 Active Subjects</p>
+                <p class="text-green-600 dark:text-green-300 text-xs">42 Students</p>
+            </div>
+        </div>
     </div>
-</div>
 
     <!-- Main Content -->
     <div class="main-content flex-1 ml-64 min-h-screen flex flex-col" id="main-content">
@@ -467,17 +515,17 @@
         <header class="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 py-4 px-8 flex items-center justify-between sticky top-0 z-10">
             <div class="header-content flex items-center justify-between w-full">
                 <div>
-                    <h1 class="text-2xl font-bold text-gray-900 dark:text-white header-title">Human Resource Management</h1>
-                    <p class="text-gray-500 dark:text-gray-400 hidden md:block">Staff Dashboard</p>
+                    <h1 class="text-2xl font-bold text-gray-900 dark:text-white header-title">Welcome, <span class="text-blue-theme">Prof. Nathaniel Martos</span> 👨‍🏫</h1>
+                    <p class="text-gray-500 dark:text-gray-400 hidden md:block">Manage your subjects, sections, and activities</p>
                 </div>
                 
                 <div class="flex items-center space-x-4 header-actions">
-                    {{-- <div class="relative hidden md:block">
+                    <div class="relative hidden md:block">
                         <div class="relative">
-                            <input type="text" placeholder="Search courses, resources..." class="search-input input-field w-80 pl-10 pr-4">
+                            <input type="text" placeholder="Search students, subjects..." class="search-input input-field w-80 pl-10 pr-4">
                             <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
                         </div>
-                    </div> --}}
+                    </div>
                     
                     <div class="flex items-center space-x-3">
                         <button class="md:hidden p-2.5 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-600 text-gray-600 dark:text-gray-300" id="mobile-search-toggle">
@@ -486,25 +534,25 @@
                         
                         <button class="relative p-2.5 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-600 text-gray-600 dark:text-gray-300">
                             <i class="fas fa-bell"></i>
-                            <span class="notification-badge">3</span>
+                            <span class="notification-badge">7</span>
                         </button>
                         
                         <button class="md:hidden p-2.5 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-600 text-gray-600 dark:text-gray-300" id="mobile-menu-toggle">
                             <i class="fas fa-bars"></i>
                         </button>
                         
-                        <div class="w-10 h-10 rounded-xl bg-blue-100 dark:bg-blue-900 flex items-center justify-center text-blue-700 dark:text-blue-300 font-medium hidden md:flex">
-                            KJ
+                        <div class="w-10 h-10 rounded-xl bg-blue-theme flex items-center justify-center text-white font-medium hidden md:flex">
+                            NM
                         </div>
                     </div>
                 </div>
             </div>
             
             <!-- Mobile Search Bar -->
-            {{-- <div class="relative w-full mt-2 md:hidden hidden" id="mobile-search-bar">
-                <input type="text" placeholder="Search courses, resources..." class="search-input input-field w-full pl-10 pr-4">
+            <div class="relative w-full mt-2 md:hidden hidden" id="mobile-search-bar">
+                <input type="text" placeholder="Search students, subjects..." class="search-input input-field w-full pl-10 pr-4">
                 <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
-            </div> --}}
+            </div>
         </header>
 
         <!-- Content -->
@@ -516,8 +564,18 @@
                         <i class="fas fa-book text-blue-600 dark:text-blue-300 text-xl"></i>
                     </div>
                     <div>
-                        <div class="text-gray-500 dark:text-gray-400 text-sm">Applicants</div>
-                        <div class="text-2xl font-bold text-gray-900 dark:text-white">12</div>
+                        <div class="text-gray-500 dark:text-gray-400 text-sm">Total Subjects</div>
+                        <div class="text-2xl font-bold text-gray-900 dark:text-white">3</div>
+                    </div>
+                </div>
+                
+                <div class="card p-6 flex items-center">
+                    <div class="w-12 h-12 rounded-xl bg-green-100 dark:bg-green-900 flex items-center justify-center mr-4">
+                        <i class="fas fa-layer-group text-green-600 dark:text-green-300 text-xl"></i>
+                    </div>
+                    <div>
+                        <div class="text-gray-500 dark:text-gray-400 text-sm">Total Sections</div>
+                        <div class="text-2xl font-bold text-gray-900 dark:text-white">8</div>
                     </div>
                 </div>
                 
@@ -526,266 +584,449 @@
                         <i class="fas fa-tasks text-yellow-600 dark:text-yellow-300 text-xl"></i>
                     </div>
                     <div>
-                        <div class="text-gray-500 dark:text-gray-400 text-sm">Staffs</div>
-                        <div class="text-2xl font-bold text-gray-900 dark:text-white">8</div>
-                    </div>
-                </div>
-                
-                <div class="card p-6 flex items-center">
-                    <div class="w-12 h-12 rounded-xl bg-green-100 dark:bg-green-900 flex items-center justify-center mr-4">
-                        <i class="fas fa-check-circle text-green-600 dark:text-green-300 text-xl"></i>
-                    </div>
-                    <div>
-                        <div class="text-gray-500 dark:text-gray-400 text-sm">Rejected</div>
-                        <div class="text-2xl font-bold text-gray-900 dark:text-white">18</div>
+                        <div class="text-gray-500 dark:text-gray-400 text-sm">Activities Created</div>
+                        <div class="text-2xl font-bold text-gray-900 dark:text-white">24</div>
                     </div>
                 </div>
                 
                 <div class="card p-6 flex items-center">
                     <div class="w-12 h-12 rounded-xl bg-purple-100 dark:bg-purple-900 flex items-center justify-center mr-4">
-                        <i class="fas fa-chart-line text-purple-600 dark:text-purple-300 text-xl"></i>
+                        <i class="fas fa-user-graduate text-purple-600 dark:text-purple-300 text-xl"></i>
                     </div>
                     <div>
-                        <div class="text-gray-500 dark:text-gray-400 text-sm">Overall Progress</div>
-                        <div class="text-2xl font-bold text-gray-900 dark:text-white">72%</div>
+                        <div class="text-gray-500 dark:text-gray-400 text-sm">Total Students</div>
+                        <div class="text-2xl font-bold text-gray-900 dark:text-white">42</div>
                     </div>
                 </div>
             </div>
 
-           <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 main-grid">
-    <!-- Left Column -->
-    <div class="lg:col-span-2 space-y-8">
-        <!-- HRM Welcome Banner -->
-        <div class="featured-banner">
-            <div class="p-8">
-                <div class="flex flex-col md:flex-row items-center justify-between">
-                    <div class="featured-banner-content mb-6 md:mb-0">
-                        <h2 class="text-2xl font-bold mb-3 text-white">Welcome to HR Management Portal</h2>
-                        <p class="text-blue-100 mb-6 max-w-lg">Employee Information Management – Centralized hub for managing all employee records, profiles, and HR data.</p>
-                        <button class="px-6 py-3 bg-yellow-theme hover:bg-yellow-600 text-gray-900 font-semibold rounded-xl transition-colors shadow-md flex items-center featured-banner-button">
-                            Quick Employee Search <i class="fas fa-search ml-2"></i>
-                        </button>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 main-grid">
+                <!-- Left Column - Create Subject Form -->
+                <div class="lg:col-span-2 space-y-8">
+                    <!-- Welcome Banner -->
+                    <div class="featured-banner">
+                        <div class="p-8">
+                            <div class="flex flex-col md:flex-row items-center justify-between">
+                                <div class="featured-banner-content mb-6 md:mb-0">
+                                    <h2 class="text-2xl font-bold mb-3 text-white">Teacher's Command Center</h2>
+                                    <p class="text-blue-100 mb-6 max-w-lg">Create and manage subjects, organize sections, and assign activities to engage your students effectively.</p>
+                                    <button class="px-6 py-3 bg-yellow-theme hover:bg-yellow-600 text-gray-900 font-semibold rounded-xl transition-colors shadow-md flex items-center featured-banner-button">
+                                        View Student Progress <i class="fas fa-chart-line ml-2"></i>
+                                    </button>
+                                </div>
+                                <div class="featured-banner-image animate-float">
+                                    <div class="w-48 h-32 bg-gradient-to-r from-blue-400 to-blue-300 dark:from-blue-500 dark:to-blue-400 rounded-lg shadow-xl flex items-center justify-center">
+                                        <i class="fas fa-chalkboard-teacher text-white text-4xl"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="featured-banner-image animate-float">
-                        <div class="w-48 h-32 bg-gradient-to-r from-blue-400 to-blue-300 dark:from-blue-500 dark:to-blue-400 rounded-lg shadow-xl flex items-center justify-center">
-                            <i class="fas fa-users text-white text-4xl"></i>
+
+                    <!-- Create New Subject -->
+                    <div class="card p-6 form-card">
+                        <h3 class="font-bold text-xl text-gray-900 dark:text-white mb-6">Create New Subject</h3>
+                        
+                        <form id="create-subject-form">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-gray-700 dark:text-gray-300 text-sm font-medium mb-2" for="subject-name">
+                                        Subject Name *
+                                    </label>
+                                    <input type="text" id="subject-name" class="input-field" placeholder="e.g., Discrete Structures 2" required>
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-gray-700 dark:text-gray-300 text-sm font-medium mb-2" for="subject-code">
+                                        Subject Code *
+                                    </label>
+                                    <input type="text" id="subject-code" class="input-field" placeholder="e.g., CS101" required>
+                                </div>
+                                
+                                <div class="md:col-span-2">
+                                    <label class="block text-gray-700 dark:text-gray-300 text-sm font-medium mb-2" for="subject-description">
+                                        Description
+                                    </label>
+                                    <textarea id="subject-description" class="input-field h-32" placeholder="Describe the subject, learning objectives, etc."></textarea>
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-gray-700 dark:text-gray-300 text-sm font-medium mb-2" for="subject-semester">
+                                        Semester
+                                    </label>
+                                    <select id="subject-semester" class="input-field">
+                                        <option value="1st">1st Semester</option>
+                                        <option value="2nd">2nd Semester</option>
+                                        <option value="summer">Summer</option>
+                                    </select>
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-gray-700 dark:text-gray-300 text-sm font-medium mb-2" for="subject-year">
+                                        Academic Year
+                                    </label>
+                                    <input type="text" id="subject-year" class="input-field" placeholder="e.g., 2023-2024">
+                                </div>
+                            </div>
+                            
+                            <div class="flex justify-end mt-6">
+                                <button type="button" onclick="resetForm('create-subject-form')" class="px-6 py-3 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 font-medium rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700 mr-4 transition-colors">
+                                    Clear
+                                </button>
+                                <button type="submit" class="px-6 py-3 bg-blue-theme hover:bg-blue-700 text-white font-medium rounded-xl transition-colors">
+                                    Create Subject
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                
+                <!-- Right Column - Quick Actions & Recent -->
+                <div class="space-y-8">
+                    <!-- Quick Actions -->
+                    <div class="card p-6">
+                        <h3 class="font-semibold text-gray-900 dark:text-white mb-5">Quick Actions</h3>
+                        
+                        <div class="space-y-3">
+                            <button class="w-full flex items-center justify-between p-4 rounded-xl bg-blue-50 dark:bg-blue-900 border border-blue-200 dark:border-blue-700 hover:bg-blue-100 dark:hover:bg-blue-800 transition-colors" onclick="showSectionForm()">
+                                <div class="flex items-center">
+                                    <div class="w-10 h-10 rounded-lg bg-blue-theme flex items-center justify-center mr-3">
+                                        <i class="fas fa-plus text-white"></i>
+                                    </div>
+                                    <div class="text-left">
+                                        <div class="font-medium text-gray-900 dark:text-white">Add Section</div>
+                                        <div class="text-xs text-gray-500 dark:text-gray-400">To existing subject</div>
+                                    </div>
+                                </div>
+                                <i class="fas fa-chevron-right text-gray-400"></i>
+                            </button>
+                            
+                            <button class="w-full flex items-center justify-between p-4 rounded-xl bg-green-50 dark:bg-green-900 border border-green-200 dark:border-green-700 hover:bg-green-100 dark:hover:bg-green-800 transition-colors" onclick="showActivityForm()">
+                                <div class="flex items-center">
+                                    <div class="w-10 h-10 rounded-lg bg-green-600 flex items-center justify-center mr-3">
+                                        <i class="fas fa-tasks text-white"></i>
+                                    </div>
+                                    <div class="text-left">
+                                        <div class="font-medium text-gray-900 dark:text-white">Create Activity</div>
+                                        <div class="text-xs text-gray-500 dark:text-gray-400">Assignment, quiz, etc.</div>
+                                    </div>
+                                </div>
+                                <i class="fas fa-chevron-right text-gray-400"></i>
+                            </button>
+                            
+                            <button class="w-full flex items-center justify-between p-4 rounded-xl bg-purple-50 dark:bg-purple-900 border border-purple-200 dark:border-purple-700 hover:bg-purple-100 dark:hover:bg-purple-800 transition-colors">
+                                <div class="flex items-center">
+                                    <div class="w-10 h-10 rounded-lg bg-purple-600 flex items-center justify-center mr-3">
+                                        <i class="fas fa-user-plus text-white"></i>
+                                    </div>
+                                    <div class="text-left">
+                                        <div class="font-medium text-gray-900 dark:text-white">Enroll Students</div>
+                                        <div class="text-xs text-gray-500 dark:text-gray-400">Add to sections</div>
+                                    </div>
+                                </div>
+                                <i class="fas fa-chevron-right text-gray-400"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Recent Activities -->
+                    <div class="card p-6">
+                        <div class="flex justify-between items-center mb-5">
+                            <h3 class="font-semibold text-gray-900 dark:text-white">Recent Activities</h3>
+                            <a href="#" class="text-blue-theme text-sm font-medium hover:text-blue-700 dark:hover:text-blue-400">View All</a>
+                        </div>
+                        
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center">
+                                    <div class="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center mr-3">
+                                        <i class="fas fa-plus text-blue-600 dark:text-blue-300 text-xs"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-medium text-gray-900 dark:text-white text-sm">New Section Added</h4>
+                                        <p class="text-gray-500 dark:text-gray-400 text-xs">Discrete Structures 2</p>
+                                    </div>
+                                </div>
+                                <span class="text-gray-500 dark:text-gray-400 text-xs">2h ago</span>
+                            </div>
+                            
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center">
+                                    <div class="w-8 h-8 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center mr-3">
+                                        <i class="fas fa-check text-green-600 dark:text-green-300 text-xs"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-medium text-gray-900 dark:text-white text-sm">Assignment Graded</h4>
+                                        <p class="text-gray-500 dark:text-gray-400 text-xs">15 submissions</p>
+                                    </div>
+                                </div>
+                                <span class="text-gray-500 dark:text-gray-400 text-xs">1d ago</span>
+                            </div>
+                            
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center">
+                                    <div class="w-8 h-8 rounded-full bg-yellow-100 dark:bg-yellow-900 flex items-center justify-center mr-3">
+                                        <i class="fas fa-exclamation text-yellow-600 dark:text-yellow-300 text-xs"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-medium text-gray-900 dark:text-white text-sm">Deadline Reminder</h4>
+                                        <p class="text-gray-500 dark:text-gray-400 text-xs">Quiz #1 due tomorrow</p>
+                                    </div>
+                                </div>
+                                <span class="text-gray-500 dark:text-gray-400 text-xs">2d ago</span>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-
-        <!-- Employee Management Dashboard -->
-        <div class="card p-6">
-            <div class="flex justify-between items-center mb-6">
-                <h3 class="font-bold text-xl text-gray-900 dark:text-white">Employee Management Tools</h3>
-                <a href="#" class="text-blue-theme font-medium flex items-center hover:text-blue-700 dark:hover:text-blue-400 text-sm">
-                    All Functions <i class="fas fa-chevron-right ml-2 text-xs"></i>
-                </a>
             </div>
             
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                <div class="bg-gray-50 dark:bg-gray-700 rounded-xl p-4 border border-gray-200 dark:border-gray-600 hover:border-blue-300 dark:hover:border-blue-500 transition-colors">
-                    <div class="flex items-start justify-between mb-4">
-                        <div class="w-12 h-12 rounded-lg bg-blue-theme flex items-center justify-center">
-                            <i class="fas fa-id-card text-white text-xl"></i>
-                        </div>
-                        <span class="bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 text-xs font-medium px-2 py-1 rounded">FREQUENT</span>
-                    </div>
-                    <h4 class="font-bold text-gray-900 dark:text-white text-lg mb-1">Employee Records</h4>
-                    <p class="text-gray-500 dark:text-gray-400 text-sm mb-4">Complete profile management</p>
-                    
-                    <div class="mb-3">
-                        <div class="flex justify-between text-sm mb-1">
-                            <span class="text-gray-600 dark:text-gray-300">Updated Profiles</span>
-                            <span class="text-blue-theme font-medium">94%</span>
-                        </div>
-                        <div class="course-progress">
-                            <div class="course-progress-fill" style="width: 94%"></div>
-                        </div>
-                    </div>
-                    
-                    <div class="flex justify-between text-xs text-gray-500 dark:text-gray-400">
-                        <span>245 Active</span>
-                        <span>8 Pending</span>
-                    </div>
-                </div>
-                
-                <div class="bg-gray-50 dark:bg-gray-700 rounded-xl p-4 border border-gray-200 dark:border-gray-600 hover:border-blue-300 dark:hover:border-blue-500 transition-colors">
-                    <div class="flex items-start justify-between mb-4">
-                        <div class="w-12 h-12 rounded-lg bg-purple-600 flex items-center justify-center">
-                            <i class="fas fa-file-contract text-white text-xl"></i>
-                        </div>
-                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs font-medium px-2 py-1 rounded">NEW</span>
-                    </div>
-                    <h4 class="font-bold text-gray-900 dark:text-white text-lg mb-1">Document Management</h4>
-                    <p class="text-gray-500 dark:text-gray-400 text-sm mb-4">Contracts & Certifications</p>
-                    
-                    <div class="mb-3">
-                        <div class="flex justify-between text-sm mb-1">
-                            <span class="text-gray-600 dark:text-gray-300">Completion Rate</span>
-                            <span class="text-blue-theme font-medium">78%</span>
-                        </div>
-                        <div class="course-progress">
-                            <div class="course-progress-fill" style="width: 78%"></div>
-                        </div>
-                    </div>
-                    
-                    <div class="flex justify-between text-xs text-gray-500 dark:text-gray-400">
-                        <span>312 Documents</span>
-                        <span>12 Expiring</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Right Column -->
-    <div class="space-y-8">
-        <!-- HR Profile Card -->
-        <div class="card p-6">
-            <div class="flex flex-col items-center text-center">
-                <div class="relative mb-4">
-                    <div class="profile-image w-20 h-20 rounded-full bg-blue-theme flex items-center justify-center text-white text-2xl font-bold">
-                        HR
-                    </div>
-                    <div class="absolute bottom-0 right-0 w-7 h-7 rounded-full bg-blue-theme flex items-center justify-center border-2 border-white dark:border-gray-800 cursor-pointer hover:bg-blue-700">
-                        <i class="fas fa-pen text-xs text-white"></i>
-                    </div>
-                </div>
-                
-                <h2 class="font-bold text-lg text-gray-900 dark:text-white">HR Administrator</h2>
-                <p class="text-gray-500 dark:text-gray-400 text-sm mt-1 flex items-center justify-center">
-                    <i class="fas fa-building mr-1.5 text-blue-theme"></i> 
-                    Human Resources Department
-                </p>
-                
-                <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5 mt-5">
-                    <div class="bg-blue-theme h-2.5 rounded-full" style="width: 88%"></div>
-                </div>
-                <div class="w-full flex justify-between text-sm text-gray-500 dark:text-gray-400 mt-2">
-                    <span>Database Completion</span>
-                    <span class="text-gray-900 dark:text-white font-medium">88%</span>
-                </div>
-                
-                <a href="#" class="w-full mt-5">
-                    <button class="w-full py-3 bg-blue-theme hover:bg-blue-700 text-white rounded-xl font-medium transition-colors px-4">
-                        Manage HR Dashboard
+            <!-- Your Subjects with Sections & Activities -->
+            <div class="mt-8">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="font-bold text-xl text-gray-900 dark:text-white">Your Subjects & Sections</h3>
+                    <button class="text-blue-theme font-medium flex items-center hover:text-blue-700 dark:hover:text-blue-400 text-sm" onclick="expandAllSubjects()">
+                        <i class="fas fa-expand-alt mr-2 text-xs"></i> Expand All
                     </button>
-                </a>
-            </div>
-        </div>
-        
-        <!-- Upcoming HR Deadlines -->
-        <div class="card p-6">
-            <div class="flex justify-between items-center mb-5">
-                <h3 class="font-semibold text-gray-900 dark:text-white">HR Deadlines</h3>
-                <a href="#" class="text-blue-theme text-sm font-medium hover:text-blue-700 dark:hover:text-blue-400">View All</a>
-            </div>
-            
-            <div class="space-y-4">
-                <div class="flex items-center justify-between p-3 rounded-xl bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600">
-                    <div class="flex items-center">
-                        <div class="w-10 h-10 rounded-lg bg-red-100 dark:bg-red-900 flex items-center justify-center mr-3">
-                            <i class="fas fa-money-check-alt text-red-600 dark:text-red-300"></i>
-                        </div>
-                        <div>
-                            <h4 class="font-medium text-gray-900 dark:text-white">PAYROLL PROCESSING</h4>
-                            <p class="text-gray-500 dark:text-gray-400 text-xs">Monthly Salary Run</p>
-                        </div>
-                    </div>
-                    <span class="text-gray-500 dark:text-gray-400 text-sm font-medium">Sep 25</span>
                 </div>
                 
-                <div class="flex items-center justify-between p-3 rounded-xl bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600">
-                    <div class="flex items-center">
-                        <div class="w-10 h-10 rounded-lg bg-yellow-100 dark:bg-yellow-900 flex items-center justify-center mr-3">
-                            <i class="fas fa-chart-bar text-yellow-600 dark:text-yellow-300"></i>
+                <div class="space-y-6" id="subjects-container">
+                    <!-- Subject 1 -->
+                    <div class="card p-6 subject-item">
+                        <div class="flex justify-between items-center mb-4">
+                            <div class="flex items-center">
+                                <div class="w-12 h-12 rounded-lg bg-blue-theme flex items-center justify-center mr-4">
+                                    <i class="fas fa-calculator text-white text-xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-gray-900 dark:text-white text-lg">Discrete Structures 2</h4>
+                                    <p class="text-gray-500 dark:text-gray-400 text-sm">CS201 • 1st Semester 2023-2024</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <button class="p-2 text-gray-500 hover:text-blue-theme" onclick="toggleSectionForm('subject1')" title="Add Section">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                                <button class="p-2 text-gray-500 hover:text-blue-theme collapsible-toggle" data-target="subject1-sections">
+                                    <i class="fas fa-chevron-down"></i>
+                                </button>
+                            </div>
                         </div>
-                        <div>
-                            <h4 class="font-medium text-gray-900 dark:text-white">PERFORMANCE REVIEWS</h4>
-                            <p class="text-gray-500 dark:text-gray-400 text-xs">Q3 Evaluations</p>
+                        
+                        <!-- Add Section Form (Hidden by default) -->
+                        <div id="subject1-section-form" class="hidden mb-6">
+                            <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-4">
+                                <h5 class="font-medium text-gray-900 dark:text-white mb-3">Add New Section</h5>
+                                <form onsubmit="addSection('subject1', event)">
+                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                        <input type="text" class="input-field" placeholder="Section Name (e.g., BSIT 3-1)" required>
+                                        <input type="text" class="input-field" placeholder="Schedule (e.g., MWF 9:00-10:30)" required>
+                                        <input type="number" class="input-field" placeholder="Max Students" min="1" max="50">
+                                    </div>
+                                    <div class="flex justify-end mt-4">
+                                        <button type="button" class="px-4 py-2 text-gray-600 dark:text-gray-400 mr-3" onclick="toggleSectionForm('subject1')">Cancel</button>
+                                        <button type="submit" class="px-4 py-2 bg-blue-theme hover:bg-blue-700 text-white rounded-lg">Add Section</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        
+                        <!-- Sections -->
+                        <div id="subject1-sections" class="collapsible-content">
+                            <div class="space-y-4">
+                                <!-- Section 1 -->
+                                <div class="section-item p-4 rounded-lg">
+                                    <div class="flex justify-between items-center mb-3">
+                                        <div>
+                                            <h5 class="font-bold text-gray-900 dark:text-white">BSIT 3-1</h5>
+                                            <p class="text-gray-500 dark:text-gray-400 text-sm">MWF 9:00-10:30 AM • 15 students</p>
+                                        </div>
+                                        <div class="flex items-center space-x-2">
+                                            <button class="p-2 text-gray-500 hover:text-green-600" onclick="toggleActivityForm('section1-1')" title="Add Activity">
+                                                <i class="fas fa-plus"></i>
+                                            </button>
+                                            <button class="p-2 text-gray-500 hover:text-blue-theme collapsible-toggle" data-target="section1-1-activities">
+                                                <i class="fas fa-chevron-down"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Add Activity Form (Hidden by default) -->
+                                    <div id="section1-1-activity-form" class="hidden mb-4">
+                                        <div class="bg-white dark:bg-gray-700 rounded-lg p-4 border border-gray-200 dark:border-gray-600">
+                                            <h6 class="font-medium text-gray-900 dark:text-white mb-3">Create New Activity</h6>
+                                            <form onsubmit="addActivity('section1-1', event)">
+                                                <div class="space-y-3">
+                                                    <input type="text" class="input-field" placeholder="Activity Title" required>
+                                                    <select class="input-field" required>
+                                                        <option value="">Select Activity Type</option>
+                                                        <option value="lecture">Lecture</option>
+                                                        <option value="assignment">Assignment</option>
+                                                        <option value="quiz">Quiz</option>
+                                                        <option value="project">Project</option>
+                                                    </select>
+                                                    <textarea class="input-field h-24" placeholder="Description/Instructions"></textarea>
+                                                    <input type="date" class="input-field" placeholder="Due Date">
+                                                </div>
+                                                <div class="flex justify-end mt-4">
+                                                    <button type="button" class="px-4 py-2 text-gray-600 dark:text-gray-400 mr-3" onclick="toggleActivityForm('section1-1')">Cancel</button>
+                                                    <button type="submit" class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg">Create Activity</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Activities -->
+                                    <div id="section1-1-activities" class="collapsible-content">
+                                        <div class="space-y-3">
+                                            <div class="activity-item p-3 rounded-lg bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600">
+                                                <div class="flex justify-between items-center">
+                                                    <div>
+                                                        <div class="font-medium text-gray-900 dark:text-white">Assignment 1: Logic Gates</div>
+                                                        <div class="flex items-center mt-1">
+                                                            <span class="type-badge type-assignment mr-3">Assignment</span>
+                                                            <span class="text-gray-500 dark:text-gray-400 text-xs">Due: Sep 15, 2023</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="flex items-center space-x-2">
+                                                        <span class="text-sm text-gray-500 dark:text-gray-400">12/15 submitted</span>
+                                                        <button class="p-1 text-blue-theme hover:text-blue-700" title="Edit">
+                                                            <i class="fas fa-edit"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="activity-item p-3 rounded-lg bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600">
+                                                <div class="flex justify-between items-center">
+                                                    <div>
+                                                        <div class="font-medium text-gray-900 dark:text-white">Quiz 1: Set Theory</div>
+                                                        <div class="flex items-center mt-1">
+                                                            <span class="type-badge type-quiz mr-3">Quiz</span>
+                                                            <span class="text-gray-500 dark:text-gray-400 text-xs">Due: Sep 20, 2023</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="flex items-center space-x-2">
+                                                        <span class="text-sm text-gray-500 dark:text-gray-400">8/15 completed</span>
+                                                        <button class="p-1 text-blue-theme hover:text-blue-700" title="Edit">
+                                                            <i class="fas fa-edit"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Section 2 -->
+                                <div class="section-item p-4 rounded-lg">
+                                    <div class="flex justify-between items-center mb-3">
+                                        <div>
+                                            <h5 class="font-bold text-gray-900 dark:text-white">BSIT 3-2</h5>
+                                            <p class="text-gray-500 dark:text-gray-400 text-sm">TTH 1:00-2:30 PM • 12 students</p>
+                                        </div>
+                                        <div class="flex items-center space-x-2">
+                                            <button class="p-2 text-gray-500 hover:text-green-600" onclick="toggleActivityForm('section1-2')" title="Add Activity">
+                                                <i class="fas fa-plus"></i>
+                                            </button>
+                                            <button class="p-2 text-gray-500 hover:text-blue-theme collapsible-toggle" data-target="section1-2-activities">
+                                                <i class="fas fa-chevron-down"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Activities -->
+                                    <div id="section1-2-activities" class="collapsible-content">
+                                        <div class="space-y-3">
+                                            <div class="activity-item p-3 rounded-lg bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600">
+                                                <div class="flex justify-between items-center">
+                                                    <div>
+                                                        <div class="font-medium text-gray-900 dark:text-white">Lecture: Graph Theory</div>
+                                                        <div class="flex items-center mt-1">
+                                                            <span class="type-badge type-lecture mr-3">Lecture</span>
+                                                            <span class="text-gray-500 dark:text-gray-400 text-xs">Posted: Sep 10, 2023</span>
+                                                        </div>
+                                                    </div>
+                                                    <button class="p-1 text-blue-theme hover:text-blue-700" title="Edit">
+                                                        <i class="fas fa-edit"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <span class="text-gray-500 dark:text-gray-400 text-sm font-medium">Sep 30</span>
-                </div>
-                
-                <div class="flex items-center justify-between p-3 rounded-xl bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600">
-                    <div class="flex items-center">
-                        <div class="w-10 h-10 rounded-lg bg-blue-100 dark:bg-blue-900 flex items-center justify-center mr-3">
-                            <i class="fas fa-file-medical text-blue-600 dark:text-blue-300"></i>
+                    
+                    <!-- Subject 2 -->
+                    <div class="card p-6 subject-item">
+                        <div class="flex justify-between items-center mb-4">
+                            <div class="flex items-center">
+                                <div class="w-12 h-12 rounded-lg bg-green-600 flex items-center justify-center mr-4">
+                                    <i class="fas fa-laptop-code text-white text-xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-gray-900 dark:text-white text-lg">Human Computer Interaction 2</h4>
+                                    <p class="text-gray-500 dark:text-gray-400 text-sm">HCI202 • 1st Semester 2023-2024</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <button class="p-2 text-gray-500 hover:text-blue-theme" onclick="toggleSectionForm('subject2')" title="Add Section">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                                <button class="p-2 text-gray-500 hover:text-blue-theme collapsible-toggle" data-target="subject2-sections">
+                                    <i class="fas fa-chevron-down"></i>
+                                </button>
+                            </div>
                         </div>
-                        <div>
-                            <h4 class="font-medium text-gray-900 dark:text-white">BENEFITS RENEWAL</h4>
-                            <p class="text-gray-500 dark:text-gray-400 text-xs">Health Insurance</p>
+                        
+                        <!-- Sections -->
+                        <div id="subject2-sections" class="collapsible-content">
+                            <div class="space-y-4">
+                                <div class="section-item p-4 rounded-lg">
+                                    <div class="flex justify-between items-center">
+                                        <div>
+                                            <h5 class="font-bold text-gray-900 dark:text-white">BSIT 3-1</h5>
+                                            <p class="text-gray-500 dark:text-gray-400 text-sm">MWF 10:30-12:00 PM • 15 students</p>
+                                        </div>
+                                        <div class="flex items-center space-x-2">
+                                            <button class="p-2 text-gray-500 hover:text-green-600" onclick="toggleActivityForm('section2-1')" title="Add Activity">
+                                                <i class="fas fa-plus"></i>
+                                            </button>
+                                            <button class="p-2 text-gray-500 hover:text-blue-theme collapsible-toggle" data-target="section2-1-activities">
+                                                <i class="fas fa-chevron-down"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Activities -->
+                                    <div id="section2-1-activities" class="collapsible-content">
+                                        <div class="space-y-3 mt-3">
+                                            <div class="activity-item p-3 rounded-lg bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600">
+                                                <div class="flex justify-between items-center">
+                                                    <div>
+                                                        <div class="font-medium text-gray-900 dark:text-white">Project: UI/UX Design</div>
+                                                        <div class="flex items-center mt-1">
+                                                            <span class="type-badge type-project mr-3">Project</span>
+                                                            <span class="text-gray-500 dark:text-gray-400 text-xs">Due: Oct 15, 2023</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="flex items-center space-x-2">
+                                                        <span class="text-sm text-gray-500 dark:text-gray-400">5/15 submitted</span>
+                                                        <button class="p-1 text-blue-theme hover:text-blue-700" title="Edit">
+                                                            <i class="fas fa-edit"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <span class="text-gray-500 dark:text-gray-400 text-sm font-medium">Oct 5</span>
                 </div>
             </div>
-        </div>
-    </div>
-</div>
-
-<!-- HR Team Section -->
-<div class="mt-8">
-    <div class="flex justify-between items-center mb-6">
-        <h3 class="font-bold text-xl text-gray-900 dark:text-white">HR Management Team</h3>
-        <a href="#" class="text-blue-theme font-medium flex items-center hover:text-blue-700 dark:hover:text-blue-400 text-sm">
-            View All <i class="fas fa-chevron-right ml-2 text-xs"></i>
-        </a>
-    </div>
-    
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 instructors-grid">
-        <div class="card p-5 flex flex-col items-center text-center">
-            <div class="rounded-full w-16 h-16 bg-blue-100 dark:bg-blue-900 flex items-center justify-center text-blue-600 dark:text-blue-300 text-xl font-bold mb-4">
-                SD
-            </div>
-            <h4 class="font-bold text-gray-900 dark:text-white">Sarah Dela Cruz</h4>
-            <p class="text-gray-500 dark:text-gray-400 text-sm mt-1">HR Director</p>
-            <div class="mt-3 flex items-center text-xs">
-                <span class="status-indicator status-online mr-2"></span>
-                <span class="text-green-600 dark:text-green-400 font-medium">Available</span>
-            </div>
-        </div>
-        
-        <div class="card p-5 flex flex-col items-center text-center">
-            <div class="rounded-full w-16 h-16 bg-blue-100 dark:bg-blue-900 flex items-center justify-center text-blue-600 dark:text-blue-300 text-xl font-bold mb-4">
-                MP
-            </div>
-            <h4 class="font-bold text-gray-900 dark:text-white">Michael Perez</h4>
-            <p class="text-gray-500 dark:text-gray-400 text-sm mt-1">Recruitment Manager</p>
-            <div class="mt-3 flex items-center text-xs">
-                <span class="status-indicator status-offline mr-2"></span>
-                <span class="text-gray-500 dark:text-gray-400 font-medium">In Meeting</span>
-            </div>
-        </div>
-        
-        <div class="card p-5 flex flex-col items-center text-center">
-            <div class="rounded-full w-16 h-16 bg-blue-100 dark:bg-blue-900 flex items-center justify-center text-blue-600 dark:text-blue-300 text-xl font-bold mb-4">
-                AG
-            </div>
-            <h4 class="font-bold text-gray-900 dark:text-white">Anna Gomez</h4>
-            <p class="text-gray-500 dark:text-gray-400 text-sm mt-1">Payroll Specialist</p>
-            <div class="mt-3 flex items-center text-xs">
-                <span class="status-indicator status-online mr-2"></span>
-                <span class="text-green-600 dark:text-green-400 font-medium">Available</span>
-            </div>
-        </div>
-        
-        <div class="card p-5 flex flex-col items-center text-center">
-            <div class="rounded-full w-16 h-16 bg-blue-100 dark:bg-blue-900 flex items-center justify-center text-blue-600 dark:text-blue-300 text-xl font-bold mb-4">
-                RS
-            </div>
-            <h4 class="font-bold text-gray-900 dark:text-white">Robert Santos</h4>
-            <p class="text-gray-500 dark:text-gray-400 text-sm mt-1">Benefits Administrator</p>
-            <div class="mt-3 flex items-center text-xs">
-                <span class="status-indicator status-offline mr-2"></span>
-                <span class="text-gray-500 dark:text-gray-400 font-medium">On Leave</span>
-            </div>
-        </div>
-    </div>
-</div>
         </main>
     </div>
 
@@ -837,22 +1078,110 @@
             mobileSearchBar.classList.toggle('hidden');
         });
         
-        // Initialize progress animations
+        // Form handling functions
+        function resetForm(formId) {
+            document.getElementById(formId).reset();
+        }
+        
+        function showSectionForm() {
+            alert('Select a subject first to add a section');
+        }
+        
+        function showActivityForm() {
+            alert('Select a section first to add an activity');
+        }
+        
+        // Collapsible functionality
         document.addEventListener('DOMContentLoaded', () => {
-            const progressBars = document.querySelectorAll('.course-progress-fill');
-            progressBars.forEach(bar => {
-                const width = bar.style.width;
-                bar.style.width = '0';
-                setTimeout(() => {
-                    bar.style.width = width;
-                }, 300);
-            });
-            
             // Handle responsive behavior on load
             if (window.innerWidth < 1024) {
                 mainContent.style.marginLeft = '0';
             }
+            
+            // Set up collapsible toggles
+            const collapsibleToggles = document.querySelectorAll('.collapsible-toggle');
+            collapsibleToggles.forEach(toggle => {
+                toggle.addEventListener('click', function() {
+                    const targetId = this.getAttribute('data-target');
+                    const target = document.getElementById(targetId);
+                    const icon = this.querySelector('i');
+                    
+                    if (target.classList.contains('expanded')) {
+                        target.classList.remove('expanded');
+                        icon.classList.remove('fa-chevron-up');
+                        icon.classList.add('fa-chevron-down');
+                    } else {
+                        target.classList.add('expanded');
+                        icon.classList.remove('fa-chevron-down');
+                        icon.classList.add('fa-chevron-up');
+                    }
+                });
+            });
+            
+            // Handle form submissions
+            document.getElementById('create-subject-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                alert('Subject created successfully!');
+                this.reset();
+            });
         });
+        
+        // Expand all subjects
+        function expandAllSubjects() {
+            const collapsibles = document.querySelectorAll('.collapsible-content');
+            const icons = document.querySelectorAll('.collapsible-toggle i');
+            
+            collapsibles.forEach(collapsible => {
+                collapsible.classList.add('expanded');
+            });
+            
+            icons.forEach(icon => {
+                icon.classList.remove('fa-chevron-down');
+                icon.classList.add('fa-chevron-up');
+            });
+        }
+        
+        // Toggle section form
+        function toggleSectionForm(subjectId) {
+            const form = document.getElementById(`${subjectId}-section-form`);
+            if (form.classList.contains('hidden')) {
+                form.classList.remove('hidden');
+            } else {
+                form.classList.add('hidden');
+            }
+        }
+        
+        // Toggle activity form
+        function toggleActivityForm(sectionId) {
+            const form = document.getElementById(`${sectionId}-activity-form`);
+            if (form.classList.contains('hidden')) {
+                form.classList.remove('hidden');
+            } else {
+                form.classList.add('hidden');
+            }
+        }
+        
+        // Add section
+        function addSection(subjectId, event) {
+            event.preventDefault();
+            const form = event.target;
+            alert('Section added successfully!');
+            form.reset();
+            toggleSectionForm(subjectId);
+            
+            // In a real app, you would add the section to the DOM here
+        }
+        
+        // Add activity
+        function addActivity(sectionId, event) {
+            event.preventDefault();
+            const form = event.target;
+            alert('Activity created successfully!');
+            form.reset();
+            toggleActivityForm(sectionId);
+            
+            // In a real app, you would add the activity to the DOM here
+        }
         
         // Handle window resize
         window.addEventListener('resize', () => {

@@ -21,6 +21,7 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
+        'position',
         'newsletter_opt_in',
     ];
 
@@ -56,8 +57,28 @@ class User extends Authenticatable
         return $this->role === 'scm';
     }
 
+    public function isManager(): bool
+    {
+        return $this->position === 'manager';
+    }
+
+    public function isStaff(): bool
+    {
+        return $this->position === 'staff';
+    }
+
     public function getFullNameAttribute(): string
     {
         return $this->first_name.' '.$this->last_name;
+    }
+
+    public function getRoleDisplayAttribute(): string
+    {
+        return $this->isHrm() ? 'HRM' : 'SCM';
+    }
+
+    public function getPositionDisplayAttribute(): string
+    {
+        return $this->isManager() ? 'Manager' : 'Staff';
     }
 }

@@ -1,7 +1,5 @@
 <?php
 
-use App\Http\Controllers\uno\hrm\DashboardController as hrmDashboard;
-use App\Http\Controllers\uno\scm\DashboardController as scmDashboard;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -36,11 +34,21 @@ Route::post('/login', function (Request $request) {
     if (auth()->attempt($credentials, $request->boolean('remember'))) {
         $request->session()->regenerate();
 
-        // Redirect based on role
-        if (auth()->user()->role === 'hrm') {
-            return redirect()->route('hrm.dashboard');
+        $user = auth()->user();
+
+        // Redirect based on role AND position
+        if ($user->role === 'hrm') {
+            if ($user->position === 'manager') {
+                return redirect()->route('hrm.manager.dashboard');
+            } else {
+                return redirect()->route('hrm.staff.dashboard');
+            }
         } else {
-            return redirect()->route('scm.dashboard');
+            if ($user->position === 'manager') {
+                return redirect()->route('scm.manager.dashboard');
+            } else {
+                return redirect()->route('scm.staff.dashboard');
+            }
         }
     }
 
@@ -73,17 +81,26 @@ Route::post('/register', function (Request $request) {
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
             'role' => $validated['role'],
+            'position' => 'staff', // Default position is staff
             'newsletter_opt_in' => $request->boolean('newsletter', false),
         ]);
 
         // Log the user in
         auth()->login($user);
 
-        // Redirect based on role
+        // Redirect based on role AND position
         if ($user->role === 'hrm') {
-            return redirect()->route('hrm.dashboard');
+            if ($user->position === 'manager') {
+                return redirect()->route('hrm.manager.dashboard');
+            } else {
+                return redirect()->route('hrm.staff.dashboard');
+            }
         } else {
-            return redirect()->route('scm.dashboard');
+            if ($user->position === 'manager') {
+                return redirect()->route('scm.manager.dashboard');
+            } else {
+                return redirect()->route('scm.staff.dashboard');
+            }
         }
     } catch (\Exception $e) {
         \Log::error('Registration failed: '.$e->getMessage());
@@ -114,31 +131,105 @@ Route::prefix('hrm')
     ->name('hrm.')
     ->group(function () {
 
-        // HRM Dashboard with role check
+        // Generic HRM Dashboard - redirects based on position
         Route::get('/dashboard', function () {
-            // Check if user has HRM role
-            if (auth()->user()->role !== 'hrm') {
-                // Redirect to appropriate dashboard
-                return redirect()->route(auth()->user()->role === 'scm' ? 'scm.dashboard' : 'login');
+            $user = auth()->user();
+
+            if ($user->role !== 'hrm') {
+                return redirect()->route('login');
             }
 
-            // If user is HRM, show the dashboard using the controller
-            $controller = new hrmDashboard;
-
-            return $controller->index();
+            if ($user->position === 'manager') {
+                return redirect()->route('hrm.manager.dashboard');
+            } else {
+                return redirect()->route('hrm.staff.dashboard');
+            }
         })->name('dashboard');
 
-        Route::get('/payroll', [hrmDashboard::class, 'payroll'])
-            ->name('payroll');
+        // HRM Staff Dashboard
+        Route::get('/staff/dashboard', function () {
+            // Check if user is HRM staff
+            if (auth()->user()->role !== 'hrm' || auth()->user()->position !== 'staff') {
+                // Redirect to appropriate dashboard
+                return redirect()->route(auth()->user()->position === 'manager' ? 'hrm.manager.dashboard' : 'login');
+            }
 
-        Route::get('/leave', [hrmDashboard::class, 'leave'])
-            ->name('leave');
+            // Get all HRM staff members (if needed)
+            $users = User::where('role', 'hrm')
+                ->orderBy('first_name')
+                ->get();
 
-        Route::get('/attendance', [hrmDashboard::class, 'attendance'])
-            ->name('attendance');
+            return view('uno.hrm.hrm_staff.dashboard', compact('users'));
+        })->name('staff.dashboard');
 
-        Route::get('/training', [hrmDashboard::class, 'training'])
-            ->name('training');
+        // HRM Manager Dashboard
+        Route::get('/manager/dashboard', function () {
+            // Check if user is HRM manager
+            if (auth()->user()->role !== 'hrm' || auth()->user()->position !== 'manager') {
+                // Redirect to appropriate dashboard
+                return redirect()->route(auth()->user()->position === 'staff' ? 'hrm.staff.dashboard' : 'login');
+            }
+
+            // Get all HRM staff members for the manager to view
+            $staff = User::where('role', 'hrm')
+                ->where('position', 'staff')
+                ->orderBy('first_name')
+                ->get();
+
+            return view('uno.hrm.hrm_manager.dashboard', compact('staff'));
+        })->name('manager.dashboard');
+
+        // Promotion endpoint (only for HRM managers)
+        Route::post('/promote/{user}', function (Request $request, User $user) {
+            // Check if current user is HRM manager
+            if (auth()->user()->position !== 'manager' || auth()->user()->role !== 'hrm') {
+                return redirect()->route('hrm.staff.dashboard')->with('error', 'Unauthorized');
+            }
+
+            // Check if user is HRM staff
+            if ($user->role !== 'hrm' || $user->position === 'manager') {
+                return back()->with('error', 'Invalid user for promotion');
+            }
+
+            // Promote to manager
+            $user->position = 'manager';
+            $user->save();
+
+            return back()->with('success', 'User promoted to manager successfully!');
+        })->name('promote');
+
+        // Other HRM staff routes - Updated to include role checks
+        Route::get('/staff/payroll', function () {
+            if (auth()->user()->role !== 'hrm' || auth()->user()->position !== 'staff') {
+                return redirect()->route(auth()->user()->position === 'manager' ? 'hrm.manager.dashboard' : 'login');
+            }
+
+            return view('uno.hrm.hrm_staff.payroll');
+        })->name('staff.payroll');
+
+        Route::get('/staff/leave', function () {
+            if (auth()->user()->role !== 'hrm' || auth()->user()->position !== 'staff') {
+                return redirect()->route(auth()->user()->position === 'manager' ? 'hrm.manager.dashboard' : 'login');
+            }
+
+            return view('uno.hrm.hrm_staff.leave');
+        })->name('staff.leave');
+
+        Route::get('/staff/attendance', function () {
+            if (auth()->user()->role !== 'hrm' || auth()->user()->position !== 'staff') {
+                return redirect()->route(auth()->user()->position === 'manager' ? 'hrm.manager.dashboard' : 'login');
+            }
+
+            return view('uno.hrm.hrm_staff.attendance');
+        })->name('staff.attendance');
+
+        Route::get('/staff/training', function () {
+            if (auth()->user()->role !== 'hrm' || auth()->user()->position !== 'staff') {
+                return redirect()->route(auth()->user()->position === 'manager' ? 'hrm.manager.dashboard' : 'login');
+            }
+
+            return view('uno.hrm.hrm_staff.training');
+        })->name('staff.training');
     });
 
 /*
@@ -152,18 +243,70 @@ Route::prefix('scm')
     ->name('scm.')
     ->group(function () {
 
-        // SCM Dashboard with role check
+        // Generic SCM Dashboard - redirects based on position
         Route::get('/dashboard', function () {
-            // Check if user has SCM role
-            if (auth()->user()->role !== 'scm') {
-                // Redirect to appropriate dashboard
-                return redirect()->route(auth()->user()->role === 'hrm' ? 'hrm.dashboard' : 'login');
+            $user = auth()->user();
+
+            if ($user->role !== 'scm') {
+                return redirect()->route('login');
             }
 
-            // If user is SCM, show the dashboard using the controller
-            $controller = new scmDashboard;
-
-            return $controller->index();
+            if ($user->position === 'manager') {
+                return redirect()->route('scm.manager.dashboard');
+            } else {
+                return redirect()->route('scm.staff.dashboard');
+            }
         })->name('dashboard');
 
+        // SCM Staff Dashboard
+        Route::get('/staff/dashboard', function () {
+            // Check if user is SCM staff
+            if (auth()->user()->role !== 'scm' || auth()->user()->position !== 'staff') {
+                // Redirect to appropriate dashboard
+                return redirect()->route(auth()->user()->position === 'manager' ? 'scm.manager.dashboard' : 'login');
+            }
+
+            // Get SCM data if needed
+            $users = User::where('role', 'scm')
+                ->orderBy('first_name')
+                ->get();
+
+            return view('uno.scm.scm_staff.dashboard', compact('users'));
+        })->name('staff.dashboard');
+
+        // SCM Manager Dashboard
+        Route::get('/manager/dashboard', function () {
+            // Check if user is SCM manager
+            if (auth()->user()->role !== 'scm' || auth()->user()->position !== 'manager') {
+                // Redirect to appropriate dashboard
+                return redirect()->route(auth()->user()->position === 'staff' ? 'scm.staff.dashboard' : 'login');
+            }
+
+            // Get all SCM staff members for the manager to view
+            $staff = User::where('role', 'scm')
+                ->where('position', 'staff')
+                ->orderBy('first_name')
+                ->get();
+
+            return view('uno.scm.scm_manager.dashboard', compact('staff'));
+        })->name('manager.dashboard');
+
+        // SCM Manager Promotion endpoint
+        Route::post('/promote/{user}', function (Request $request, User $user) {
+            // Check if current user is SCM manager
+            if (auth()->user()->position !== 'manager' || auth()->user()->role !== 'scm') {
+                return redirect()->route('scm.staff.dashboard')->with('error', 'Unauthorized');
+            }
+
+            // Check if user is SCM staff
+            if ($user->role !== 'scm' || $user->position === 'manager') {
+                return back()->with('error', 'Invalid user for promotion');
+            }
+
+            // Promote to manager
+            $user->position = 'manager';
+            $user->save();
+
+            return back()->with('success', 'User promoted to manager successfully!');
+        })->name('promote');
     });

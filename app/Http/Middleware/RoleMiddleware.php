@@ -22,11 +22,21 @@ class RoleMiddleware
 
         // Check if user has the required role
         if (auth()->user()->role !== $role) {
-            // Instead of aborting with 403, redirect to user's own dashboard
-            if (auth()->user()->role === 'hrm') {
-                return redirect()->route('hrm.dashboard');
+            // Redirect to appropriate dashboard based on role and position
+            $user = auth()->user();
+
+            if ($user->role === 'hrm') {
+                if ($user->position === 'manager') {
+                    return redirect()->route('hrm.manager.dashboard');
+                } else {
+                    return redirect()->route('hrm.staff.dashboard');
+                }
             } else {
-                return redirect()->route('scm.dashboard');
+                if ($user->position === 'manager') {
+                    return redirect()->route('scm.manager.dashboard');
+                } else {
+                    return redirect()->route('scm.staff.dashboard');
+                }
             }
         }
 

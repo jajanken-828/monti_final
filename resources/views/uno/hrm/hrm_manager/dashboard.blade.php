@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Training Records - Monti Textile HRM</title>
+    <title>HR Manager Dashboard - Monti Textile HRM</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -18,26 +18,26 @@
         </style>
     @endif
 
-    <!-- Custom color overrides for blue/purple theme -->
+    <!-- Custom color overrides for gold/blue theme -->
     <style>
         .bg-blue-theme { background-color: #2563eb; }
-        .bg-purple-theme { background-color: #7c3aed; }
-        .bg-indigo-theme { background-color: #4f46e5; }
+        .bg-gold-theme { background-color: #d4af37; }
+        .bg-emerald-theme { background-color: #059669; }
         .text-blue-theme { color: #2563eb; }
-        .text-purple-theme { color: #7c3aed; }
-        .text-indigo-theme { color: #4f46e5; }
+        .text-gold-theme { color: #d4af37; }
+        .text-emerald-theme { color: #059669; }
         .border-blue-theme { border-color: #2563eb; }
-        .border-purple-theme { border-color: #7c3aed; }
-        .border-indigo-theme { border-color: #4f46e5; }
+        .border-gold-theme { border-color: #d4af37; }
+        .border-emerald-theme { border-color: #059669; }
         .hover\:bg-blue-theme:hover { background-color: #1d4ed8; }
-        .hover\:bg-purple-theme:hover { background-color: #6d28d9; }
-        .hover\:bg-indigo-theme:hover { background-color: #4338ca; }
+        .hover\:bg-gold-theme:hover { background-color: #b8860b; }
+        .hover\:bg-emerald-theme:hover { background-color: #047857; }
         .dark .bg-blue-theme { background-color: #1e40af; }
-        .dark .bg-purple-theme { background-color: #5b21b6; }
-        .dark .bg-indigo-theme { background-color: #3730a3; }
+        .dark .bg-gold-theme { background-color: #92400e; }
+        .dark .bg-emerald-theme { background-color: #065f46; }
         .dark .text-blue-theme { color: #60a5fa; }
-        .dark .text-purple-theme { color: #a78bfa; }
-        .dark .text-indigo-theme { color: #818cf8; }
+        .dark .text-gold-theme { color: #fbbf24; }
+        .dark .text-emerald-theme { color: #34d399; }
         
         .input-field { 
             border: 1px solid #d1d5db;
@@ -209,34 +209,34 @@
             position: relative;
         }
         
-        .training-status-badge {
+        .staff-status-badge {
             padding: 0.25rem 0.75rem;
             border-radius: 9999px;
             font-size: 0.75rem;
             font-weight: 500;
         }
         
-        .training-status-completed {
+        .staff-status-active {
             background-color: #dcfce7;
             color: #166534;
         }
         
-        .training-status-ongoing {
+        .staff-status-probation {
             background-color: #fef9c3;
             color: #854d0e;
         }
         
-        .training-status-upcoming {
+        .staff-status-pending {
             background-color: #dbeafe;
             color: #1e40af;
         }
         
-        .training-status-expired {
+        .staff-status-inactive {
             background-color: #fee2e2;
             color: #991b1b;
         }
         
-        .certification-badge {
+        .promotion-badge {
             display: inline-flex;
             align-items: center;
             justify-content: center;
@@ -246,12 +246,17 @@
             margin-right: 8px;
         }
         
-        .certification-valid {
+        .promotion-eligible {
             background-color: #dcfce7;
             color: #166534;
         }
         
-        .certification-expired {
+        .promotion-pending {
+            background-color: #fef9c3;
+            color: #854d0e;
+        }
+        
+        .promotion-not-eligible {
             background-color: #fee2e2;
             color: #991b1b;
         }
@@ -332,32 +337,37 @@
             background: linear-gradient(135deg, #1e3a8a 0%, #1d4ed8 100%);
         }
         
-        .dark .training-status-completed {
+        .dark .staff-status-active {
             background-color: #14532d;
             color: #86efac;
         }
         
-        .dark .training-status-ongoing {
+        .dark .staff-status-probation {
             background-color: #713f12;
             color: #fde047;
         }
         
-        .dark .training-status-upcoming {
+        .dark .staff-status-pending {
             background-color: #1e3a8a;
             color: #93c5fd;
         }
         
-        .dark .training-status-expired {
+        .dark .staff-status-inactive {
             background-color: #7f1d1d;
             color: #fca5a5;
         }
         
-        .dark .certification-valid {
+        .dark .promotion-eligible {
             background-color: #14532d;
             color: #86efac;
         }
         
-        .dark .certification-expired {
+        .dark .promotion-pending {
+            background-color: #713f12;
+            color: #fde047;
+        }
+        
+        .dark .promotion-not-eligible {
             background-color: #7f1d1d;
             color: #fca5a5;
         }
@@ -460,8 +470,8 @@
 <div class="sidebar bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 flex flex-col py-6 px-4 fixed h-full z-10" id="sidebar">
     <div class="flex items-center justify-between px-2 mb-8">
         <div class="flex items-center space-x-3">
-            <div class="w-10 h-10 rounded-xl bg-blue-theme flex items-center justify-center">
-                <i class="fas fa-graduation-cap text-white text-xl"></i>
+            <div class="w-10 h-10 rounded-xl bg-gold-theme flex items-center justify-center">
+                <i class="fas fa-crown text-white text-xl"></i>
             </div>
             <span class="font-bold text-xl text-gray-900 dark:text-white">Monti Textile</span>
         </div>
@@ -472,40 +482,47 @@
     </div>
     
     <nav class="flex-1 space-y-1">
-        <a href="{{ route('hrm.dashboard') }}" class="sidebar-item flex items-center space-x-3 py-3 px-4 rounded-xl text-gray-600 dark:text-gray-300 hover:text-blue-theme">
+        <a href="{{ route('hrm.manager.dashboard') }}" class="sidebar-item flex items-center space-x-3 py-3 px-4 rounded-xl text-gray-600 dark:text-gray-300 hover:text-blue-theme">
             <div class="sidebar-icon w-6 text-center">
                 <i class="fas fa-home"></i>
             </div>
             <span class="sidebar-text font-medium">Employee Information</span>
         </a>
         
-        <a href="{{ route('hrm.payroll') }}" class="sidebar-item flex items-center space-x-3 py-3 px-4 rounded-xl text-gray-600 dark:text-gray-300 hover:text-blue-theme">
+        <a href="#" class="sidebar-item flex items-center space-x-3 py-3 px-4 rounded-xl text-gray-600 dark:text-gray-300 hover:text-blue-theme">
             <div class="sidebar-icon w-6 text-center">
                 <i class="fas fa-money-check-alt"></i>
             </div>
             <span class="sidebar-text font-medium">Payroll Management</span>
         </a>
         
-        <a href="{{ route('hrm.leave') }}" class="sidebar-item flex items-center space-x-3 py-3 px-4 rounded-xl text-gray-600 dark:text-gray-300 hover:text-blue-theme">
+        <a href="#" class="sidebar-item flex items-center space-x-3 py-3 px-4 rounded-xl text-gray-600 dark:text-gray-300 hover:text-blue-theme">
             <div class="sidebar-icon w-6 text-center">
                 <i class="fas fa-calendar-alt"></i>
             </div>
             <span class="sidebar-text font-medium">Leave Request</span>
         </a>
         
-        <a href="{{ route('hrm.attendance') }}" class="sidebar-item flex items-center space-x-3 py-3 px-4 rounded-xl text-gray-600 dark:text-gray-300 hover:text-blue-theme">
+        <a href="#" class="sidebar-item flex items-center space-x-3 py-3 px-4 rounded-xl text-gray-600 dark:text-gray-300 hover:text-blue-theme">
             <div class="sidebar-icon w-6 text-center">
                 <i class="fas fa-clock"></i>
             </div>
             <span class="sidebar-text font-medium">Time and Attendance</span>
         </a>
         
-        <a href="{{ route('hrm.training') }}" class="sidebar-item active flex items-center space-x-3 py-3 px-4 rounded-xl text-blue-theme">
+        <a href="#" class="sidebar-item flex items-center space-x-3 py-3 px-4 rounded-xl text-gray-600 dark:text-gray-300 hover:text-blue-theme">
             <div class="sidebar-icon w-6 text-center">
                 <i class="fas fa-chalkboard-teacher"></i>
             </div>
             <span class="sidebar-text font-medium">Training Records</span>
-            <span class="ml-auto bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 text-xs font-medium px-2 py-0.5 rounded-full">5</span>
+        </a>
+        
+        <a href="#" class="sidebar-item active flex items-center space-x-3 py-3 px-4 rounded-xl text-blue-theme">
+            <div class="sidebar-icon w-6 text-center">
+                <i class="fas fa-user-tie"></i>
+            </div>
+            <span class="sidebar-text font-medium">HR Staff Management</span>
+            <span class="ml-auto bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 text-xs font-medium px-2 py-0.5 rounded-full">3</span>
         </a>
         
         <div class="py-4 px-4">
@@ -531,10 +548,10 @@
     
     <div class="px-4 pt-6 border-t border-gray-200 dark:border-gray-700">
         <div class="bg-blue-50 dark:bg-blue-900 rounded-xl p-4">
-            <div class="text-blue-800 dark:text-blue-200 font-medium text-sm mb-2">Need help?</div>
-            <p class="text-blue-600 dark:text-blue-300 text-xs mb-3">Contact our Tech support team for assistance</p>
-            <button class="w-full bg-blue-theme hover:bg-blue-700 text-white py-2 rounded-lg text-xs font-medium transition-colors">
-                Get Help
+            <div class="text-blue-800 dark:text-blue-200 font-medium text-sm mb-2">HR Manager Tools</div>
+            <p class="text-blue-600 dark:text-blue-300 text-xs mb-3">Access advanced HR management features</p>
+            <button class="w-full bg-gold-theme hover:bg-gold-700 text-white py-2 rounded-lg text-xs font-medium transition-colors">
+                Admin Panel
             </button>
         </div>
     </div>
@@ -546,8 +563,8 @@
         <header class="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 py-4 px-8 flex items-center justify-between sticky top-0 z-10">
             <div class="header-content flex items-center justify-between w-full">
                 <div>
-                    <h1 class="text-2xl font-bold text-gray-900 dark:text-white header-title">Training & Development Records</h1>
-                    <p class="text-gray-500 dark:text-gray-400 hidden md:block">Employee Training Programs, Certifications & Skill Development</p>
+                    <h1 class="text-2xl font-bold text-gray-900 dark:text-white header-title">HR Manager Dashboard</h1>
+                    <p class="text-gray-500 dark:text-gray-400 hidden md:block">Staff Management & Promotions Authority</p>
                 </div>
                 
                 <div class="flex items-center space-x-4 header-actions">
@@ -558,15 +575,15 @@
                         
                         <button class="relative p-2.5 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-600 text-gray-600 dark:text-gray-300">
                             <i class="fas fa-bell"></i>
-                            <span class="notification-badge">5</span>
+                            <span class="notification-badge">3</span>
                         </button>
                         
                         <button class="md:hidden p-2.5 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-600 text-gray-600 dark:text-gray-300" id="mobile-menu-toggle">
                             <i class="fas fa-bars"></i>
                         </button>
                         
-                        <div class="w-10 h-10 rounded-xl bg-indigo-100 dark:bg-indigo-900 flex items-center justify-center text-indigo-700 dark:text-indigo-300 font-medium hidden md:flex">
-                            TD
+                        <div class="w-10 h-10 rounded-xl bg-gold-100 dark:bg-gold-900 flex items-center justify-center text-gold-700 dark:text-gold-300 font-medium hidden md:flex">
+                            HM
                         </div>
                     </div>
                 </div>
@@ -575,45 +592,45 @@
 
         <!-- Content -->
         <main class="flex-1 p-8 overflow-y-auto custom-scrollbar">
-            <!-- Training Stats Overview -->
+            <!-- HR Manager Stats Overview -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8 stats-grid">
                 <div class="card p-6 flex items-center">
-                    <div class="w-12 h-12 rounded-xl bg-purple-100 dark:bg-purple-900 flex items-center justify-center mr-4">
-                        <i class="fas fa-graduation-cap text-purple-600 dark:text-purple-300 text-xl"></i>
+                    <div class="w-12 h-12 rounded-xl bg-gold-100 dark:bg-gold-900 flex items-center justify-center mr-4">
+                        <i class="fas fa-user-tie text-gold-600 dark:text-gold-300 text-xl"></i>
                     </div>
                     <div>
-                        <div class="text-gray-500 dark:text-gray-400 text-sm">Active Trainings</div>
-                        <div class="text-2xl font-bold text-gray-900 dark:text-white">18</div>
+                        <div class="text-gray-500 dark:text-gray-400 text-sm">Total HR Staff</div>
+                        <div class="text-2xl font-bold text-gray-900 dark:text-white">24</div>
                     </div>
                 </div>
                 
                 <div class="card p-6 flex items-center">
-                    <div class="w-12 h-12 rounded-xl bg-green-100 dark:bg-green-900 flex items-center justify-center mr-4">
-                        <i class="fas fa-users text-green-600 dark:text-green-300 text-xl"></i>
+                    <div class="w-12 h-12 rounded-xl bg-emerald-100 dark:bg-emerald-900 flex items-center justify-center mr-4">
+                        <i class="fas fa-medal text-emerald-600 dark:text-emerald-300 text-xl"></i>
                     </div>
                     <div>
-                        <div class="text-gray-500 dark:text-gray-400 text-sm">Employees Trained</div>
-                        <div class="text-2xl font-bold text-gray-900 dark:text-white">142</div>
+                        <div class="text-gray-500 dark:text-gray-400 text-sm">Eligible for Promotion</div>
+                        <div class="text-2xl font-bold text-gray-900 dark:text-white">8</div>
                     </div>
                 </div>
                 
                 <div class="card p-6 flex items-center">
                     <div class="w-12 h-12 rounded-xl bg-blue-100 dark:bg-blue-900 flex items-center justify-center mr-4">
-                        <i class="fas fa-certificate text-blue-600 dark:text-blue-300 text-xl"></i>
+                        <i class="fas fa-chart-line text-blue-600 dark:text-blue-300 text-xl"></i>
                     </div>
                     <div>
-                        <div class="text-gray-500 dark:text-gray-400 text-sm">Certifications</div>
-                        <div class="text-2xl font-bold text-gray-900 dark:text-white">245</div>
+                        <div class="text-gray-500 dark:text-gray-400 text-sm">Promotion Rate</div>
+                        <div class="text-2xl font-bold text-gray-900 dark:text-white">85%</div>
                     </div>
                 </div>
                 
                 <div class="card p-6 flex items-center">
-                    <div class="w-12 h-12 rounded-xl bg-yellow-100 dark:bg-yellow-900 flex items-center justify-center mr-4">
-                        <i class="fas fa-chart-line text-yellow-600 dark:text-yellow-300 text-xl"></i>
+                    <div class="w-12 h-12 rounded-xl bg-purple-100 dark:bg-purple-900 flex items-center justify-center mr-4">
+                        <i class="fas fa-award text-purple-600 dark:text-purple-300 text-xl"></i>
                     </div>
                     <div>
-                        <div class="text-gray-500 dark:text-gray-400 text-sm">Completion Rate</div>
-                        <div class="text-2xl font-bold text-gray-900 dark:text-white">88%</div>
+                        <div class="text-gray-500 dark:text-gray-400 text-sm">Avg. Tenure</div>
+                        <div class="text-2xl font-bold text-gray-900 dark:text-white">3.5 yrs</div>
                     </div>
                 </div>
             </div>
@@ -621,30 +638,30 @@
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 main-grid">
                 <!-- Left Column -->
                 <div class="lg:col-span-2 space-y-8">
-                    <!-- Training Management Banner -->
+                    <!-- HR Manager Banner -->
                     <div class="featured-banner">
                         <div class="p-8">
                             <div class="flex flex-col md:flex-row items-center justify-between">
                                 <div class="featured-banner-content mb-6 md:mb-0">
-                                    <h2 class="text-2xl font-bold mb-3 text-white">Training & Development Portal</h2>
-                                    <p class="text-blue-100 mb-6 max-w-lg">Manage employee training programs, track certifications, and monitor skill development progress.</p>
-                                    <button class="px-6 py-3 bg-purple-theme hover:bg-purple-600 text-white font-semibold rounded-xl transition-colors shadow-md flex items-center featured-banner-button">
-                                        Schedule New Training <i class="fas fa-calendar-plus ml-2"></i>
+                                    <h2 class="text-2xl font-bold mb-3 text-white">HR Manager Command Center</h2>
+                                    <p class="text-blue-100 mb-6 max-w-lg">Manage HR staff, review performance, and authorize promotions across all departments.</p>
+                                    <button class="px-6 py-3 bg-gold-theme hover:bg-gold-600 text-white font-semibold rounded-xl transition-colors shadow-md flex items-center featured-banner-button" id="promote-all-btn">
+                                        <i class="fas fa-bolt mr-2"></i> Promote All Eligible Staff
                                     </button>
                                 </div>
                                 <div class="featured-banner-image animate-float">
-                                    <div class="w-48 h-32 bg-gradient-to-r from-purple-400 to-purple-300 dark:from-purple-500 dark:to-purple-400 rounded-lg shadow-xl flex items-center justify-center">
-                                        <i class="fas fa-chalkboard-teacher text-white text-4xl"></i>
+                                    <div class="w-48 h-32 bg-gradient-to-r from-gold-400 to-gold-300 dark:from-gold-500 dark:to-gold-400 rounded-lg shadow-xl flex items-center justify-center">
+                                        <i class="fas fa-user-shield text-white text-4xl"></i>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Training Management Tools -->
+                    <!-- HR Staff Management Tools -->
                     <div class="card p-6">
                         <div class="flex justify-between items-center mb-6">
-                            <h3 class="font-bold text-xl text-gray-900 dark:text-white">Training Management Tools</h3>
+                            <h3 class="font-bold text-xl text-gray-900 dark:text-white">HR Staff Management Tools</h3>
                             <a href="#" class="text-blue-theme font-medium flex items-center hover:text-blue-700 dark:hover:text-blue-400 text-sm">
                                 All Functions <i class="fas fa-chevron-right ml-2 text-xs"></i>
                             </a>
@@ -653,43 +670,43 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                             <div class="bg-gray-50 dark:bg-gray-700 rounded-xl p-4 border border-gray-200 dark:border-gray-600 hover:border-blue-300 dark:hover:border-blue-500 transition-colors">
                                 <div class="flex items-start justify-between mb-4">
-                                    <div class="w-12 h-12 rounded-lg bg-purple-theme flex items-center justify-center">
-                                        <i class="fas fa-clipboard-check text-white text-xl"></i>
+                                    <div class="w-12 h-12 rounded-lg bg-gold-theme flex items-center justify-center">
+                                        <i class="fas fa-chart-bar text-white text-xl"></i>
                                     </div>
-                                    <span class="bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 text-xs font-medium px-2 py-1 rounded">ACTIVE</span>
+                                    <span class="bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 text-xs font-medium px-2 py-1 rounded">ANALYTICS</span>
                                 </div>
-                                <h4 class="font-bold text-gray-900 dark:text-white text-lg mb-1">Training Programs</h4>
-                                <p class="text-gray-500 dark:text-gray-400 text-sm mb-4">Manage & schedule trainings</p>
+                                <h4 class="font-bold text-gray-900 dark:text-white text-lg mb-1">Performance Reviews</h4>
+                                <p class="text-gray-500 dark:text-gray-400 text-sm mb-4">Evaluate HR staff performance</p>
                                 
                                 <div class="mb-3">
                                     <div class="flex justify-between text-sm mb-1">
-                                        <span class="text-gray-600 dark:text-gray-300">Completion Rate</span>
-                                        <span class="text-blue-theme font-medium">85%</span>
+                                        <span class="text-gray-600 dark:text-gray-300">Review Completion</span>
+                                        <span class="text-blue-theme font-medium">78%</span>
                                     </div>
                                     <div class="course-progress">
-                                        <div class="course-progress-fill" style="width: 85%"></div>
+                                        <div class="course-progress-fill" style="width: 78%"></div>
                                     </div>
                                 </div>
                                 
                                 <div class="flex justify-between text-xs text-gray-500 dark:text-gray-400">
-                                    <span>18 Active</span>
-                                    <span>5 Upcoming</span>
+                                    <span>18 Reviews</span>
+                                    <span>5 Pending</span>
                                 </div>
                             </div>
                             
                             <div class="bg-gray-50 dark:bg-gray-700 rounded-xl p-4 border border-gray-200 dark:border-gray-600 hover:border-blue-300 dark:hover:border-blue-500 transition-colors">
                                 <div class="flex items-start justify-between mb-4">
-                                    <div class="w-12 h-12 rounded-lg bg-indigo-600 flex items-center justify-center">
-                                        <i class="fas fa-award text-white text-xl"></i>
+                                    <div class="w-12 h-12 rounded-lg bg-emerald-600 flex items-center justify-center">
+                                        <i class="fas fa-user-check text-white text-xl"></i>
                                     </div>
-                                    <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs font-medium px-2 py-1 rounded">CERTIFICATIONS</span>
+                                    <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs font-medium px-2 py-1 rounded">PROMOTIONS</span>
                                 </div>
-                                <h4 class="font-bold text-gray-900 dark:text-white text-lg mb-1">Certification Tracker</h4>
-                                <p class="text-gray-500 dark:text-gray-400 text-sm mb-4">Track employee certifications</p>
+                                <h4 class="font-bold text-gray-900 dark:text-white text-lg mb-1">Promotion Authority</h4>
+                                <p class="text-gray-500 dark:text-gray-400 text-sm mb-4">Approve staff promotions</p>
                                 
                                 <div class="mb-3">
                                     <div class="flex justify-between text-sm mb-1">
-                                        <span class="text-gray-600 dark:text-gray-300">Valid Certifications</span>
+                                        <span class="text-gray-600 dark:text-gray-300">Approval Rate</span>
                                         <span class="text-blue-theme font-medium">92%</span>
                                     </div>
                                     <div class="course-progress">
@@ -698,8 +715,8 @@
                                 </div>
                                 
                                 <div class="flex justify-between text-xs text-gray-500 dark:text-gray-400">
-                                    <span>245 Active</span>
-                                    <span>12 Expiring</span>
+                                    <span>8 Eligible</span>
+                                    <span>24 Total Staff</span>
                                 </div>
                             </div>
                         </div>
@@ -708,98 +725,106 @@
                 
                 <!-- Right Column -->
                 <div class="space-y-8">
-                    <!-- Training Manager Profile Card -->
+                    <!-- HR Manager Profile Card -->
                     <div class="card p-6">
                         <div class="flex flex-col items-center text-center">
                             <div class="relative mb-4">
-                                <div class="profile-image w-20 h-20 rounded-full bg-indigo-theme flex items-center justify-center text-white text-2xl font-bold">
-                                    TM
+                                <div class="profile-image w-20 h-20 rounded-full bg-gold-theme flex items-center justify-center text-white text-2xl font-bold">
+                                    HM
                                 </div>
                                 <div class="absolute bottom-0 right-0 w-7 h-7 rounded-full bg-blue-theme flex items-center justify-center border-2 border-white dark:border-gray-800 cursor-pointer hover:bg-blue-700">
                                     <i class="fas fa-pen text-xs text-white"></i>
                                 </div>
                             </div>
                             
-                            <h2 class="font-bold text-lg text-gray-900 dark:text-white">Training Manager</h2>
+                            <h2 class="font-bold text-lg text-gray-900 dark:text-white">HR Manager</h2>
                             <p class="text-gray-500 dark:text-gray-400 text-sm mt-1 flex items-center justify-center">
-                                <i class="fas fa-building mr-1.5 text-blue-theme"></i> 
-                                HR Development
+                                <i class="fas fa-crown mr-1.5 text-gold-theme"></i> 
+                                Senior Management
                             </p>
                             
                             <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5 mt-5">
-                                <div class="bg-indigo-theme h-2.5 rounded-full" style="width: 92%"></div>
+                                <div class="bg-gold-theme h-2.5 rounded-full" style="width: 95%"></div>
                             </div>
                             <div class="w-full flex justify-between text-sm text-gray-500 dark:text-gray-400 mt-2">
-                                <span>Training Effectiveness</span>
-                                <span class="text-gray-900 dark:text-white font-medium">92%</span>
+                                <span>Management Authority</span>
+                                <span class="text-gray-900 dark:text-white font-medium">95%</span>
                             </div>
                             
-                            <a href="#" class="w-full mt-5">
-                                <button class="w-full py-3 bg-blue-theme hover:bg-blue-700 text-white rounded-xl font-medium transition-colors px-4">
-                                    Create Training Program
+                            <div class="w-full mt-5 grid grid-cols-2 gap-2">
+                                <button class="py-3 bg-blue-theme hover:bg-blue-700 text-white rounded-xl font-medium transition-colors px-4">
+                                    Generate Reports
                                 </button>
-                            </a>
+                                <button class="py-3 bg-emerald-theme hover:bg-emerald-700 text-white rounded-xl font-medium transition-colors px-4">
+                                    Audit Logs
+                                </button>
+                            </div>
                         </div>
                     </div>
                     
-                    <!-- Upcoming Training Schedule -->
+                    <!-- Promotion Statistics -->
                     <div class="card p-6">
                         <div class="flex justify-between items-center mb-5">
-                            <h3 class="font-semibold text-gray-900 dark:text-white">Upcoming Trainings</h3>
-                            <a href="#" class="text-blue-theme text-sm font-medium hover:text-blue-700 dark:hover:text-blue-400">View Calendar</a>
+                            <h3 class="font-semibold text-gray-900 dark:text-white">Promotion Statistics</h3>
+                            <a href="#" class="text-blue-theme text-sm font-medium hover:text-blue-700 dark:hover:text-blue-400">View Details</a>
                         </div>
                         
                         <div class="space-y-4">
                             <div class="flex items-center justify-between p-3 rounded-xl bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600">
                                 <div class="flex items-center">
-                                    <div class="w-10 h-10 rounded-lg bg-purple-100 dark:bg-purple-900 flex items-center justify-center mr-3">
-                                        <i class="fas fa-shield-alt text-purple-600 dark:text-purple-300"></i>
+                                    <div class="w-10 h-10 rounded-lg bg-emerald-100 dark:bg-emerald-900 flex items-center justify-center mr-3">
+                                        <i class="fas fa-check-circle text-emerald-600 dark:text-emerald-300"></i>
                                     </div>
                                     <div>
-                                        <h4 class="font-medium text-gray-900 dark:text-white">SAFETY TRAINING</h4>
-                                        <p class="text-gray-500 dark:text-gray-400 text-xs">All Production Staff</p>
+                                        <h4 class="font-medium text-gray-900 dark:text-white">ELIGIBLE STAFF</h4>
+                                        <p class="text-gray-500 dark:text-gray-400 text-xs">Ready for promotion</p>
                                     </div>
                                 </div>
-                                <span class="text-gray-500 dark:text-gray-400 text-sm font-medium">Nov 22</span>
+                                <span class="text-gray-500 dark:text-gray-400 text-sm font-medium">8</span>
                             </div>
                             
                             <div class="flex items-center justify-between p-3 rounded-xl bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600">
                                 <div class="flex items-center">
                                     <div class="w-10 h-10 rounded-lg bg-blue-100 dark:bg-blue-900 flex items-center justify-center mr-3">
-                                        <i class="fas fa-cogs text-blue-600 dark:text-blue-300"></i>
+                                        <i class="fas fa-clock text-blue-600 dark:text-blue-300"></i>
                                     </div>
                                     <div>
-                                        <h4 class="font-medium text-gray-900 dark:text-white">MACHINE OPERATION</h4>
-                                        <p class="text-gray-500 dark:text-gray-400 text-xs">New Operators</p>
+                                        <h4 class="font-medium text-gray-900 dark:text-white">PENDING REVIEW</h4>
+                                        <p class="text-gray-500 dark:text-gray-400 text-xs">Under evaluation</p>
                                     </div>
                                 </div>
-                                <span class="text-gray-500 dark:text-gray-400 text-sm font-medium">Nov 25</span>
+                                <span class="text-gray-500 dark:text-gray-400 text-sm font-medium">5</span>
                             </div>
                             
                             <div class="flex items-center justify-between p-3 rounded-xl bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600">
                                 <div class="flex items-center">
-                                    <div class="w-10 h-10 rounded-lg bg-green-100 dark:bg-green-900 flex items-center justify-center mr-3">
-                                        <i class="fas fa-chart-line text-green-600 dark:text-green-300"></i>
+                                    <div class="w-10 h-10 rounded-lg bg-gold-100 dark:bg-gold-900 flex items-center justify-center mr-3">
+                                        <i class="fas fa-trophy text-gold-600 dark:text-gold-300"></i>
                                     </div>
                                     <div>
-                                        <h4 class="font-medium text-gray-900 dark:text-white">LEADERSHIP SKILLS</h4>
-                                        <p class="text-gray-500 dark:text-gray-400 text-xs">Supervisors</p>
+                                        <h4 class="font-medium text-gray-900 dark:text-white">PROMOTED THIS YEAR</h4>
+                                        <p class="text-gray-500 dark:text-gray-400 text-xs">2023 promotions</p>
                                     </div>
                                 </div>
-                                <span class="text-gray-500 dark:text-gray-400 text-sm font-medium">Nov 28</span>
+                                <span class="text-gray-500 dark:text-gray-400 text-sm font-medium">12</span>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Training Records Table -->
+            <!-- HR Staff List with Promotion Controls -->
             <div class="mt-8">
                 <div class="flex justify-between items-center mb-6">
-                    <h3 class="font-bold text-xl text-gray-900 dark:text-white">Employee Training Records</h3>
-                    <a href="#" class="text-blue-theme font-medium flex items-center hover:text-blue-700 dark:hover:text-blue-400 text-sm">
-                        View All Records <i class="fas fa-chevron-right ml-2 text-xs"></i>
-                    </a>
+                    <h3 class="font-bold text-xl text-gray-900 dark:text-white">HR Staff Management</h3>
+                    <div class="flex space-x-3">
+                        <button class="px-4 py-2 bg-blue-theme hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-colors flex items-center">
+                            <i class="fas fa-filter mr-2"></i> Filter Staff
+                        </button>
+                        <button class="px-4 py-2 bg-emerald-theme hover:bg-emerald-700 text-white rounded-lg text-sm font-medium transition-colors flex items-center" id="select-all-btn">
+                            <i class="fas fa-check-double mr-2"></i> Select All
+                        </button>
+                    </div>
                 </div>
                 
                 <div class="card p-6">
@@ -807,311 +832,295 @@
                         <table class="w-full min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                             <thead>
                                 <tr class="bg-gray-50 dark:bg-gray-700">
-                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Employee</th>
-                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Training Program</th>
-                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Type</th>
-                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Duration</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                                        <input type="checkbox" id="select-all-checkbox" class="rounded border-gray-300 text-blue-theme focus:ring-blue-500">
+                                    </th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">HR Staff</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Position</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Department</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Tenure</th>
                                     <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Status</th>
-                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Completion Date</th>
-                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Certificate</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Promotion Eligibility</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Actions</th>
                                 </tr>
                             </thead>
-                            <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                            <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700" id="staff-table-body">
                                 <tr>
+                                    <td class="px-4 py-4 whitespace-nowrap">
+                                        <input type="checkbox" class="staff-checkbox rounded border-gray-300 text-blue-theme focus:ring-blue-500" data-id="1">
+                                    </td>
                                     <td class="px-4 py-4 whitespace-nowrap">
                                         <div class="flex items-center">
                                             <div class="flex-shrink-0 h-10 w-10 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center text-blue-600 dark:text-blue-300 font-medium">
-                                                JD
+                                                SD
                                             </div>
                                             <div class="ml-4">
-                                                <div class="text-sm font-medium text-gray-900 dark:text-white">John Dela Cruz</div>
-                                                <div class="text-sm text-gray-500 dark:text-gray-400">Production Dept.</div>
+                                                <div class="text-sm font-medium text-gray-900 dark:text-white">Sarah Dela Cruz</div>
+                                                <div class="text-sm text-gray-500 dark:text-gray-400">EMP-HR-001</div>
                                             </div>
                                         </div>
                                     </td>
-                                    <td class="px-4 py-4 whitespace-nowrap">
-                                        <div class="text-sm font-medium text-gray-900 dark:text-white">Advanced Machine Operation</div>
-                                        <div class="text-sm text-gray-500 dark:text-gray-400">Instructor: Engr. Santos</div>
-                                    </td>
+                                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">HR Director</td>
                                     <td class="px-4 py-4 whitespace-nowrap">
                                         <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300">
-                                            Technical
+                                            Executive
                                         </span>
                                     </td>
                                     <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
-                                        5 days<br>
-                                        <span class="text-gray-500 dark:text-gray-400 text-xs">40 hours</span>
+                                        5.2 years<br>
+                                        <span class="text-gray-500 dark:text-gray-400 text-xs">Since 2018</span>
                                     </td>
                                     <td class="px-4 py-4 whitespace-nowrap">
-                                        <span class="training-status-badge training-status-completed">
-                                            Completed
+                                        <span class="staff-status-badge staff-status-active">
+                                            Active
                                         </span>
                                     </td>
-                                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">Nov 15, 2023</td>
                                     <td class="px-4 py-4 whitespace-nowrap">
                                         <div class="flex items-center">
-                                            <div class="certification-badge certification-valid">
+                                            <div class="promotion-badge promotion-eligible">
                                                 <i class="fas fa-check text-xs"></i>
                                             </div>
-                                            <span class="text-sm text-gray-900 dark:text-white">Valid</span>
+                                            <span class="text-sm text-gray-900 dark:text-white">Eligible</span>
                                         </div>
+                                    </td>
+                                    <td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
+                                        <button class="text-gold-600 hover:text-gold-900 dark:text-gold-400 dark:hover:text-gold-300 mr-3 promote-btn" data-id="1" data-name="Sarah Dela Cruz">
+                                            <i class="fas fa-arrow-up mr-1"></i> Promote
+                                        </button>
+                                        <button class="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300 view-btn">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
                                     </td>
                                 </tr>
                                 <tr>
+                                    <td class="px-4 py-4 whitespace-nowrap">
+                                        <input type="checkbox" class="staff-checkbox rounded border-gray-300 text-blue-theme focus:ring-blue-500" data-id="2">
+                                    </td>
                                     <td class="px-4 py-4 whitespace-nowrap">
                                         <div class="flex items-center">
                                             <div class="flex-shrink-0 h-10 w-10 rounded-full bg-purple-100 dark:bg-purple-900 flex items-center justify-center text-purple-600 dark:text-purple-300 font-medium">
-                                                MS
+                                                MP
                                             </div>
                                             <div class="ml-4">
-                                                <div class="text-sm font-medium text-gray-900 dark:text-white">Maria Santos</div>
-                                                <div class="text-sm text-gray-500 dark:text-gray-400">Quality Control</div>
+                                                <div class="text-sm font-medium text-gray-900 dark:text-white">Michael Perez</div>
+                                                <div class="text-sm text-gray-500 dark:text-gray-400">EMP-HR-002</div>
                                             </div>
                                         </div>
                                     </td>
-                                    <td class="px-4 py-4 whitespace-nowrap">
-                                        <div class="text-sm font-medium text-gray-900 dark:text-white">Quality Assurance Standards</div>
-                                        <div class="text-sm text-gray-500 dark:text-gray-400">Instructor: QA Manager</div>
-                                    </td>
+                                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">Recruitment Manager</td>
                                     <td class="px-4 py-4 whitespace-nowrap">
                                         <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300">
-                                            Quality
+                                            Recruitment
                                         </span>
                                     </td>
                                     <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
-                                        3 days<br>
-                                        <span class="text-gray-500 dark:text-gray-400 text-xs">24 hours</span>
+                                        3.8 years<br>
+                                        <span class="text-gray-500 dark:text-gray-400 text-xs">Since 2020</span>
                                     </td>
                                     <td class="px-4 py-4 whitespace-nowrap">
-                                        <span class="training-status-badge training-status-ongoing">
-                                            Ongoing
+                                        <span class="staff-status-badge staff-status-active">
+                                            Active
                                         </span>
                                     </td>
-                                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">In Progress</td>
                                     <td class="px-4 py-4 whitespace-nowrap">
                                         <div class="flex items-center">
-                                            <div class="certification-badge certification-expired">
-                                                <i class="fas fa-clock text-xs"></i>
+                                            <div class="promotion-badge promotion-eligible">
+                                                <i class="fas fa-check text-xs"></i>
                                             </div>
-                                            <span class="text-sm text-gray-900 dark:text-white">Pending</span>
+                                            <span class="text-sm text-gray-900 dark:text-white">Eligible</span>
                                         </div>
+                                    </td>
+                                    <td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
+                                        <button class="text-gold-600 hover:text-gold-900 dark:text-gold-400 dark:hover:text-gold-300 mr-3 promote-btn" data-id="2" data-name="Michael Perez">
+                                            <i class="fas fa-arrow-up mr-1"></i> Promote
+                                        </button>
+                                        <button class="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300 view-btn">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class="px-4 py-4 whitespace-nowrap">
+                                        <input type="checkbox" class="staff-checkbox rounded border-gray-300 text-blue-theme focus:ring-blue-500" data-id="3">
+                                    </td>
+                                    <td class="px-4 py-4 whitespace-nowrap">
                                         <div class="flex items-center">
                                             <div class="flex-shrink-0 h-10 w-10 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center text-green-600 dark:text-green-300 font-medium">
-                                                RG
+                                                AG
                                             </div>
                                             <div class="ml-4">
-                                                <div class="text-sm font-medium text-gray-900 dark:text-white">Robert Garcia</div>
-                                                <div class="text-sm text-gray-500 dark:text-gray-400">Maintenance</div>
+                                                <div class="text-sm font-medium text-gray-900 dark:text-white">Anna Gomez</div>
+                                                <div class="text-sm text-gray-500 dark:text-gray-400">EMP-HR-003</div>
                                             </div>
                                         </div>
                                     </td>
-                                    <td class="px-4 py-4 whitespace-nowrap">
-                                        <div class="text-sm font-medium text-gray-900 dark:text-white">Workplace Safety & Compliance</div>
-                                        <div class="text-sm text-gray-500 dark:text-gray-400">Instructor: Safety Officer</div>
-                                    </td>
+                                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">Payroll Specialist</td>
                                     <td class="px-4 py-4 whitespace-nowrap">
                                         <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300">
-                                            Safety
+                                            Payroll
                                         </span>
                                     </td>
                                     <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
-                                        2 days<br>
-                                        <span class="text-gray-500 dark:text-gray-400 text-xs">16 hours</span>
+                                        2.1 years<br>
+                                        <span class="text-gray-500 dark:text-gray-400 text-xs">Since 2021</span>
                                     </td>
                                     <td class="px-4 py-4 whitespace-nowrap">
-                                        <span class="training-status-badge training-status-upcoming">
-                                            Upcoming
+                                        <span class="staff-status-badge staff-status-probation">
+                                            Probation
                                         </span>
                                     </td>
-                                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">Nov 22, 2023</td>
                                     <td class="px-4 py-4 whitespace-nowrap">
                                         <div class="flex items-center">
-                                            <div class="certification-badge certification-expired">
+                                            <div class="promotion-badge promotion-not-eligible">
+                                                <i class="fas fa-times text-xs"></i>
+                                            </div>
+                                            <span class="text-sm text-gray-900 dark:text-white">Not Eligible</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
+                                        <button class="text-gray-400 dark:text-gray-600 mr-3 cursor-not-allowed" disabled>
+                                            <i class="fas fa-arrow-up mr-1"></i> Promote
+                                        </button>
+                                        <button class="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300 view-btn">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-4 whitespace-nowrap">
+                                        <input type="checkbox" class="staff-checkbox rounded border-gray-300 text-blue-theme focus:ring-blue-500" data-id="4">
+                                    </td>
+                                    <td class="px-4 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="flex-shrink-0 h-10 w-10 rounded-full bg-red-100 dark:bg-red-900 flex items-center justify-center text-red-600 dark:text-red-300 font-medium">
+                                                RS
+                                            </div>
+                                            <div class="ml-4">
+                                                <div class="text-sm font-medium text-gray-900 dark:text-white">Robert Santos</div>
+                                                <div class="text-sm text-gray-500 dark:text-gray-400">EMP-HR-004</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">Benefits Administrator</td>
+                                    <td class="px-4 py-4 whitespace-nowrap">
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300">
+                                            Benefits
+                                        </span>
+                                    </td>
+                                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                                        4.5 years<br>
+                                        <span class="text-gray-500 dark:text-gray-400 text-xs">Since 2019</span>
+                                    </td>
+                                    <td class="px-4 py-4 whitespace-nowrap">
+                                        <span class="staff-status-badge staff-status-active">
+                                            Active
+                                        </span>
+                                    </td>
+                                    <td class="px-4 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="promotion-badge promotion-pending">
                                                 <i class="fas fa-clock text-xs"></i>
                                             </div>
-                                            <span class="text-sm text-gray-900 dark:text-white">Scheduled</span>
+                                            <span class="text-sm text-gray-900 dark:text-white">Pending Review</span>
                                         </div>
+                                    </td>
+                                    <td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
+                                        <button class="text-gold-600 hover:text-gold-900 dark:text-gold-400 dark:hover:text-gold-300 mr-3 promote-btn" data-id="4" data-name="Robert Santos">
+                                            <i class="fas fa-arrow-up mr-1"></i> Promote
+                                        </button>
+                                        <button class="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300 view-btn">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
+                    
+                    <!-- Bulk Actions Footer -->
+                    <div class="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700 flex justify-between items-center">
+                        <div class="text-sm text-gray-500 dark:text-gray-400">
+                            <span id="selected-count">0</span> staff selected
+                        </div>
+                        <div class="flex space-x-3">
+                            <button class="px-4 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 rounded-lg text-sm font-medium transition-colors" id="deselect-all-btn">
+                                Deselect All
+                            </button>
+                            <button class="px-4 py-2 bg-gold-theme hover:bg-gold-600 text-white rounded-lg text-sm font-medium transition-colors flex items-center" id="bulk-promote-btn">
+                                <i class="fas fa-arrow-up mr-2"></i> Promote Selected
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <!-- Training Programs Summary -->
+            <!-- Promotion History -->
             <div class="mt-8">
                 <div class="flex justify-between items-center mb-6">
-                    <h3 class="font-bold text-xl text-gray-900 dark:text-white">Training Programs Summary</h3>
+                    <h3 class="font-bold text-xl text-gray-900 dark:text-white">Recent Promotions History</h3>
                     <a href="#" class="text-blue-theme font-medium flex items-center hover:text-blue-700 dark:hover:text-blue-400 text-sm">
-                        Export Report <i class="fas fa-download ml-2"></i>
+                        View Full History <i class="fas fa-chevron-right ml-2 text-xs"></i>
                     </a>
                 </div>
                 
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 instructors-grid">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 instructors-grid">
                     <div class="card p-5">
                         <div class="flex items-center mb-4">
                             <div class="rounded-full w-12 h-12 bg-blue-100 dark:bg-blue-900 flex items-center justify-center text-blue-600 dark:text-blue-300 text-xl mr-3">
-                                <i class="fas fa-cogs"></i>
+                                <i class="fas fa-user-graduate"></i>
                             </div>
                             <div>
-                                <div class="text-gray-500 dark:text-gray-400 text-sm">Technical Training</div>
-                                <div class="text-xl font-bold text-gray-900 dark:text-white">8 programs</div>
+                                <div class="text-gray-500 dark:text-gray-400 text-sm">Lisa Chen</div>
+                                <div class="text-sm font-medium text-gray-900 dark:text-white">HR Assistant → HR Officer</div>
                             </div>
                         </div>
                         <div class="text-xs text-gray-500 dark:text-gray-400">
-                            142 employees completed
+                            Promoted: Oct 15, 2023
                         </div>
-                        <div class="mt-2 course-progress">
-                            <div class="course-progress-fill" style="width: 75%"></div>
+                        <div class="mt-2">
+                            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300">
+                                <i class="fas fa-check mr-1"></i> Approved
+                            </span>
                         </div>
                     </div>
                     
                     <div class="card p-5">
                         <div class="flex items-center mb-4">
                             <div class="rounded-full w-12 h-12 bg-purple-100 dark:bg-purple-900 flex items-center justify-center text-purple-600 dark:text-purple-300 text-xl mr-3">
-                                <i class="fas fa-shield-alt"></i>
+                                <i class="fas fa-user-tie"></i>
                             </div>
                             <div>
-                                <div class="text-gray-500 dark:text-gray-400 text-sm">Safety Training</div>
-                                <div class="text-xl font-bold text-gray-900 dark:text-white">5 programs</div>
+                                <div class="text-gray-500 dark:text-gray-400 text-sm">David Park</div>
+                                <div class="text-sm font-medium text-gray-900 dark:text-white">HR Officer → Senior HR</div>
                             </div>
                         </div>
                         <div class="text-xs text-gray-500 dark:text-gray-400">
-                            All 245 employees trained
+                            Promoted: Sep 28, 2023
                         </div>
-                        <div class="mt-2 course-progress">
-                            <div class="course-progress-fill" style="width: 100%"></div>
+                        <div class="mt-2">
+                            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300">
+                                <i class="fas fa-check mr-1"></i> Approved
+                            </span>
                         </div>
                     </div>
                     
                     <div class="card p-5">
                         <div class="flex items-center mb-4">
-                            <div class="rounded-full w-12 h-12 bg-green-100 dark:bg-green-900 flex items-center justify-center text-green-600 dark:text-green-300 text-xl mr-3">
-                                <i class="fas fa-chart-line"></i>
+                            <div class="rounded-full w-12 h-12 bg-gold-100 dark:bg-gold-900 flex items-center justify-center text-gold-600 dark:text-gold-300 text-xl mr-3">
+                                <i class="fas fa-user-shield"></i>
                             </div>
                             <div>
-                                <div class="text-gray-500 dark:text-gray-400 text-sm">Soft Skills</div>
-                                <div class="text-xl font-bold text-gray-900 dark:text-white">6 programs</div>
+                                <div class="text-gray-500 dark:text-gray-400 text-sm">Maria Cruz</div>
+                                <div class="text-sm font-medium text-gray-900 dark:text-white">Senior HR → HR Manager</div>
                             </div>
                         </div>
                         <div class="text-xs text-gray-500 dark:text-gray-400">
-                            89 employees completed
+                            Promoted: Aug 10, 2023
                         </div>
-                        <div class="mt-2 course-progress">
-                            <div class="course-progress-fill" style="width: 65%"></div>
-                        </div>
-                    </div>
-                    
-                    <div class="card p-5">
-                        <div class="flex items-center mb-4">
-                            <div class="rounded-full w-12 h-12 bg-yellow-100 dark:bg-yellow-900 flex items-center justify-center text-yellow-600 dark:text-yellow-300 text-xl mr-3">
-                                <i class="fas fa-industry"></i>
-                            </div>
-                            <div>
-                                <div class="text-gray-500 dark:text-gray-400 text-sm">Compliance</div>
-                                <div class="text-xl font-bold text-gray-900 dark:text-white">4 programs</div>
-                            </div>
-                        </div>
-                        <div class="text-xs text-gray-500 dark:text-gray-400">
-                            203 employees completed
-                        </div>
-                        <div class="mt-2 course-progress">
-                            <div class="course-progress-fill" style="width: 83%"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Certification Tracking -->
-            <div class="mt-8">
-                <div class="card p-6">
-                    <div class="flex justify-between items-center mb-6">
-                        <h3 class="font-bold text-xl text-gray-900 dark:text-white">Certification Tracking</h3>
-                        <a href="#" class="text-blue-theme font-medium flex items-center hover:text-blue-700 dark:hover:text-blue-400 text-sm">
-                            View All Certifications <i class="fas fa-chevron-right ml-2 text-xs"></i>
-                        </a>
-                    </div>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        <div class="bg-gray-50 dark:bg-gray-700 rounded-xl p-5">
-                            <div class="flex items-center mb-4">
-                                <div class="w-10 h-10 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center text-green-600 dark:text-green-300 mr-3">
-                                    <i class="fas fa-check-circle"></i>
-                                </div>
-                                <div>
-                                    <div class="text-gray-500 dark:text-gray-400 text-sm">Valid Certifications</div>
-                                    <div class="text-2xl font-bold text-gray-900 dark:text-white">225</div>
-                                </div>
-                            </div>
-                            <div class="text-xs text-gray-500 dark:text-gray-400">
-                                92% of all certifications
-                            </div>
-                        </div>
-                        
-                        <div class="bg-gray-50 dark:bg-gray-700 rounded-xl p-5">
-                            <div class="flex items-center mb-4">
-                                <div class="w-10 h-10 rounded-full bg-yellow-100 dark:bg-yellow-900 flex items-center justify-center text-yellow-600 dark:text-yellow-300 mr-3">
-                                    <i class="fas fa-exclamation-triangle"></i>
-                                </div>
-                                <div>
-                                    <div class="text-gray-500 dark:text-gray-400 text-sm">Expiring Soon</div>
-                                    <div class="text-2xl font-bold text-gray-900 dark:text-white">12</div>
-                                </div>
-                            </div>
-                            <div class="text-xs text-gray-500 dark:text-gray-400">
-                                Within next 30 days
-                            </div>
-                        </div>
-                        
-                        <div class="bg-gray-50 dark:bg-gray-700 rounded-xl p-5">
-                            <div class="flex items-center mb-4">
-                                <div class="w-10 h-10 rounded-full bg-red-100 dark:bg-red-900 flex items-center justify-center text-red-600 dark:text-red-300 mr-3">
-                                    <i class="fas fa-times-circle"></i>
-                                </div>
-                                <div>
-                                    <div class="text-gray-500 dark:text-gray-400 text-sm">Expired</div>
-                                    <div class="text-2xl font-bold text-gray-900 dark:text-white">8</div>
-                                </div>
-                            </div>
-                            <div class="text-xs text-gray-500 dark:text-gray-400">
-                                Require renewal
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
-                        <h4 class="font-semibold text-gray-900 dark:text-white mb-4">Certifications Expiring Soon</h4>
-                        <div class="space-y-3">
-                            <div class="flex items-center justify-between p-3 rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
-                                <div class="flex items-center">
-                                    <div class="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center text-blue-600 dark:text-blue-300 mr-3">
-                                        <i class="fas fa-user-hard-hat"></i>
-                                    </div>
-                                    <div>
-                                        <div class="text-sm font-medium text-gray-900 dark:text-white">Safety Officer Certification</div>
-                                        <div class="text-xs text-gray-500 dark:text-gray-400">John Dela Cruz</div>
-                                    </div>
-                                </div>
-                                <div class="text-sm text-red-600 dark:text-red-400 font-medium">Expires: Dec 15, 2023</div>
-                            </div>
-                            
-                            <div class="flex items-center justify-between p-3 rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
-                                <div class="flex items-center">
-                                    <div class="w-8 h-8 rounded-full bg-purple-100 dark:bg-purple-900 flex items-center justify-center text-purple-600 dark:text-purple-300 mr-3">
-                                        <i class="fas fa-tools"></i>
-                                    </div>
-                                    <div>
-                                        <div class="text-sm font-medium text-gray-900 dark:text-white">Machine Operator License</div>
-                                        <div class="text-xs text-gray-500 dark:text-gray-400">Maria Santos</div>
-                                    </div>
-                                </div>
-                                <div class="text-sm text-yellow-600 dark:text-yellow-400 font-medium">Expires: Dec 20, 2023</div>
-                            </div>
+                        <div class="mt-2">
+                            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300">
+                                <i class="fas fa-check mr-1"></i> Approved
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -1124,6 +1133,32 @@
         @csrf
     </form>
 
+    <!-- Promotion Confirmation Modal -->
+    <div id="promotion-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white dark:bg-gray-800 rounded-xl p-8 max-w-md w-full mx-4">
+            <div class="text-center mb-6">
+                <div class="w-16 h-16 rounded-full bg-gold-100 dark:bg-gold-900 flex items-center justify-center text-gold-600 dark:text-gold-300 text-2xl mx-auto mb-4">
+                    <i class="fas fa-trophy"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2" id="modal-title">Promote Staff</h3>
+                <p class="text-gray-600 dark:text-gray-400" id="modal-description">Are you sure you want to promote the selected staff?</p>
+            </div>
+            
+            <div class="space-y-4 mb-6" id="promotion-details">
+                <!-- Details will be inserted here -->
+            </div>
+            
+            <div class="flex space-x-3">
+                <button class="flex-1 py-3 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 rounded-xl font-medium transition-colors" id="cancel-promotion">
+                    Cancel
+                </button>
+                <button class="flex-1 py-3 bg-gold-theme hover:bg-gold-600 text-white rounded-xl font-medium transition-colors" id="confirm-promotion">
+                    Confirm Promotion
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script>
         // Toggle sidebar
         const sidebarToggle = document.getElementById('sidebar-toggle');
@@ -1133,6 +1168,26 @@
         const mobileOverlay = document.getElementById('mobile-overlay');
         const sidebar = document.getElementById('sidebar');
         const mainContent = document.getElementById('main-content');
+        
+        // Promotion functionality
+        const promoteAllBtn = document.getElementById('promote-all-btn');
+        const selectAllBtn = document.getElementById('select-all-btn');
+        const selectAllCheckbox = document.getElementById('select-all-checkbox');
+        const deselectAllBtn = document.getElementById('deselect-all-btn');
+        const bulkPromoteBtn = document.getElementById('bulk-promote-btn');
+        const staffCheckboxes = document.querySelectorAll('.staff-checkbox');
+        const promoteBtns = document.querySelectorAll('.promote-btn');
+        const promotionModal = document.getElementById('promotion-modal');
+        const cancelPromotionBtn = document.getElementById('cancel-promotion');
+        const confirmPromotionBtn = document.getElementById('confirm-promotion');
+        const modalTitle = document.getElementById('modal-title');
+        const modalDescription = document.getElementById('modal-description');
+        const promotionDetails = document.getElementById('promotion-details');
+        
+        let selectedStaff = [];
+        let promotionAction = 'single'; // 'single' or 'bulk' or 'all'
+        let currentStaffId = null;
+        let currentStaffName = null;
         
         // Function to toggle sidebar
         function toggleSidebar() {
@@ -1177,6 +1232,9 @@
             if (window.innerWidth < 1024) {
                 mainContent.style.marginLeft = '0';
             }
+            
+            // Initialize selected staff count
+            updateSelectedCount();
         });
         
         // Handle window resize
@@ -1200,34 +1258,307 @@
             }
         });
         
-        // Training record status updates
-        document.addEventListener('DOMContentLoaded', () => {
-            // Mark as completed functionality
-            document.querySelectorAll('button').forEach(button => {
-                if (button.textContent.includes('Mark Complete')) {
-                    button.addEventListener('click', function() {
-                        const row = this.closest('tr');
-                        const statusCell = row.querySelector('.training-status-badge');
-                        const certCell = row.querySelector('.certification-badge');
+        // Update selected count
+        function updateSelectedCount() {
+            const selected = document.querySelectorAll('.staff-checkbox:checked');
+            const count = selected.length;
+            document.getElementById('selected-count').textContent = count;
+            
+            // Update select all checkbox state
+            const total = staffCheckboxes.length;
+            selectAllCheckbox.checked = count === total && total > 0;
+            selectAllCheckbox.indeterminate = count > 0 && count < total;
+        }
+        
+        // Select all functionality
+        selectAllBtn.addEventListener('click', () => {
+            staffCheckboxes.forEach(checkbox => {
+                checkbox.checked = true;
+            });
+            updateSelectedCount();
+            showToast('All staff selected for promotion', 'info');
+        });
+        
+        selectAllCheckbox.addEventListener('change', () => {
+            staffCheckboxes.forEach(checkbox => {
+                checkbox.checked = selectAllCheckbox.checked;
+            });
+            updateSelectedCount();
+        });
+        
+        // Deselect all functionality
+        deselectAllBtn.addEventListener('click', () => {
+            staffCheckboxes.forEach(checkbox => {
+                checkbox.checked = false;
+            });
+            updateSelectedCount();
+            showToast('All staff deselected', 'info');
+        });
+        
+        // Individual checkbox change
+        staffCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', updateSelectedCount);
+        });
+        
+        // Promote all eligible staff
+        promoteAllBtn.addEventListener('click', () => {
+            promotionAction = 'all';
+            const eligibleStaff = Array.from(staffCheckboxes)
+                .filter(cb => {
+                    const row = cb.closest('tr');
+                    const eligibility = row.querySelector('.promotion-badge');
+                    return eligibility && eligibility.classList.contains('promotion-eligible');
+                })
+                .map(cb => {
+                    const row = cb.closest('tr');
+                    const name = row.querySelector('.text-sm.font-medium').textContent;
+                    const position = row.querySelector('td:nth-child(3)').textContent;
+                    return { name, position };
+                });
+            
+            if (eligibleStaff.length === 0) {
+                showToast('No eligible staff found for promotion', 'warning');
+                return;
+            }
+            
+            modalTitle.textContent = 'Promote All Eligible Staff';
+            modalDescription.textContent = `You are about to promote ${eligibleStaff.length} eligible staff members.`;
+            
+            promotionDetails.innerHTML = `
+                <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                    <h4 class="font-medium text-gray-900 dark:text-white mb-2">Staff to be promoted:</h4>
+                    <ul class="space-y-2 max-h-40 overflow-y-auto">
+                        ${eligibleStaff.map(staff => `
+                            <li class="flex items-center text-sm">
+                                <i class="fas fa-user text-blue-500 mr-2"></i>
+                                <span class="text-gray-700 dark:text-gray-300">${staff.name}</span>
+                                <span class="ml-auto text-gray-500 dark:text-gray-400">${staff.position}</span>
+                            </li>
+                        `).join('')}
+                    </ul>
+                </div>
+            `;
+            
+            promotionModal.classList.remove('hidden');
+        });
+        
+        // Bulk promote selected staff
+        bulkPromoteBtn.addEventListener('click', () => {
+            const selected = Array.from(staffCheckboxes)
+                .filter(cb => cb.checked)
+                .map(cb => {
+                    const row = cb.closest('tr');
+                    const name = row.querySelector('.text-sm.font-medium').textContent;
+                    const position = row.querySelector('td:nth-child(3)').textContent;
+                    const eligibility = row.querySelector('.promotion-badge');
+                    const isEligible = eligibility && eligibility.classList.contains('promotion-eligible');
+                    return { name, position, isEligible };
+                });
+            
+            if (selected.length === 0) {
+                showToast('Please select staff to promote', 'warning');
+                return;
+            }
+            
+            const eligibleStaff = selected.filter(s => s.isEligible);
+            const ineligibleStaff = selected.filter(s => !s.isEligible);
+            
+            promotionAction = 'bulk';
+            
+            modalTitle.textContent = 'Promote Selected Staff';
+            modalDescription.textContent = `You are about to promote ${eligibleStaff.length} selected staff members.`;
+            
+            let detailsHtml = `
+                <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                    <h4 class="font-medium text-gray-900 dark:text-white mb-2">Staff to be promoted:</h4>
+                    <ul class="space-y-2 max-h-40 overflow-y-auto">
+            `;
+            
+            if (eligibleStaff.length > 0) {
+                eligibleStaff.forEach(staff => {
+                    detailsHtml += `
+                        <li class="flex items-center text-sm">
+                            <i class="fas fa-check text-green-500 mr-2"></i>
+                            <span class="text-gray-700 dark:text-gray-300">${staff.name}</span>
+                            <span class="ml-auto text-gray-500 dark:text-gray-400">${staff.position}</span>
+                        </li>
+                    `;
+                });
+            }
+            
+            if (ineligibleStaff.length > 0) {
+                detailsHtml += `
+                    </ul>
+                </div>
+                <div class="bg-yellow-50 dark:bg-yellow-900 rounded-lg p-4">
+                    <h4 class="font-medium text-yellow-800 dark:text-yellow-300 mb-2">Not eligible for promotion:</h4>
+                    <ul class="space-y-2">
+                `;
+                
+                ineligibleStaff.forEach(staff => {
+                    detailsHtml += `
+                        <li class="flex items-center text-sm">
+                            <i class="fas fa-times text-red-500 mr-2"></i>
+                            <span class="text-yellow-700 dark:text-yellow-300">${staff.name}</span>
+                            <span class="ml-auto text-yellow-600 dark:text-yellow-400">${staff.position}</span>
+                        </li>
+                    `;
+                });
+            }
+            
+            detailsHtml += `
+                    </ul>
+                </div>
+            `;
+            
+            promotionDetails.innerHTML = detailsHtml;
+            promotionModal.classList.remove('hidden');
+        });
+        
+        // Individual promote buttons
+        promoteBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                promotionAction = 'single';
+                currentStaffId = btn.getAttribute('data-id');
+                currentStaffName = btn.getAttribute('data-name');
+                
+                const row = btn.closest('tr');
+                const position = row.querySelector('td:nth-child(3)').textContent;
+                const department = row.querySelector('td:nth-child(4) span').textContent;
+                const tenure = row.querySelector('td:nth-child(5)').textContent.split('\n')[0];
+                
+                modalTitle.textContent = `Promote ${currentStaffName}`;
+                modalDescription.textContent = `You are about to promote this staff member.`;
+                
+                promotionDetails.innerHTML = `
+                    <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                        <div class="space-y-3">
+                            <div class="flex justify-between">
+                                <span class="text-gray-600 dark:text-gray-400">Name:</span>
+                                <span class="font-medium text-gray-900 dark:text-white">${currentStaffName}</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600 dark:text-gray-400">Current Position:</span>
+                                <span class="font-medium text-gray-900 dark:text-white">${position}</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600 dark:text-gray-400">Department:</span>
+                                <span class="font-medium text-gray-900 dark:text-white">${department}</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600 dark:text-gray-400">Tenure:</span>
+                                <span class="font-medium text-gray-900 dark:text-white">${tenure}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-blue-50 dark:bg-blue-900 rounded-lg p-4">
+                        <h4 class="font-medium text-blue-800 dark:text-blue-300 mb-2">New Position:</h4>
+                        <select class="w-full input-field">
+                            <option>Senior ${position}</option>
+                            <option>Lead ${position.split(' ')[0]}</option>
+                            <option>${position.split(' ')[0]} Manager</option>
+                            <option>Department Head</option>
+                        </select>
+                    </div>
+                `;
+                
+                promotionModal.classList.remove('hidden');
+            });
+        });
+        
+        // Cancel promotion
+        cancelPromotionBtn.addEventListener('click', () => {
+            promotionModal.classList.add('hidden');
+        });
+        
+        // Confirm promotion
+        confirmPromotionBtn.addEventListener('click', () => {
+            promotionModal.classList.add('hidden');
+            
+            if (promotionAction === 'single') {
+                // Update single staff
+                const row = document.querySelector(`.staff-checkbox[data-id="${currentStaffId}"]`).closest('tr');
+                const positionCell = row.querySelector('td:nth-child(3)');
+                const oldPosition = positionCell.textContent;
+                const newPosition = document.querySelector('#promotion-details select').value;
+                
+                // Update position
+                positionCell.textContent = newPosition;
+                
+                // Update promotion eligibility
+                const eligibilityBadge = row.querySelector('.promotion-badge');
+                const eligibilityText = row.querySelector('.promotion-badge + span');
+                
+                eligibilityBadge.className = 'promotion-badge promotion-pending';
+                eligibilityBadge.innerHTML = '<i class="fas fa-clock text-xs"></i>';
+                eligibilityText.textContent = 'Recently Promoted';
+                
+                // Disable promote button
+                const promoteBtn = row.querySelector('.promote-btn');
+                promoteBtn.disabled = true;
+                promoteBtn.className = 'text-gray-400 dark:text-gray-600 mr-3 cursor-not-allowed';
+                
+                showToast(`${currentStaffName} promoted from ${oldPosition} to ${newPosition}`, 'success');
+                
+            } else if (promotionAction === 'bulk' || promotionAction === 'all') {
+                // Update all selected eligible staff
+                const checkboxes = promotionAction === 'all' 
+                    ? Array.from(staffCheckboxes).filter(cb => {
+                        const row = cb.closest('tr');
+                        const eligibility = row.querySelector('.promotion-badge');
+                        return eligibility && eligibility.classList.contains('promotion-eligible');
+                    })
+                    : Array.from(staffCheckboxes).filter(cb => cb.checked);
+                
+                let promotedCount = 0;
+                
+                checkboxes.forEach(checkbox => {
+                    const row = checkbox.closest('tr');
+                    const eligibilityBadge = row.querySelector('.promotion-badge');
+                    
+                    if (eligibilityBadge && eligibilityBadge.classList.contains('promotion-eligible')) {
+                        const name = row.querySelector('.text-sm.font-medium').textContent;
+                        const positionCell = row.querySelector('td:nth-child(3)');
+                        const oldPosition = positionCell.textContent;
+                        const newPosition = `Senior ${oldPosition.split(' ')[0]}`;
                         
-                        statusCell.textContent = 'Completed';
-                        statusCell.className = 'training-status-badge training-status-completed';
+                        // Update position
+                        positionCell.textContent = newPosition;
                         
-                        if (certCell) {
-                            certCell.className = 'certification-badge certification-valid';
-                            certCell.innerHTML = '<i class="fas fa-check text-xs"></i>';
-                            
-                            // Update next sibling text
-                            const certText = certCell.nextElementSibling;
-                            if (certText) {
-                                certText.textContent = 'Valid';
-                            }
+                        // Update promotion eligibility
+                        const eligibilityText = row.querySelector('.promotion-badge + span');
+                        
+                        eligibilityBadge.className = 'promotion-badge promotion-pending';
+                        eligibilityBadge.innerHTML = '<i class="fas fa-clock text-xs"></i>';
+                        eligibilityText.textContent = 'Recently Promoted';
+                        
+                        // Disable promote button
+                        const promoteBtn = row.querySelector('.promote-btn');
+                        if (promoteBtn) {
+                            promoteBtn.disabled = true;
+                            promoteBtn.className = 'text-gray-400 dark:text-gray-600 mr-3 cursor-not-allowed';
                         }
                         
-                        // Show success message
-                        showToast('Training marked as completed!', 'success');
-                    });
-                }
+                        promotedCount++;
+                    }
+                });
+                
+                // Deselect all checkboxes
+                staffCheckboxes.forEach(cb => cb.checked = false);
+                updateSelectedCount();
+                
+                showToast(`${promotedCount} staff members promoted successfully!`, 'success');
+            }
+        });
+        
+        // View staff details
+        document.querySelectorAll('.view-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const row = this.closest('tr');
+                const name = row.querySelector('.text-sm.font-medium').textContent;
+                const position = row.querySelector('td:nth-child(3)').textContent;
+                
+                showToast(`Viewing details for ${name} (${position})`, 'info');
             });
         });
         
@@ -1236,6 +1567,7 @@
             const toast = document.createElement('div');
             toast.className = `fixed top-4 right-4 px-6 py-3 rounded-lg shadow-lg z-50 transform transition-transform duration-300 ${
                 type === 'success' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300' : 
+                type === 'warning' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300' :
                 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300'
             }`;
             toast.textContent = message;

@@ -432,21 +432,21 @@
     </div>
     
     <nav class="flex-1 space-y-1">
-        <a href="{{ route('hrm.dashboard') }}" class="sidebar-item flex items-center space-x-3 py-3 px-4 rounded-xl text-gray-600 dark:text-gray-300 hover:text-blue-theme">
+        <a href="{{ route('hrm.staff.dashboard') }}" class="sidebar-item flex items-center space-x-3 py-3 px-4 rounded-xl text-gray-600 dark:text-gray-300 hover:text-blue-theme">
             <div class="sidebar-icon w-6 text-center">
                 <i class="fas fa-home"></i>
             </div>
             <span class="sidebar-text font-medium">Employee Information</span>
         </a>
         
-        <a href="{{ route('hrm.payroll') }}" class="sidebar-item flex items-center space-x-3 py-3 px-4 rounded-xl text-gray-600 dark:text-gray-300 hover:text-blue-theme">
+        <a href="{{ route('hrm.staff.payroll') }}" class="sidebar-item flex items-center space-x-3 py-3 px-4 rounded-xl text-gray-600 dark:text-gray-300 hover:text-blue-theme">
             <div class="sidebar-icon w-6 text-center">
                 <i class="fas fa-money-check-alt"></i>
             </div>
             <span class="sidebar-text font-medium">Payroll Management</span>
         </a>
         
-        <a href="{{ route('hrm.leave') }}" class="sidebar-item active flex items-center space-x-3 py-3 px-4 rounded-xl text-blue-theme">
+        <a href="{{ route('hrm.staff.leave') }}" class="sidebar-item active flex items-center space-x-3 py-3 px-4 rounded-xl text-blue-theme">
             <div class="sidebar-icon w-6 text-center">
                 <i class="fas fa-calendar-alt"></i>
             </div>
@@ -454,14 +454,14 @@
             <span class="ml-auto bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 text-xs font-medium px-2 py-0.5 rounded-full">8</span>
         </a>
         
-        <a href="{{ route('hrm.attendance') }}" class="sidebar-item flex items-center space-x-3 py-3 px-4 rounded-xl text-gray-600 dark:text-gray-300 hover:text-blue-theme">
+        <a href="{{ route('hrm.staff.attendance') }}" class="sidebar-item flex items-center space-x-3 py-3 px-4 rounded-xl text-gray-600 dark:text-gray-300 hover:text-blue-theme">
             <div class="sidebar-icon w-6 text-center">
                 <i class="fas fa-clock"></i>
             </div>
             <span class="sidebar-text font-medium">Time and Attendance</span>
         </a>
         
-        <a href="{{ route('hrm.training') }}" class="sidebar-item flex items-center space-x-3 py-3 px-4 rounded-xl text-gray-600 dark:text-gray-300 hover:text-blue-theme">
+        <a href="{{ route('hrm.staff.training') }}" class="sidebar-item flex items-center space-x-3 py-3 px-4 rounded-xl text-gray-600 dark:text-gray-300 hover:text-blue-theme">
             <div class="sidebar-icon w-6 text-center">
                 <i class="fas fa-chalkboard-teacher"></i>
             </div>
