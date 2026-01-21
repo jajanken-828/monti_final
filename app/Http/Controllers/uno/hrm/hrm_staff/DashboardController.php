@@ -30,4 +30,14 @@ class DashboardController extends Controller
     {
         return view('uno.hrm.hrm_staff.training');
     }
+
+    public function employee()
+    {
+        return view('uno.hrm.hrm_staff.employee');
+    }
+
+    public function application()
+    {
+        return view('uno.hrm.hrm_staff.application');
+    }
 }

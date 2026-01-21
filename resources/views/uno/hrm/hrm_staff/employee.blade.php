@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Dashboard - Monti Textile HRM</title>
+    <title>Employee Records - Monti Textile HRM</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -19,7 +19,7 @@
         </style>
     @endif
 
-    <!-- Custom Styles -->
+    <!-- Custom Styles (from dashboard) -->
     <style>
         .bg-blue-theme { background-color: #2563eb; }
         .bg-yellow-theme { background-color: #fbbf24; }
@@ -636,14 +636,13 @@
         </div>
         
         <nav class="flex-1 space-y-1">
-            <a href="{{ route('hrm.staff.dashboard') }}" class="sidebar-item active flex items-center space-x-3 py-3 px-4 rounded-xl text-blue-theme">
+            <a href="{{ route('hrm.staff.dashboard') }}" class="sidebar-item flex items-center space-x-3 py-3 px-4 rounded-xl text-gray-600 dark:text-gray-300 hover:text-blue-theme">
                 <div class="sidebar-icon w-6 text-center">
                     <i class="fas fa-home"></i>
                 </div>
                 <span class="sidebar-text font-medium">Employee Information</span>
             </a>
             
-           
             
             <a href="{{ route('hrm.staff.payroll') }}" class="sidebar-item flex items-center space-x-3 py-3 px-4 rounded-xl text-gray-600 dark:text-gray-300 hover:text-blue-theme">
                 <div class="sidebar-icon w-6 text-center">
@@ -712,8 +711,8 @@
         <header class="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 py-4 px-8 flex items-center justify-between sticky top-0 z-10">
             <div class="header-content flex items-center justify-between w-full">
                 <div>
-                    <h1 class="text-2xl font-bold text-gray-900 dark:text-white header-title">Human Resource Management</h1>
-                    <p class="text-gray-500 dark:text-gray-400 hidden md:block">Staff Dashboard</p>
+                    <h1 class="text-2xl font-bold text-gray-900 dark:text-white header-title">Employee Records</h1>
+                    <p class="text-gray-500 dark:text-gray-400 hidden md:block">Manage employee information by department and position</p>
                 </div>
                 
                 <div class="flex items-center space-x-4 header-actions">
@@ -732,7 +731,7 @@
                         </button>
                         
                         <div class="w-10 h-10 rounded-xl bg-blue-100 dark:bg-blue-900 flex items-center justify-center text-blue-700 dark:text-blue-300 font-medium hidden md:flex">
-                            KJ
+                            HR
                         </div>
                     </div>
                 </div>
@@ -741,25 +740,329 @@
 
         <!-- Content -->
         <main class="flex-1 p-8 overflow-y-auto custom-scrollbar">
-            <!-- Stats Overview -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8 stats-grid">
-                <div class="card p-6 flex items-center">
-                    <div class="w-12 h-12 rounded-xl bg-blue-100 dark:bg-blue-900 flex items-center justify-center mr-4">
-                        <i class="fas fa-book text-blue-600 dark:text-blue-300 text-xl"></i>
+            <!-- Filter Controls -->
+            <div class="card p-6 mb-6">
+                <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                    <div class="flex-1">
+                        <div class="relative">
+                            <input type="text" placeholder="Search employees by name, ID, or department..." class="w-full px-4 py-2 pl-10 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 search-input">
+                            <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                        </div>
                     </div>
-                    <div>
-                        <div class="text-gray-500 dark:text-gray-400 text-sm">Applicants</div>
-                        <div class="text-2xl font-bold text-gray-900 dark:text-white">12</div>
+                    
+                    <div class="flex gap-3">
+                        <select class="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700">
+                            <option value="">All Departments</option>
+                            <option value="production">Production</option>
+                            <option value="quality">Quality Control</option>
+                            <option value="maintenance">Maintenance</option>
+                            <option value="admin">Administration</option>
+                            <option value="logistics">Logistics</option>
+                        </select>
+                        
+                        <select class="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700">
+                            <option value="">All Status</option>
+                            <option value="active">Active</option>
+                            <option value="inactive">Inactive</option>
+                            <option value="on-leave">On Leave</option>
+                        </select>
                     </div>
                 </div>
+            </div>
+
+            <!-- Department Tabs -->
+            <div class="flex space-x-1 mb-6 overflow-x-auto">
+                <button class="px-4 py-2 rounded-lg bg-blue-600 text-white font-medium">All Employees</button>
+                <button class="px-4 py-2 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 font-medium">Production</button>
+                <button class="px-4 py-2 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 font-medium">Quality Control</button>
+                <button class="px-4 py-2 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 font-medium">Maintenance</button>
+                <button class="px-4 py-2 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 font-medium">Administration</button>
+                <button class="px-4 py-2 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 font-medium">Logistics</button>
+            </div>
+
+            <!-- Employees Table -->
+            <div class="card overflow-hidden">
+                <div class="p-6 border-b border-gray-200 dark:border-gray-700">
+                    <h2 class="text-lg font-bold text-gray-900 dark:text-white">Employee Directory</h2>
+                    <p class="text-gray-500 dark:text-gray-400 text-sm">Total: 245 employees</p>
+                </div>
                 
+                <div class="overflow-x-auto">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Employee</th>
+                                <th>Employee ID</th>
+                                <th>Department</th>
+                                <th>Position</th>
+                                <th>Status</th>
+                                <th>Date Hired</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Production Department -->
+                            <tr>
+                                <td>
+                                    <div class="flex items-center">
+                                        <div class="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center text-blue-600 dark:text-blue-300 font-bold mr-3">
+                                            JD
+                                        </div>
+                                        <div>
+                                            <div class="font-medium text-gray-900 dark:text-white">Juan Dela Cruz</div>
+                                            <div class="text-gray-500 dark:text-gray-400 text-sm">juan.delacruz@montitextile.com</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="font-medium">EMP-00123</td>
+                                <td>
+                                    <span class="department-tag department-production">
+                                        <i class="fas fa-industry mr-1"></i> Production
+                                    </span>
+                                </td>
+                                <td>Production Supervisor</td>
+                                <td>
+                                    <span class="badge badge-success">
+                                        <i class="fas fa-circle text-xs mr-1"></i> Active
+                                    </span>
+                                </td>
+                                <td>2022-03-15</td>
+                                <td>
+                                    <div class="flex space-x-2">
+                                        <button class="btn btn-outline btn-sm">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn btn-outline btn-sm">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <div class="flex items-center">
+                                        <div class="w-10 h-10 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center text-green-600 dark:text-green-300 font-bold mr-3">
+                                            MP
+                                        </div>
+                                        <div>
+                                            <div class="font-medium text-gray-900 dark:text-white">Maria Santos</div>
+                                            <div class="text-gray-500 dark:text-gray-400 text-sm">maria.santos@montitextile.com</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="font-medium">EMP-00124</td>
+                                <td>
+                                    <span class="department-tag department-production">
+                                        <i class="fas fa-industry mr-1"></i> Production
+                                    </span>
+                                </td>
+                                <td>Textile Operator</td>
+                                <td>
+                                    <span class="badge badge-success">
+                                        <i class="fas fa-circle text-xs mr-1"></i> Active
+                                    </span>
+                                </td>
+                                <td>2022-05-20</td>
+                                <td>
+                                    <div class="flex space-x-2">
+                                        <button class="btn btn-outline btn-sm">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn btn-outline btn-sm">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            
+                            <!-- Quality Control Department -->
+                            <tr>
+                                <td>
+                                    <div class="flex items-center">
+                                        <div class="w-10 h-10 rounded-full bg-purple-100 dark:bg-purple-900 flex items-center justify-center text-purple-600 dark:text-purple-300 font-bold mr-3">
+                                            RS
+                                        </div>
+                                        <div>
+                                            <div class="font-medium text-gray-900 dark:text-white">Roberto Garcia</div>
+                                            <div class="text-gray-500 dark:text-gray-400 text-sm">roberto.garcia@montitextile.com</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="font-medium">EMP-00145</td>
+                                <td>
+                                    <span class="department-tag department-quality">
+                                        <i class="fas fa-check-circle mr-1"></i> Quality Control
+                                    </span>
+                                </td>
+                                <td>Quality Inspector</td>
+                                <td>
+                                    <span class="badge badge-success">
+                                        <i class="fas fa-circle text-xs mr-1"></i> Active
+                                    </span>
+                                </td>
+                                <td>2021-11-10</td>
+                                <td>
+                                    <div class="flex space-x-2">
+                                        <button class="btn btn-outline btn-sm">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn btn-outline btn-sm">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            
+                            <!-- Maintenance Department -->
+                            <tr>
+                                <td>
+                                    <div class="flex items-center">
+                                        <div class="w-10 h-10 rounded-full bg-yellow-100 dark:bg-yellow-900 flex items-center justify-center text-yellow-600 dark:text-yellow-300 font-bold mr-3">
+                                            AL
+                                        </div>
+                                        <div>
+                                            <div class="font-medium text-gray-900 dark:text-white">Antonio Lopez</div>
+                                            <div class="text-gray-500 dark:text-gray-400 text-sm">antonio.lopez@montitextile.com</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="font-medium">EMP-00167</td>
+                                <td>
+                                    <span class="department-tag department-maintenance">
+                                        <i class="fas fa-tools mr-1"></i> Maintenance
+                                    </span>
+                                </td>
+                                <td>Maintenance Technician</td>
+                                <td>
+                                    <span class="badge badge-warning">
+                                        <i class="fas fa-circle text-xs mr-1"></i> On Leave
+                                    </span>
+                                </td>
+                                <td>2020-08-15</td>
+                                <td>
+                                    <div class="flex space-x-2">
+                                        <button class="btn btn-outline btn-sm">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn btn-outline btn-sm">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            
+                            <!-- Administration Department -->
+                            <tr>
+                                <td>
+                                    <div class="flex items-center">
+                                        <div class="w-10 h-10 rounded-full bg-pink-100 dark:bg-pink-900 flex items-center justify-center text-pink-600 dark:text-pink-300 font-bold mr-3">
+                                            SG
+                                        </div>
+                                        <div>
+                                            <div class="font-medium text-gray-900 dark:text-white">Sofia Gomez</div>
+                                            <div class="text-gray-500 dark:text-gray-400 text-sm">sofia.gomez@montitextile.com</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="font-medium">EMP-00189</td>
+                                <td>
+                                    <span class="department-tag department-admin">
+                                        <i class="fas fa-briefcase mr-1"></i> Administration
+                                    </span>
+                                </td>
+                                <td>HR Manager</td>
+                                <td>
+                                    <span class="badge badge-success">
+                                        <i class="fas fa-circle text-xs mr-1"></i> Active
+                                    </span>
+                                </td>
+                                <td>2019-06-01</td>
+                                <td>
+                                    <div class="flex space-x-2">
+                                        <button class="btn btn-outline btn-sm">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn btn-outline btn-sm">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            
+                            <!-- Logistics Department -->
+                            <tr>
+                                <td>
+                                    <div class="flex items-center">
+                                        <div class="w-10 h-10 rounded-full bg-red-100 dark:bg-red-900 flex items-center justify-center text-red-600 dark:text-red-300 font-bold mr-3">
+                                            CR
+                                        </div>
+                                        <div>
+                                            <div class="font-medium text-gray-900 dark:text-white">Carlos Reyes</div>
+                                            <div class="text-gray-500 dark:text-gray-400 text-sm">carlos.reyes@montitextile.com</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="font-medium">EMP-00201</td>
+                                <td>
+                                    <span class="department-tag department-logistics">
+                                        <i class="fas fa-truck mr-1"></i> Logistics
+                                    </span>
+                                </td>
+                                <td>Warehouse Supervisor</td>
+                                <td>
+                                    <span class="badge badge-danger">
+                                        <i class="fas fa-circle text-xs mr-1"></i> Inactive
+                                    </span>
+                                </td>
+                                <td>2021-02-28</td>
+                                <td>
+                                    <div class="flex space-x-2">
+                                        <button class="btn btn-outline btn-sm">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn btn-outline btn-sm">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- Pagination -->
+                <div class="p-6 border-t border-gray-200 dark:border-gray-700 flex items-center justify-between">
+                    <div class="text-gray-500 dark:text-gray-400 text-sm">
+                        Showing 1 to 6 of 245 entries
+                    </div>
+                    <div class="flex space-x-2">
+                        <button class="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
+                            Previous
+                        </button>
+                        <button class="px-3 py-1 bg-blue-600 text-white rounded-lg">1</button>
+                        <button class="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
+                            2
+                        </button>
+                        <button class="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
+                            3
+                        </button>
+                        <button class="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
+                            Next
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Department Summary Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mt-8 stats-grid">
                 <div class="card p-6 flex items-center">
-                    <div class="w-12 h-12 rounded-xl bg-yellow-100 dark:bg-yellow-900 flex items-center justify-center mr-4">
-                        <i class="fas fa-tasks text-yellow-600 dark:text-yellow-300 text-xl"></i>
+                    <div class="w-12 h-12 rounded-xl bg-blue-100 dark:bg-blue-900 flex items-center justify-center mr-4">
+                        <i class="fas fa-industry text-blue-600 dark:text-blue-300 text-xl"></i>
                     </div>
                     <div>
-                        <div class="text-gray-500 dark:text-gray-400 text-sm">Staffs</div>
-                        <div class="text-2xl font-bold text-gray-900 dark:text-white">245</div>
+                        <div class="text-gray-500 dark:text-gray-400 text-sm">Production</div>
+                        <div class="text-2xl font-bold text-gray-900 dark:text-white">142</div>
                     </div>
                 </div>
                 
@@ -768,271 +1071,38 @@
                         <i class="fas fa-check-circle text-green-600 dark:text-green-300 text-xl"></i>
                     </div>
                     <div>
-                        <div class="text-gray-500 dark:text-gray-400 text-sm">Active Employees</div>
-                        <div class="text-2xl font-bold text-gray-900 dark:text-white">237</div>
+                        <div class="text-gray-500 dark:text-gray-400 text-sm">Quality Control</div>
+                        <div class="text-2xl font-bold text-gray-900 dark:text-white">38</div>
+                    </div>
+                </div>
+                
+                <div class="card p-6 flex items-center">
+                    <div class="w-12 h-12 rounded-xl bg-yellow-100 dark:bg-yellow-900 flex items-center justify-center mr-4">
+                        <i class="fas fa-tools text-yellow-600 dark:text-yellow-300 text-xl"></i>
+                    </div>
+                    <div>
+                        <div class="text-gray-500 dark:text-gray-400 text-sm">Maintenance</div>
+                        <div class="text-2xl font-bold text-gray-900 dark:text-white">24</div>
                     </div>
                 </div>
                 
                 <div class="card p-6 flex items-center">
                     <div class="w-12 h-12 rounded-xl bg-purple-100 dark:bg-purple-900 flex items-center justify-center mr-4">
-                        <i class="fas fa-chart-line text-purple-600 dark:text-purple-300 text-xl"></i>
+                        <i class="fas fa-briefcase text-purple-600 dark:text-purple-300 text-xl"></i>
                     </div>
                     <div>
-                        <div class="text-gray-500 dark:text-gray-400 text-sm">Overall Progress</div>
-                        <div class="text-2xl font-bold text-gray-900 dark:text-white">72%</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 main-grid">
-                <!-- Left Column -->
-                <div class="lg:col-span-2 space-y-8">
-                    <!-- HRM Welcome Banner -->
-                    <div class="featured-banner">
-                        <div class="p-8">
-                            <div class="flex flex-col md:flex-row items-center justify-between">
-                                <div class="featured-banner-content mb-6 md:mb-0">
-                                    <h2 class="text-2xl font-bold mb-3 text-white">Welcome to HR Management Portal</h2>
-                                    <p class="text-blue-100 mb-6 max-w-lg">Employee Information Management – Centralized hub for managing all employee records, profiles, and HR data.</p>
-                                    <a href="{{ route('hrm.staff.employee') }}" class="inline-block">
-                                        <button class="px-6 py-3 bg-yellow-theme hover:bg-yellow-600 text-gray-900 font-semibold rounded-xl transition-colors shadow-md flex items-center featured-banner-button">
-                                            Manage Employee Records <i class="fas fa-users ml-2"></i>
-                                        </button>
-                                    </a>
-                                </div>
-                                <div class="featured-banner-image animate-float">
-                                    <div class="w-48 h-32 bg-gradient-to-r from-blue-400 to-blue-300 dark:from-blue-500 dark:to-blue-400 rounded-lg shadow-xl flex items-center justify-center">
-                                        <i class="fas fa-users text-white text-4xl"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Employee Management Dashboard -->
-                    <div class="card p-6">
-                        <div class="flex justify-between items-center mb-6">
-                            <h3 class="font-bold text-xl text-gray-900 dark:text-white">Employee Management Tools</h3>
-                            <a href="#" class="text-blue-theme font-medium flex items-center hover:text-blue-700 dark:hover:text-blue-400 text-sm">
-                                All Functions <i class="fas fa-chevron-right ml-2 text-xs"></i>
-                            </a>
-                        </div>
-                        
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                            <!-- Employee Records Card with Button -->
-                            <div class="bg-gray-50 dark:bg-gray-700 rounded-xl p-4 border border-gray-200 dark:border-gray-600 hover:border-blue-300 dark:hover:border-blue-500 transition-colors">
-                                <div class="flex items-start justify-between mb-4">
-                                    <div class="w-12 h-12 rounded-lg bg-blue-theme flex items-center justify-center">
-                                        <i class="fas fa-id-card text-white text-xl"></i>
-                                    </div>
-                                    <span class="bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 text-xs font-medium px-2 py-1 rounded">FREQUENT</span>
-                                </div>
-                                <h4 class="font-bold text-gray-900 dark:text-white text-lg mb-1">Employee Records</h4>
-                                <p class="text-gray-500 dark:text-gray-400 text-sm mb-4">Complete profile management</p>
-                                
-                                <div class="mb-3">
-                                    <div class="flex justify-between text-sm mb-1">
-                                        <span class="text-gray-600 dark:text-gray-300">Updated Profiles</span>
-                                        <span class="text-blue-theme font-medium">94%</span>
-                                    </div>
-                                    <div class="course-progress">
-                                        <div class="course-progress-fill" style="width: 94%"></div>
-                                    </div>
-                                </div>
-                                
-                                <div class="flex justify-between text-xs text-gray-500 dark:text-gray-400 mb-4">
-                                    <span>245 Active</span>
-                                    <span>8 Pending</span>
-                                </div>
-                                
-                                <!-- Added Button for Employee Records -->
-                                <a href="{{ route('hrm.staff.employee') }}" class="block w-full text-center">
-                                    <button class="w-full py-2 bg-blue-theme hover:bg-blue-700 text-white rounded-lg font-medium transition-colors">
-                                        View Employee Records
-                                    </button>
-                                </a>
-                            </div>
-                            
-                            <!-- Application Request Management Card with Button -->
-                            <div class="bg-gray-50 dark:bg-gray-700 rounded-xl p-4 border border-gray-200 dark:border-gray-600 hover:border-blue-300 dark:hover:border-blue-500 transition-colors">
-                                <div class="flex items-start justify-between mb-4">
-                                    <div class="w-12 h-12 rounded-lg bg-purple-600 flex items-center justify-center">
-                                        <i class="fas fa-file-contract text-white text-xl"></i>
-                                    </div>
-                                    <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs font-medium px-2 py-1 rounded">NEW</span>
-                                </div>
-                                <h4 class="font-bold text-gray-900 dark:text-white text-lg mb-1">Application Request and Management</h4>
-                                <p class="text-gray-500 dark:text-gray-400 text-sm mb-4">Contracts & Certifications</p>
-                                
-                                <div class="mb-3">
-                                    <div class="flex justify-between text-sm mb-1">
-                                        <span class="text-gray-600 dark:text-gray-300">Completion Rate</span>
-                                        <span class="text-blue-theme font-medium">78%</span>
-                                    </div>
-                                    <div class="course-progress">
-                                        <div class="course-progress-fill" style="width: 78%"></div>
-                                    </div>
-                                </div>
-                                
-                                <div class="flex justify-between text-xs text-gray-500 dark:text-gray-400 mb-4">
-                                    <span>12 Applications</span>
-                                    <span>5 Pending</span>
-                                </div>
-                                
-                                <!-- Added Button for Application Management -->
-                                <a href="{{ route('hrm.staff.application') }}" class="block w-full text-center">
-                                    <button class="w-full py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg font-medium transition-colors">
-                                        Manage Applications
-                                    </button>
-                                </a>
-                            </div>
-                        </div>
+                        <div class="text-gray-500 dark:text-gray-400 text-sm">Administration</div>
+                        <div class="text-2xl font-bold text-gray-900 dark:text-white">28</div>
                     </div>
                 </div>
                 
-                <!-- Right Column -->
-                <div class="space-y-8">
-                    <!-- HR Profile Card -->
-                    <div class="card p-6">
-                        <div class="flex flex-col items-center text-center">
-                            <div class="relative mb-4">
-                                <div class="profile-image w-20 h-20 rounded-full bg-blue-theme flex items-center justify-center text-white text-2xl font-bold">
-                                    HR
-                                </div>
-                                <div class="absolute bottom-0 right-0 w-7 h-7 rounded-full bg-blue-theme flex items-center justify-center border-2 border-white dark:border-gray-800 cursor-pointer hover:bg-blue-700">
-                                    <i class="fas fa-pen text-xs text-white"></i>
-                                </div>
-                            </div>
-                            
-                            <h2 class="font-bold text-lg text-gray-900 dark:text-white">HR Administrator</h2>
-                            <p class="text-gray-500 dark:text-gray-400 text-sm mt-1 flex items-center justify-center">
-                                <i class="fas fa-building mr-1.5 text-blue-theme"></i> 
-                                Human Resources Department
-                            </p>
-                            
-                            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5 mt-5">
-                                <div class="bg-blue-theme h-2.5 rounded-full" style="width: 88%"></div>
-                            </div>
-                            <div class="w-full flex justify-between text-sm text-gray-500 dark:text-gray-400 mt-2">
-                                <span>Database Completion</span>
-                                <span class="text-gray-900 dark:text-white font-medium">88%</span>
-                            </div>
-                            
-                            <a href="#" class="w-full mt-5">
-                                <button class="w-full py-3 bg-blue-theme hover:bg-blue-700 text-white rounded-xl font-medium transition-colors px-4">
-                                    Manage HR Dashboard
-                                </button>
-                            </a>
-                        </div>
+                <div class="card p-6 flex items-center">
+                    <div class="w-12 h-12 rounded-xl bg-pink-100 dark:bg-pink-900 flex items-center justify-center mr-4">
+                        <i class="fas fa-truck text-pink-600 dark:text-pink-300 text-xl"></i>
                     </div>
-                    
-                    <!-- Upcoming HR Deadlines -->
-                    <div class="card p-6">
-                        <div class="flex justify-between items-center mb-5">
-                            <h3 class="font-semibold text-gray-900 dark:text-white">HR Deadlines</h3>
-                            <a href="#" class="text-blue-theme text-sm font-medium hover:text-blue-700 dark:hover:text-blue-400">View All</a>
-                        </div>
-                        
-                        <div class="space-y-4">
-                            <div class="flex items-center justify-between p-3 rounded-xl bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600">
-                                <div class="flex items-center">
-                                    <div class="w-10 h-10 rounded-lg bg-red-100 dark:bg-red-900 flex items-center justify-center mr-3">
-                                        <i class="fas fa-money-check-alt text-red-600 dark:text-red-300"></i>
-                                    </div>
-                                    <div>
-                                        <h4 class="font-medium text-gray-900 dark:text-white">PAYROLL PROCESSING</h4>
-                                        <p class="text-gray-500 dark:text-gray-400 text-xs">Monthly Salary Run</p>
-                                    </div>
-                                </div>
-                                <span class="text-gray-500 dark:text-gray-400 text-sm font-medium">Sep 25</span>
-                            </div>
-                            
-                            <div class="flex items-center justify-between p-3 rounded-xl bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600">
-                                <div class="flex items-center">
-                                    <div class="w-10 h-10 rounded-lg bg-yellow-100 dark:bg-yellow-900 flex items-center justify-center mr-3">
-                                        <i class="fas fa-chart-bar text-yellow-600 dark:text-yellow-300"></i>
-                                    </div>
-                                    <div>
-                                        <h4 class="font-medium text-gray-900 dark:text-white">PERFORMANCE REVIEWS</h4>
-                                        <p class="text-gray-500 dark:text-gray-400 text-xs">Q3 Evaluations</p>
-                                    </div>
-                                </div>
-                                <span class="text-gray-500 dark:text-gray-400 text-sm font-medium">Sep 30</span>
-                            </div>
-                            
-                            <div class="flex items-center justify-between p-3 rounded-xl bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600">
-                                <div class="flex items-center">
-                                    <div class="w-10 h-10 rounded-lg bg-blue-100 dark:bg-blue-900 flex items-center justify-center mr-3">
-                                        <i class="fas fa-file-medical text-blue-600 dark:text-blue-300"></i>
-                                    </div>
-                                    <div>
-                                        <h4 class="font-medium text-gray-900 dark:text-white">BENEFITS RENEWAL</h4>
-                                        <p class="text-gray-500 dark:text-gray-400 text-xs">Health Insurance</p>
-                                    </div>
-                                </div>
-                                <span class="text-gray-500 dark:text-gray-400 text-sm font-medium">Oct 5</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- HR Team Section -->
-            <div class="mt-8">
-                <div class="flex justify-between items-center mb-6">
-                    <h3 class="font-bold text-xl text-gray-900 dark:text-white">HR Management Team</h3>
-                    <a href="#" class="text-blue-theme font-medium flex items-center hover:text-blue-700 dark:hover:text-blue-400 text-sm">
-                        View All <i class="fas fa-chevron-right ml-2 text-xs"></i>
-                    </a>
-                </div>
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 instructors-grid">
-                    <div class="card p-5 flex flex-col items-center text-center">
-                        <div class="rounded-full w-16 h-16 bg-blue-100 dark:bg-blue-900 flex items-center justify-center text-blue-600 dark:text-blue-300 text-xl font-bold mb-4">
-                            SD
-                        </div>
-                        <h4 class="font-bold text-gray-900 dark:text-white">Sarah Dela Cruz</h4>
-                        <p class="text-gray-500 dark:text-gray-400 text-sm mt-1">HR Director</p>
-                        <div class="mt-3 flex items-center text-xs">
-                            <span class="status-indicator status-online mr-2"></span>
-                            <span class="text-green-600 dark:text-green-400 font-medium">Available</span>
-                        </div>
-                    </div>
-                    
-                    <div class="card p-5 flex flex-col items-center text-center">
-                        <div class="rounded-full w-16 h-16 bg-blue-100 dark:bg-blue-900 flex items-center justify-center text-blue-600 dark:text-blue-300 text-xl font-bold mb-4">
-                            MP
-                        </div>
-                        <h4 class="font-bold text-gray-900 dark:text-white">Michael Perez</h4>
-                        <p class="text-gray-500 dark:text-gray-400 text-sm mt-1">Recruitment Manager</p>
-                        <div class="mt-3 flex items-center text-xs">
-                            <span class="status-indicator status-offline mr-2"></span>
-                            <span class="text-gray-500 dark:text-gray-400 font-medium">In Meeting</span>
-                        </div>
-                    </div>
-                    
-                    <div class="card p-5 flex flex-col items-center text-center">
-                        <div class="rounded-full w-16 h-16 bg-blue-100 dark:bg-blue-900 flex items-center justify-center text-blue-600 dark:text-blue-300 text-xl font-bold mb-4">
-                            AG
-                        </div>
-                        <h4 class="font-bold text-gray-900 dark:text-white">Anna Gomez</h4>
-                        <p class="text-gray-500 dark:text-gray-400 text-sm mt-1">Payroll Specialist</p>
-                        <div class="mt-3 flex items-center text-xs">
-                            <span class="status-indicator status-online mr-2"></span>
-                            <span class="text-green-600 dark:text-green-400 font-medium">Available</span>
-                        </div>
-                    </div>
-                    
-                    <div class="card p-5 flex flex-col items-center text-center">
-                        <div class="rounded-full w-16 h-16 bg-blue-100 dark:bg-blue-900 flex items-center justify-center text-blue-600 dark:text-blue-300 text-xl font-bold mb-4">
-                            RS
-                        </div>
-                        <h4 class="font-bold text-gray-900 dark:text-white">Robert Santos</h4>
-                        <p class="text-gray-500 dark:text-gray-400 text-sm mt-1">Benefits Administrator</p>
-                        <div class="mt-3 flex items-center text-xs">
-                            <span class="status-indicator status-offline mr-2"></span>
-                            <span class="text-gray-500 dark:text-gray-400 font-medium">On Leave</span>
-                        </div>
+                    <div>
+                        <div class="text-gray-500 dark:text-gray-400 text-sm">Logistics</div>
+                        <div class="text-2xl font-bold text-gray-900 dark:text-white">13</div>
                     </div>
                 </div>
             </div>
@@ -1083,15 +1153,6 @@
         
         // Initialize progress animations
         document.addEventListener('DOMContentLoaded', () => {
-            const progressBars = document.querySelectorAll('.course-progress-fill');
-            progressBars.forEach(bar => {
-                const width = bar.style.width;
-                bar.style.width = '0';
-                setTimeout(() => {
-                    bar.style.width = width;
-                }, 300);
-            });
-            
             // Handle responsive behavior on load
             if (window.innerWidth < 1024) {
                 mainContent.style.marginLeft = '0';

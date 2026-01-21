@@ -259,21 +259,21 @@ Route::prefix('hrm')
                 return view('uno.hrm.hrm_staff.training');
             })->name('training');
 
-            Route::get('/onboarding', function () {
+            Route::get('/employee', function () {
                 if ($redirect = checkAccess('hrm', 'staff')) {
                     return $redirect;
                 }
 
-                return view('uno.hrm.hrm_staff.onboarding');
-            })->name('onboarding');
+                return view('uno.hrm.hrm_staff.employee');
+            })->name('employee');
 
-            Route::get('/recruitment', function () {
+            Route::get('/application', function () {
                 if ($redirect = checkAccess('hrm', 'staff')) {
                     return $redirect;
                 }
 
-                return view('uno.hrm.hrm_staff.recruitment');
-            })->name('recruitment');
+                return view('uno.hrm.hrm_staff.application');
+            })->name('application');
 
             Route::get('/performance', function () {
                 if ($redirect = checkAccess('hrm', 'staff')) {
