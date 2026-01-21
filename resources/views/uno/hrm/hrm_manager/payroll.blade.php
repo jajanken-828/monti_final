@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>HR Manager Dashboard - Monti Textile HRM</title>
+    <title>Payroll Management - Monti Textile HRM</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -118,20 +118,6 @@
             transform: translateY(-2px);
         }
         
-        .course-progress {
-            height: 8px;
-            border-radius: 4px;
-            overflow: hidden;
-            background-color: #e5e7eb;
-        }
-        
-        .course-progress-fill {
-            height: 100%;
-            border-radius: 4px;
-            background: linear-gradient(to right, #3b82f6, #60a5fa);
-            transition: width 1s ease;
-        }
-        
         .notification-badge {
             position: absolute;
             top: -6px;
@@ -209,34 +195,44 @@
             position: relative;
         }
         
-        .staff-status-badge {
+        .payroll-status-badge {
             padding: 0.25rem 0.75rem;
             border-radius: 9999px;
             font-size: 0.75rem;
             font-weight: 500;
         }
         
-        .staff-status-active {
-            background-color: #dcfce7;
-            color: #166534;
-        }
-        
-        .staff-status-probation {
+        .payroll-status-pending {
             background-color: #fef9c3;
             color: #854d0e;
         }
         
-        .staff-status-pending {
+        .payroll-status-processing {
             background-color: #dbeafe;
             color: #1e40af;
         }
         
-        .staff-status-inactive {
+        .payroll-status-paid {
+            background-color: #dcfce7;
+            color: #166534;
+        }
+        
+        .payroll-status-failed {
             background-color: #fee2e2;
             color: #991b1b;
         }
         
-        .promotion-badge {
+        .amount-positive {
+            color: #059669;
+            font-weight: 600;
+        }
+        
+        .amount-negative {
+            color: #dc2626;
+            font-weight: 600;
+        }
+        
+        .payroll-action-btn {
             display: inline-flex;
             align-items: center;
             justify-content: center;
@@ -246,19 +242,19 @@
             margin-right: 8px;
         }
         
-        .promotion-eligible {
+        .payroll-action-approve {
             background-color: #dcfce7;
             color: #166534;
         }
         
-        .promotion-pending {
-            background-color: #fef9c3;
-            color: #854d0e;
-        }
-        
-        .promotion-not-eligible {
+        .payroll-action-reject {
             background-color: #fee2e2;
             color: #991b1b;
+        }
+        
+        .payroll-action-view {
+            background-color: #dbeafe;
+            color: #1e40af;
         }
         
         .animate-float {
@@ -337,39 +333,39 @@
             background: linear-gradient(135deg, #1e3a8a 0%, #1d4ed8 100%);
         }
         
-        .dark .staff-status-active {
-            background-color: #14532d;
-            color: #86efac;
-        }
-        
-        .dark .staff-status-probation {
+        .dark .payroll-status-pending {
             background-color: #713f12;
             color: #fde047;
         }
         
-        .dark .staff-status-pending {
+        .dark .payroll-status-processing {
             background-color: #1e3a8a;
             color: #93c5fd;
         }
         
-        .dark .staff-status-inactive {
-            background-color: #7f1d1d;
-            color: #fca5a5;
-        }
-        
-        .dark .promotion-eligible {
+        .dark .payroll-status-paid {
             background-color: #14532d;
             color: #86efac;
         }
         
-        .dark .promotion-pending {
-            background-color: #713f12;
-            color: #fde047;
-        }
-        
-        .dark .promotion-not-eligible {
+        .dark .payroll-status-failed {
             background-color: #7f1d1d;
             color: #fca5a5;
+        }
+        
+        .dark .payroll-action-approve {
+            background-color: #14532d;
+            color: #86efac;
+        }
+        
+        .dark .payroll-action-reject {
+            background-color: #7f1d1d;
+            color: #fca5a5;
+        }
+        
+        .dark .payroll-action-view {
+            background-color: #1e3a8a;
+            color: #93c5fd;
         }
         
         /* Responsive Design */
@@ -434,7 +430,7 @@
                 display: none;
             }
             
-            .instructors-grid {
+            .payroll-period-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
         }
@@ -444,7 +440,7 @@
                 grid-template-columns: 1fr;
             }
             
-            .instructors-grid {
+            .payroll-period-grid {
                 grid-template-columns: 1fr;
             }
             
@@ -467,82 +463,78 @@
     <div class="mobile-sidebar-overlay" id="mobile-overlay"></div>
 
     <!-- Sidebar -->
-<div class="sidebar bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 flex flex-col py-6 px-4 fixed h-full z-10" id="sidebar">
-    <div class="flex items-center justify-between px-2 mb-8">
-        <div class="flex items-center space-x-3">
-            <div class="w-10 h-10 rounded-xl bg-gold-theme flex items-center justify-center">
-                <i class="fas fa-crown text-white text-xl"></i>
+    <div class="sidebar bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 flex flex-col py-6 px-4 fixed h-full z-10" id="sidebar">
+        <div class="flex items-center justify-between px-2 mb-8">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-gold-theme flex items-center justify-center">
+                    <i class="fas fa-crown text-white text-xl"></i>
+                </div>
+                <span class="font-bold text-xl text-gray-900 dark:text-white">Monti Textile</span>
             </div>
-            <span class="font-bold text-xl text-gray-900 dark:text-white">Monti Textile</span>
-        </div>
-        
-        <button class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-400" id="sidebar-toggle">
-            <i class="fas fa-bars"></i>
-        </button>
-    </div>
-    
-    <nav class="flex-1 space-y-1">
-        <a href="{{ route('hrm.manager.dashboard') }}" class="sidebar-item flex items-center active space-x-3 py-3 px-4 rounded-xl text-gray-600 dark:text-gray-300 text-blue-theme">
-            <div class="sidebar-icon w-6 text-center">
-                <i class="fas fa-home"></i>
-            </div>
-            <span class="sidebar-text font-medium">Employee Information</span>
-        </a>
-        
-        <a href="{{ route('hrm.manager.onboarding') }}" class="sidebar-item flex items-center space-x-3 py-3 px-4 rounded-xl text-gray-600 dark:text-gray-300 hover:text-blue-theme">
-            <div class="sidebar-icon w-6 text-center">
-                <i class="fas fa-money-check-alt"></i>
-            </div>
-            <span class="sidebar-text font-medium">Recruitment & Onboarding</span>
-        </a>
-        <a href="{{ route('hrm.manager.payroll') }}" class="sidebar-item flex items-center space-x-3 py-3 px-4 rounded-xl text-gray-600 dark:text-gray-300 hover:text-blue-theme">
-            <div class="sidebar-icon w-6 text-center">
-                <i class="fas fa-money-check-alt"></i>
-            </div>
-            <span class="sidebar-text font-medium">Payroll Management</span>
-        </a>
-        <a href="{{ route('hrm.manager.analytics') }}" class="sidebar-item flex items-center space-x-3 py-3 px-4 rounded-xl text-gray-600 dark:text-gray-300 hover:text-blue-theme">
-            <div class="sidebar-icon w-6 text-center">
-                <i class="fas fa-money-check-alt"></i>
-            </div>
-            <span class="sidebar-text font-medium">HR Analytics & Reports</span>
-        </a>
-        
-        
-         
-        
-        
-        <div class="py-4 px-4">
-            <div class="border-t border-gray-200 dark:border-gray-700"></div>
-        </div>
-        
-        <a href="#" class="sidebar-item flex items-center space-x-3 py-3 px-4 rounded-xl text-gray-600 dark:text-gray-300 hover:text-blue-theme">
-            <div class="sidebar-icon w-6 text-center">
-                <i class="fas fa-cog"></i>
-            </div>
-            <span class="sidebar-text font-medium">Settings</span>
-        </a>
-        
-        <!-- Updated Logout Button -->
-        <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" 
-           class="sidebar-item flex items-center space-x-3 py-3 px-4 rounded-xl text-gray-600 dark:text-gray-300 hover:text-blue-theme">
-            <div class="sidebar-icon w-6 text-center">
-                <i class="fas fa-sign-out-alt"></i>
-            </div>
-            <span class="sidebar-text font-medium">Logout</span>
-        </a>
-    </nav>
-    
-    <div class="px-4 pt-6 border-t border-gray-200 dark:border-gray-700">
-        <div class="bg-blue-50 dark:bg-blue-900 rounded-xl p-4">
-            <div class="text-blue-800 dark:text-blue-200 font-medium text-sm mb-2">HR Manager Tools</div>
-            <p class="text-blue-600 dark:text-blue-300 text-xs mb-3">Access advanced HR management features</p>
-            <button class="w-full bg-gold-theme hover:bg-gold-700 text-white py-2 rounded-lg text-xs font-medium transition-colors">
-                Admin Panel
+            
+            <button class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-400" id="sidebar-toggle">
+                <i class="fas fa-bars"></i>
             </button>
         </div>
+        
+        <nav class="flex-1 space-y-1">
+            <a href="{{ route('hrm.manager.dashboard') }}" class="sidebar-item flex items-center space-x-3 py-3 px-4 rounded-xl text-gray-600 dark:text-gray-300 hover:text-blue-theme">
+                <div class="sidebar-icon w-6 text-center">
+                    <i class="fas fa-home"></i>
+                </div>
+                <span class="sidebar-text font-medium">Employee Information</span>
+            </a>
+            
+            <a href="{{ route('hrm.manager.onboarding') }}" class="sidebar-item flex items-center space-x-3 py-3 px-4 rounded-xl text-gray-600 dark:text-gray-300 hover:text-blue-theme">
+                <div class="sidebar-icon w-6 text-center">
+                    <i class="fas fa-money-check-alt"></i>
+                </div>
+                <span class="sidebar-text font-medium">Recruitment & Onboarding</span>
+            </a>
+            <a href="{{ route('hrm.manager.payroll') }}" class="sidebar-item flex items-center active space-x-3 py-3 px-4 rounded-xl text-gray-600 dark:text-gray-300 text-blue-theme">
+                <div class="sidebar-icon w-6 text-center">
+                    <i class="fas fa-file-invoice-dollar"></i>
+                </div>
+                <span class="sidebar-text font-medium">Payroll Management</span>
+            </a>
+            <a href="{{ route('hrm.manager.analytics') }}" class="sidebar-item flex items-center space-x-3 py-3 px-4 rounded-xl text-gray-600 dark:text-gray-300 hover:text-blue-theme">
+                <div class="sidebar-icon w-6 text-center">
+                    <i class="fas fa-chart-bar"></i>
+                </div>
+                <span class="sidebar-text font-medium">HR Analytics & Reports</span>
+            </a>
+            
+            <div class="py-4 px-4">
+                <div class="border-t border-gray-200 dark:border-gray-700"></div>
+            </div>
+            
+            <a href="#" class="sidebar-item flex items-center space-x-3 py-3 px-4 rounded-xl text-gray-600 dark:text-gray-300 hover:text-blue-theme">
+                <div class="sidebar-icon w-6 text-center">
+                    <i class="fas fa-cog"></i>
+                </div>
+                <span class="sidebar-text font-medium">Settings</span>
+            </a>
+            
+            <!-- Updated Logout Button -->
+            <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" 
+               class="sidebar-item flex items-center space-x-3 py-3 px-4 rounded-xl text-gray-600 dark:text-gray-300 hover:text-blue-theme">
+                <div class="sidebar-icon w-6 text-center">
+                    <i class="fas fa-sign-out-alt"></i>
+                </div>
+                <span class="sidebar-text font-medium">Logout</span>
+            </a>
+        </nav>
+        
+        <div class="px-4 pt-6 border-t border-gray-200 dark:border-gray-700">
+            <div class="bg-blue-50 dark:bg-blue-900 rounded-xl p-4">
+                <div class="text-blue-800 dark:text-blue-200 font-medium text-sm mb-2">HR Manager Tools</div>
+                <p class="text-blue-600 dark:text-blue-300 text-xs mb-3">Access advanced payroll management features</p>
+                <button class="w-full bg-gold-theme hover:bg-gold-700 text-white py-2 rounded-lg text-xs font-medium transition-colors">
+                    Admin Panel
+                </button>
+            </div>
+        </div>
     </div>
-</div>
 
     <!-- Main Content -->
     <div class="main-content flex-1 ml-64 min-h-screen flex flex-col" id="main-content">
@@ -550,8 +542,8 @@
         <header class="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 py-4 px-8 flex items-center justify-between sticky top-0 z-10">
             <div class="header-content flex items-center justify-between w-full">
                 <div>
-                    <h1 class="text-2xl font-bold text-gray-900 dark:text-white header-title">HR Manager Dashboard</h1>
-                    <p class="text-gray-500 dark:text-gray-400 hidden md:block">Staff Management & Promotions Authority</p>
+                    <h1 class="text-2xl font-bold text-gray-900 dark:text-white header-title">Payroll Management</h1>
+                    <p class="text-gray-500 dark:text-gray-400 hidden md:block">Process & Approve Employee Salaries</p>
                 </div>
                 
                 <div class="flex items-center space-x-4 header-actions">
@@ -562,7 +554,7 @@
                         
                         <button class="relative p-2.5 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-600 text-gray-600 dark:text-gray-300">
                             <i class="fas fa-bell"></i>
-                            <span class="notification-badge">3</span>
+                            <span class="notification-badge">5</span>
                         </button>
                         
                         <button class="md:hidden p-2.5 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-600 text-gray-600 dark:text-gray-300" id="mobile-menu-toggle">
@@ -579,45 +571,45 @@
 
         <!-- Content -->
         <main class="flex-1 p-8 overflow-y-auto custom-scrollbar">
-            <!-- HR Manager Stats Overview -->
+            <!-- Payroll Overview Stats -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8 stats-grid">
                 <div class="card p-6 flex items-center">
                     <div class="w-12 h-12 rounded-xl bg-gold-100 dark:bg-gold-900 flex items-center justify-center mr-4">
-                        <i class="fas fa-user-tie text-gold-600 dark:text-gold-300 text-xl"></i>
+                        <i class="fas fa-money-bill-wave text-gold-600 dark:text-gold-300 text-xl"></i>
                     </div>
                     <div>
-                        <div class="text-gray-500 dark:text-gray-400 text-sm">Total HR Staff</div>
-                        <div class="text-2xl font-bold text-gray-900 dark:text-white">24</div>
+                        <div class="text-gray-500 dark:text-gray-400 text-sm">Total Payroll</div>
+                        <div class="text-2xl font-bold text-gray-900 dark:text-white">₱1,245,800</div>
                     </div>
                 </div>
                 
                 <div class="card p-6 flex items-center">
                     <div class="w-12 h-12 rounded-xl bg-emerald-100 dark:bg-emerald-900 flex items-center justify-center mr-4">
-                        <i class="fas fa-medal text-emerald-600 dark:text-emerald-300 text-xl"></i>
+                        <i class="fas fa-user-check text-emerald-600 dark:text-emerald-300 text-xl"></i>
                     </div>
                     <div>
-                        <div class="text-gray-500 dark:text-gray-400 text-sm">Eligible for Promotion</div>
-                        <div class="text-2xl font-bold text-gray-900 dark:text-white">8</div>
+                        <div class="text-gray-500 dark:text-gray-400 text-sm">Employees Paid</div>
+                        <div class="text-2xl font-bold text-gray-900 dark:text-white">156</div>
                     </div>
                 </div>
                 
                 <div class="card p-6 flex items-center">
                     <div class="w-12 h-12 rounded-xl bg-blue-100 dark:bg-blue-900 flex items-center justify-center mr-4">
-                        <i class="fas fa-chart-line text-blue-600 dark:text-blue-300 text-xl"></i>
+                        <i class="fas fa-clock text-blue-600 dark:text-blue-300 text-xl"></i>
                     </div>
                     <div>
-                        <div class="text-gray-500 dark:text-gray-400 text-sm">Promotion Rate</div>
-                        <div class="text-2xl font-bold text-gray-900 dark:text-white">85%</div>
+                        <div class="text-gray-500 dark:text-gray-400 text-sm">Pending Approval</div>
+                        <div class="text-2xl font-bold text-gray-900 dark:text-white">24</div>
                     </div>
                 </div>
                 
                 <div class="card p-6 flex items-center">
                     <div class="w-12 h-12 rounded-xl bg-purple-100 dark:bg-purple-900 flex items-center justify-center mr-4">
-                        <i class="fas fa-award text-purple-600 dark:text-purple-300 text-xl"></i>
+                        <i class="fas fa-exclamation-circle text-purple-600 dark:text-purple-300 text-xl"></i>
                     </div>
                     <div>
-                        <div class="text-gray-500 dark:text-gray-400 text-sm">Avg. Tenure</div>
-                        <div class="text-2xl font-bold text-gray-900 dark:text-white">3.5 yrs</div>
+                        <div class="text-gray-500 dark:text-gray-400 text-sm">Discrepancies</div>
+                        <div class="text-2xl font-bold text-gray-900 dark:text-white">3</div>
                     </div>
                 </div>
             </div>
@@ -625,85 +617,116 @@
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 main-grid">
                 <!-- Left Column -->
                 <div class="lg:col-span-2 space-y-8">
-                    <!-- HR Manager Banner -->
+                    <!-- Payroll Processing Banner -->
                     <div class="featured-banner">
                         <div class="p-8">
                             <div class="flex flex-col md:flex-row items-center justify-between">
                                 <div class="featured-banner-content mb-6 md:mb-0">
-                                    <h2 class="text-2xl font-bold mb-3 text-white">HR Manager Command Center</h2>
-                                    <p class="text-blue-100 mb-6 max-w-lg">Manage HR staff, review performance, and authorize promotions across all departments.</p>
-                                    <button class="px-6 py-3 bg-gold-theme hover:bg-gold-600 text-white font-semibold rounded-xl transition-colors shadow-md flex items-center featured-banner-button" id="promote-all-btn">
-                                        <i class="fas fa-bolt mr-2"></i> Promote All Eligible Staff
+                                    <h2 class="text-2xl font-bold mb-3 text-white">Payroll Processing Center</h2>
+                                    <p class="text-blue-100 mb-6 max-w-lg">Review, approve, and process payroll for all departments. Final authority for salary disbursements.</p>
+                                    <button class="px-6 py-3 bg-gold-theme hover:bg-gold-600 text-white font-semibold rounded-xl transition-colors shadow-md flex items-center featured-banner-button" id="process-payroll-btn">
+                                        <i class="fas fa-bolt mr-2"></i> Process Payroll Run
                                     </button>
                                 </div>
                                 <div class="featured-banner-image animate-float">
                                     <div class="w-48 h-32 bg-gradient-to-r from-gold-400 to-gold-300 dark:from-gold-500 dark:to-gold-400 rounded-lg shadow-xl flex items-center justify-center">
-                                        <i class="fas fa-user-shield text-white text-4xl"></i>
+                                        <i class="fas fa-file-invoice-dollar text-white text-4xl"></i>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- HR Staff Management Tools -->
+                    <!-- Payroll Period Management -->
                     <div class="card p-6">
                         <div class="flex justify-between items-center mb-6">
-                            <h3 class="font-bold text-xl text-gray-900 dark:text-white">HR Staff Management Tools</h3>
-                            <a href="#" class="text-blue-theme font-medium flex items-center hover:text-blue-700 dark:hover:text-blue-400 text-sm">
-                                All Functions <i class="fas fa-chevron-right ml-2 text-xs"></i>
-                            </a>
+                            <h3 class="font-bold text-xl text-gray-900 dark:text-white">Payroll Period Management</h3>
+                            <div class="flex space-x-3">
+                                <button class="text-blue-theme font-medium flex items-center hover:text-blue-700 dark:hover:text-blue-400 text-sm">
+                                    <i class="fas fa-history mr-2"></i> View History
+                                </button>
+                                <button class="text-emerald-theme font-medium flex items-center hover:text-emerald-700 dark:hover:text-emerald-400 text-sm">
+                                    <i class="fas fa-plus mr-2"></i> New Period
+                                </button>
+                            </div>
                         </div>
                         
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-5 payroll-period-grid">
                             <div class="bg-gray-50 dark:bg-gray-700 rounded-xl p-4 border border-gray-200 dark:border-gray-600 hover:border-blue-300 dark:hover:border-blue-500 transition-colors">
                                 <div class="flex items-start justify-between mb-4">
-                                    <div class="w-12 h-12 rounded-lg bg-gold-theme flex items-center justify-center">
-                                        <i class="fas fa-chart-bar text-white text-xl"></i>
+                                    <div class="w-10 h-10 rounded-lg bg-gold-theme flex items-center justify-center">
+                                        <i class="fas fa-calendar-check text-white text-lg"></i>
                                     </div>
-                                    <span class="bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 text-xs font-medium px-2 py-1 rounded">ANALYTICS</span>
+                                    <span class="payroll-status-badge payroll-status-processing">PROCESSING</span>
                                 </div>
-                                <h4 class="font-bold text-gray-900 dark:text-white text-lg mb-1">Performance Reviews</h4>
-                                <p class="text-gray-500 dark:text-gray-400 text-sm mb-4">Evaluate HR staff performance</p>
+                                <h4 class="font-bold text-gray-900 dark:text-white text-lg mb-1">Current Period</h4>
+                                <p class="text-gray-500 dark:text-gray-400 text-sm mb-2">Nov 1-15, 2023</p>
                                 
                                 <div class="mb-3">
                                     <div class="flex justify-between text-sm mb-1">
-                                        <span class="text-gray-600 dark:text-gray-300">Review Completion</span>
-                                        <span class="text-blue-theme font-medium">78%</span>
+                                        <span class="text-gray-600 dark:text-gray-300">Progress</span>
+                                        <span class="text-blue-theme font-medium">65%</span>
                                     </div>
-                                    <div class="course-progress">
-                                        <div class="course-progress-fill" style="width: 78%"></div>
+                                    <div class="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2">
+                                        <div class="bg-gold-theme h-2 rounded-full" style="width: 65%"></div>
                                     </div>
                                 </div>
                                 
                                 <div class="flex justify-between text-xs text-gray-500 dark:text-gray-400">
-                                    <span>18 Reviews</span>
-                                    <span>5 Pending</span>
+                                    <span>Due: Nov 30</span>
+                                    <span>156/240</span>
                                 </div>
                             </div>
                             
                             <div class="bg-gray-50 dark:bg-gray-700 rounded-xl p-4 border border-gray-200 dark:border-gray-600 hover:border-blue-300 dark:hover:border-blue-500 transition-colors">
                                 <div class="flex items-start justify-between mb-4">
-                                    <div class="w-12 h-12 rounded-lg bg-emerald-600 flex items-center justify-center">
-                                        <i class="fas fa-user-check text-white text-xl"></i>
+                                    <div class="w-10 h-10 rounded-lg bg-emerald-600 flex items-center justify-center">
+                                        <i class="fas fa-check-circle text-white text-lg"></i>
                                     </div>
-                                    <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs font-medium px-2 py-1 rounded">PROMOTIONS</span>
+                                    <span class="payroll-status-badge payroll-status-paid">COMPLETED</span>
                                 </div>
-                                <h4 class="font-bold text-gray-900 dark:text-white text-lg mb-1">Promotion Authority</h4>
-                                <p class="text-gray-500 dark:text-gray-400 text-sm mb-4">Approve staff promotions</p>
+                                <h4 class="font-bold text-gray-900 dark:text-white text-lg mb-1">Last Period</h4>
+                                <p class="text-gray-500 dark:text-gray-400 text-sm mb-2">Oct 16-31, 2023</p>
                                 
                                 <div class="mb-3">
                                     <div class="flex justify-between text-sm mb-1">
-                                        <span class="text-gray-600 dark:text-gray-300">Approval Rate</span>
-                                        <span class="text-blue-theme font-medium">92%</span>
+                                        <span class="text-gray-600 dark:text-gray-300">Total Paid</span>
+                                        <span class="text-emerald-theme font-medium">₱1,189,450</span>
                                     </div>
-                                    <div class="course-progress">
-                                        <div class="course-progress-fill" style="width: 92%"></div>
+                                    <div class="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2">
+                                        <div class="bg-emerald-600 h-2 rounded-full" style="width: 100%"></div>
                                     </div>
                                 </div>
                                 
                                 <div class="flex justify-between text-xs text-gray-500 dark:text-gray-400">
-                                    <span>8 Eligible</span>
-                                    <span>24 Total Staff</span>
+                                    <span>Paid: Oct 31</span>
+                                    <span>240/240</span>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-gray-50 dark:bg-gray-700 rounded-xl p-4 border border-gray-200 dark:border-gray-600 hover:border-blue-300 dark:hover:border-blue-500 transition-colors">
+                                <div class="flex items-start justify-between mb-4">
+                                    <div class="w-10 h-10 rounded-lg bg-blue-600 flex items-center justify-center">
+                                        <i class="fas fa-calendar-alt text-white text-lg"></i>
+                                    </div>
+                                    <span class="payroll-status-badge payroll-status-pending">UPCOMING</span>
+                                </div>
+                                <h4 class="font-bold text-gray-900 dark:text-white text-lg mb-1">Next Period</h4>
+                                <p class="text-gray-500 dark:text-gray-400 text-sm mb-2">Nov 16-30, 2023</p>
+                                
+                                <div class="mb-3">
+                                    <div class="flex justify-between text-sm mb-1">
+                                        <span class="text-gray-600 dark:text-gray-300">Starts In</span>
+                                        <span class="text-blue-theme font-medium">3 days</span>
+                                    </div>
+                                    <div class="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2">
+                                        <div class="bg-blue-600 h-2 rounded-full" style="width: 15%"></div>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex justify-between text-xs text-gray-500 dark:text-gray-400">
+                                    <span>Starts: Nov 16</span>
+                                    <span>Projected: ₱1.2M</span>
                                 </div>
                             </div>
                         </div>
@@ -712,7 +735,7 @@
                 
                 <!-- Right Column -->
                 <div class="space-y-8">
-                    <!-- HR Manager Profile Card -->
+                    <!-- Payroll Manager Profile Card -->
                     <div class="card p-6">
                         <div class="flex flex-col items-center text-center">
                             <div class="relative mb-4">
@@ -724,7 +747,7 @@
                                 </div>
                             </div>
                             
-                            <h2 class="font-bold text-lg text-gray-900 dark:text-white">HR Manager</h2>
+                            <h2 class="font-bold text-lg text-gray-900 dark:text-white">Payroll Manager</h2>
                             <p class="text-gray-500 dark:text-gray-400 text-sm mt-1 flex items-center justify-center">
                                 <i class="fas fa-crown mr-1.5 text-gold-theme"></i> 
                                 Senior Management
@@ -734,81 +757,81 @@
                                 <div class="bg-gold-theme h-2.5 rounded-full" style="width: 95%"></div>
                             </div>
                             <div class="w-full flex justify-between text-sm text-gray-500 dark:text-gray-400 mt-2">
-                                <span>Management Authority</span>
+                                <span>Approval Authority</span>
                                 <span class="text-gray-900 dark:text-white font-medium">95%</span>
                             </div>
                             
                             <div class="w-full mt-5 grid grid-cols-2 gap-2">
                                 <button class="py-3 bg-blue-theme hover:bg-blue-700 text-white rounded-xl font-medium transition-colors px-4">
-                                    Generate Reports
+                                    Audit Reports
                                 </button>
                                 <button class="py-3 bg-emerald-theme hover:bg-emerald-700 text-white rounded-xl font-medium transition-colors px-4">
-                                    Audit Logs
+                                    Tax Settings
                                 </button>
                             </div>
                         </div>
                     </div>
                     
-                    <!-- Promotion Statistics -->
+                    <!-- Quick Payroll Actions -->
                     <div class="card p-6">
                         <div class="flex justify-between items-center mb-5">
-                            <h3 class="font-semibold text-gray-900 dark:text-white">Promotion Statistics</h3>
-                            <a href="#" class="text-blue-theme text-sm font-medium hover:text-blue-700 dark:hover:text-blue-400">View Details</a>
+                            <h3 class="font-semibold text-gray-900 dark:text-white">Quick Actions</h3>
+                            <a href="#" class="text-blue-theme text-sm font-medium hover:text-blue-700 dark:hover:text-blue-400">More Tools</a>
                         </div>
                         
                         <div class="space-y-4">
-                            <div class="flex items-center justify-between p-3 rounded-xl bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600">
-                                <div class="flex items-center">
-                                    <div class="w-10 h-10 rounded-lg bg-emerald-100 dark:bg-emerald-900 flex items-center justify-center mr-3">
-                                        <i class="fas fa-check-circle text-emerald-600 dark:text-emerald-300"></i>
-                                    </div>
-                                    <div>
-                                        <h4 class="font-medium text-gray-900 dark:text-white">ELIGIBLE STAFF</h4>
-                                        <p class="text-gray-500 dark:text-gray-400 text-xs">Ready for promotion</p>
-                                    </div>
-                                </div>
-                                <span class="text-gray-500 dark:text-gray-400 text-sm font-medium">8</span>
-                            </div>
-                            
-                            <div class="flex items-center justify-between p-3 rounded-xl bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600">
+                            <button class="w-full flex items-center justify-between p-3 rounded-xl bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors" id="generate-payslips">
                                 <div class="flex items-center">
                                     <div class="w-10 h-10 rounded-lg bg-blue-100 dark:bg-blue-900 flex items-center justify-center mr-3">
-                                        <i class="fas fa-clock text-blue-600 dark:text-blue-300"></i>
+                                        <i class="fas fa-file-alt text-blue-600 dark:text-blue-300"></i>
                                     </div>
-                                    <div>
-                                        <h4 class="font-medium text-gray-900 dark:text-white">PENDING REVIEW</h4>
-                                        <p class="text-gray-500 dark:text-gray-400 text-xs">Under evaluation</p>
+                                    <div class="text-left">
+                                        <h4 class="font-medium text-gray-900 dark:text-white">Generate Payslips</h4>
+                                        <p class="text-gray-500 dark:text-gray-400 text-xs">For current period</p>
                                     </div>
                                 </div>
-                                <span class="text-gray-500 dark:text-gray-400 text-sm font-medium">5</span>
-                            </div>
+                                <i class="fas fa-chevron-right text-gray-400"></i>
+                            </button>
                             
-                            <div class="flex items-center justify-between p-3 rounded-xl bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600">
+                            <button class="w-full flex items-center justify-between p-3 rounded-xl bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors" id="export-reports">
+                                <div class="flex items-center">
+                                    <div class="w-10 h-10 rounded-lg bg-emerald-100 dark:bg-emerald-900 flex items-center justify-center mr-3">
+                                        <i class="fas fa-download text-emerald-600 dark:text-emerald-300"></i>
+                                    </div>
+                                    <div class="text-left">
+                                        <h4 class="font-medium text-gray-900 dark:text-white">Export Reports</h4>
+                                        <p class="text-gray-500 dark:text-gray-400 text-xs">CSV, Excel, PDF</p>
+                                    </div>
+                                </div>
+                                <i class="fas fa-chevron-right text-gray-400"></i>
+                            </button>
+                            
+                            <button class="w-full flex items-center justify-between p-3 rounded-xl bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors" id="bank-transfer">
                                 <div class="flex items-center">
                                     <div class="w-10 h-10 rounded-lg bg-gold-100 dark:bg-gold-900 flex items-center justify-center mr-3">
-                                        <i class="fas fa-trophy text-gold-600 dark:text-gold-300"></i>
+                                        <i class="fas fa-university text-gold-600 dark:text-gold-300"></i>
                                     </div>
-                                    <div>
-                                        <h4 class="font-medium text-gray-900 dark:text-white">PROMOTED THIS YEAR</h4>
-                                        <p class="text-gray-500 dark:text-gray-400 text-xs">2023 promotions</p>
+                                    <div class="text-left">
+                                        <h4 class="font-medium text-gray-900 dark:text-white">Bank Transfer</h4>
+                                        <p class="text-gray-500 dark:text-gray-400 text-xs">Initiate bulk transfer</p>
                                     </div>
                                 </div>
-                                <span class="text-gray-500 dark:text-gray-400 text-sm font-medium">12</span>
-                            </div>
+                                <i class="fas fa-chevron-right text-gray-400"></i>
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- HR Staff List with Promotion Controls -->
+            <!-- Payroll Approval Queue -->
             <div class="mt-8">
                 <div class="flex justify-between items-center mb-6">
-                    <h3 class="font-bold text-xl text-gray-900 dark:text-white">HR Staff Management</h3>
+                    <h3 class="font-bold text-xl text-gray-900 dark:text-white">Payroll Approval Queue</h3>
                     <div class="flex space-x-3">
-                        <button class="px-4 py-2 bg-blue-theme hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-colors flex items-center">
-                            <i class="fas fa-filter mr-2"></i> Filter Staff
+                        <button class="px-4 py-2 bg-blue-theme hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-colors flex items-center" id="filter-payroll">
+                            <i class="fas fa-filter mr-2"></i> Filter
                         </button>
-                        <button class="px-4 py-2 bg-emerald-theme hover:bg-emerald-700 text-white rounded-lg text-sm font-medium transition-colors flex items-center" id="select-all-btn">
+                        <button class="px-4 py-2 bg-emerald-theme hover:bg-emerald-700 text-white rounded-lg text-sm font-medium transition-colors flex items-center" id="select-all-payroll">
                             <i class="fas fa-check-double mr-2"></i> Select All
                         </button>
                     </div>
@@ -820,21 +843,22 @@
                             <thead>
                                 <tr class="bg-gray-50 dark:bg-gray-700">
                                     <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                                        <input type="checkbox" id="select-all-checkbox" class="rounded border-gray-300 text-blue-theme focus:ring-blue-500">
+                                        <input type="checkbox" id="select-all-payroll-checkbox" class="rounded border-gray-300 text-blue-theme focus:ring-blue-500">
                                     </th>
-                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">HR Staff</th>
-                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Position</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Employee</th>
                                     <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Department</th>
-                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Tenure</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Basic Salary</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Allowances</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Deductions</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Net Pay</th>
                                     <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Status</th>
-                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Promotion Eligibility</th>
                                     <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Actions</th>
                                 </tr>
                             </thead>
-                            <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700" id="staff-table-body">
+                            <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700" id="payroll-table-body">
                                 <tr>
                                     <td class="px-4 py-4 whitespace-nowrap">
-                                        <input type="checkbox" class="staff-checkbox rounded border-gray-300 text-blue-theme focus:ring-blue-500" data-id="1">
+                                        <input type="checkbox" class="payroll-checkbox rounded border-gray-300 text-blue-theme focus:ring-blue-500" data-id="1">
                                     </td>
                                     <td class="px-4 py-4 whitespace-nowrap">
                                         <div class="flex items-center">
@@ -843,45 +867,50 @@
                                             </div>
                                             <div class="ml-4">
                                                 <div class="text-sm font-medium text-gray-900 dark:text-white">Sarah Dela Cruz</div>
-                                                <div class="text-sm text-gray-500 dark:text-gray-400">EMP-HR-001</div>
+                                                <div class="text-sm text-gray-500 dark:text-gray-400">EMP-001</div>
                                             </div>
                                         </div>
                                     </td>
-                                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">HR Director</td>
                                     <td class="px-4 py-4 whitespace-nowrap">
                                         <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300">
-                                            Executive
-                                        </span>
-                                    </td>
-                                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
-                                        5.2 years<br>
-                                        <span class="text-gray-500 dark:text-gray-400 text-xs">Since 2018</span>
-                                    </td>
-                                    <td class="px-4 py-4 whitespace-nowrap">
-                                        <span class="staff-status-badge staff-status-active">
-                                            Active
+                                            Weaving
                                         </span>
                                     </td>
                                     <td class="px-4 py-4 whitespace-nowrap">
-                                        <div class="flex items-center">
-                                            <div class="promotion-badge promotion-eligible">
-                                                <i class="fas fa-check text-xs"></i>
-                                            </div>
-                                            <span class="text-sm text-gray-900 dark:text-white">Eligible</span>
-                                        </div>
+                                        <div class="text-sm text-gray-900 dark:text-white">₱28,500</div>
+                                        <div class="text-xs text-gray-500 dark:text-gray-400">Monthly</div>
+                                    </td>
+                                    <td class="px-4 py-4 whitespace-nowrap">
+                                        <div class="text-sm amount-positive">+₱3,200</div>
+                                        <div class="text-xs text-gray-500 dark:text-gray-400">Overtime: ₱2,800</div>
+                                    </td>
+                                    <td class="px-4 py-4 whitespace-nowrap">
+                                        <div class="text-sm amount-negative">-₱2,450</div>
+                                        <div class="text-xs text-gray-500 dark:text-gray-400">Tax: ₱1,850</div>
+                                    </td>
+                                    <td class="px-4 py-4 whitespace-nowrap">
+                                        <div class="text-lg font-bold text-gray-900 dark:text-white">₱29,250</div>
+                                    </td>
+                                    <td class="px-4 py-4 whitespace-nowrap">
+                                        <span class="payroll-status-badge payroll-status-pending">
+                                            Pending
+                                        </span>
                                     </td>
                                     <td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
-                                        <button class="text-gold-600 hover:text-gold-900 dark:text-gold-400 dark:hover:text-gold-300 mr-3 promote-btn" data-id="1" data-name="Sarah Dela Cruz">
-                                            <i class="fas fa-arrow-up mr-1"></i> Promote
+                                        <button class="payroll-action-btn payroll-action-approve mr-2 approve-payroll-btn" data-id="1" data-name="Sarah Dela Cruz">
+                                            <i class="fas fa-check text-xs"></i>
                                         </button>
-                                        <button class="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300 view-btn">
-                                            <i class="fas fa-eye"></i>
+                                        <button class="payroll-action-btn payroll-action-reject mr-2 reject-payroll-btn" data-id="1" data-name="Sarah Dela Cruz">
+                                            <i class="fas fa-times text-xs"></i>
+                                        </button>
+                                        <button class="payroll-action-btn payroll-action-view view-payroll-btn" data-id="1">
+                                            <i class="fas fa-eye text-xs"></i>
                                         </button>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class="px-4 py-4 whitespace-nowrap">
-                                        <input type="checkbox" class="staff-checkbox rounded border-gray-300 text-blue-theme focus:ring-blue-500" data-id="2">
+                                        <input type="checkbox" class="payroll-checkbox rounded border-gray-300 text-blue-theme focus:ring-blue-500" data-id="2">
                                     </td>
                                     <td class="px-4 py-4 whitespace-nowrap">
                                         <div class="flex items-center">
@@ -890,45 +919,50 @@
                                             </div>
                                             <div class="ml-4">
                                                 <div class="text-sm font-medium text-gray-900 dark:text-white">Michael Perez</div>
-                                                <div class="text-sm text-gray-500 dark:text-gray-400">EMP-HR-002</div>
+                                                <div class="text-sm text-gray-500 dark:text-gray-400">EMP-002</div>
                                             </div>
                                         </div>
                                     </td>
-                                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">Recruitment Manager</td>
                                     <td class="px-4 py-4 whitespace-nowrap">
                                         <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300">
-                                            Recruitment
-                                        </span>
-                                    </td>
-                                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
-                                        3.8 years<br>
-                                        <span class="text-gray-500 dark:text-gray-400 text-xs">Since 2020</span>
-                                    </td>
-                                    <td class="px-4 py-4 whitespace-nowrap">
-                                        <span class="staff-status-badge staff-status-active">
-                                            Active
+                                            Dyeing
                                         </span>
                                     </td>
                                     <td class="px-4 py-4 whitespace-nowrap">
-                                        <div class="flex items-center">
-                                            <div class="promotion-badge promotion-eligible">
-                                                <i class="fas fa-check text-xs"></i>
-                                            </div>
-                                            <span class="text-sm text-gray-900 dark:text-white">Eligible</span>
-                                        </div>
+                                        <div class="text-sm text-gray-900 dark:text-white">₱26,800</div>
+                                        <div class="text-xs text-gray-500 dark:text-gray-400">Monthly</div>
+                                    </td>
+                                    <td class="px-4 py-4 whitespace-nowrap">
+                                        <div class="text-sm amount-positive">+₱4,500</div>
+                                        <div class="text-xs text-gray-500 dark:text-gray-400">Bonus: ₱3,000</div>
+                                    </td>
+                                    <td class="px-4 py-4 whitespace-nowrap">
+                                        <div class="text-sm amount-negative">-₱2,150</div>
+                                        <div class="text-xs text-gray-500 dark:text-gray-400">SSS: ₱850</div>
+                                    </td>
+                                    <td class="px-4 py-4 whitespace-nowrap">
+                                        <div class="text-lg font-bold text-gray-900 dark:text-white">₱29,150</div>
+                                    </td>
+                                    <td class="px-4 py-4 whitespace-nowrap">
+                                        <span class="payroll-status-badge payroll-status-processing">
+                                            Processing
+                                        </span>
                                     </td>
                                     <td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
-                                        <button class="text-gold-600 hover:text-gold-900 dark:text-gold-400 dark:hover:text-gold-300 mr-3 promote-btn" data-id="2" data-name="Michael Perez">
-                                            <i class="fas fa-arrow-up mr-1"></i> Promote
+                                        <button class="payroll-action-btn payroll-action-approve mr-2 approve-payroll-btn" data-id="2" data-name="Michael Perez">
+                                            <i class="fas fa-check text-xs"></i>
                                         </button>
-                                        <button class="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300 view-btn">
-                                            <i class="fas fa-eye"></i>
+                                        <button class="payroll-action-btn payroll-action-reject mr-2 reject-payroll-btn" data-id="2" data-name="Michael Perez">
+                                            <i class="fas fa-times text-xs"></i>
+                                        </button>
+                                        <button class="payroll-action-btn payroll-action-view view-payroll-btn" data-id="2">
+                                            <i class="fas fa-eye text-xs"></i>
                                         </button>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class="px-4 py-4 whitespace-nowrap">
-                                        <input type="checkbox" class="staff-checkbox rounded border-gray-300 text-blue-theme focus:ring-blue-500" data-id="3">
+                                        <input type="checkbox" class="payroll-checkbox rounded border-gray-300 text-blue-theme focus:ring-blue-500" data-id="3">
                                     </td>
                                     <td class="px-4 py-4 whitespace-nowrap">
                                         <div class="flex items-center">
@@ -937,45 +971,44 @@
                                             </div>
                                             <div class="ml-4">
                                                 <div class="text-sm font-medium text-gray-900 dark:text-white">Anna Gomez</div>
-                                                <div class="text-sm text-gray-500 dark:text-gray-400">EMP-HR-003</div>
+                                                <div class="text-sm text-gray-500 dark:text-gray-400">EMP-003</div>
                                             </div>
                                         </div>
                                     </td>
-                                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">Payroll Specialist</td>
                                     <td class="px-4 py-4 whitespace-nowrap">
                                         <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300">
-                                            Payroll
-                                        </span>
-                                    </td>
-                                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
-                                        2.1 years<br>
-                                        <span class="text-gray-500 dark:text-gray-400 text-xs">Since 2021</span>
-                                    </td>
-                                    <td class="px-4 py-4 whitespace-nowrap">
-                                        <span class="staff-status-badge staff-status-probation">
-                                            Probation
+                                            Finishing
                                         </span>
                                     </td>
                                     <td class="px-4 py-4 whitespace-nowrap">
-                                        <div class="flex items-center">
-                                            <div class="promotion-badge promotion-not-eligible">
-                                                <i class="fas fa-times text-xs"></i>
-                                            </div>
-                                            <span class="text-sm text-gray-900 dark:text-white">Not Eligible</span>
-                                        </div>
+                                        <div class="text-sm text-gray-900 dark:text-white">₱24,500</div>
+                                        <div class="text-xs text-gray-500 dark:text-gray-400">Monthly</div>
+                                    </td>
+                                    <td class="px-4 py-4 whitespace-nowrap">
+                                        <div class="text-sm amount-positive">+₱2,800</div>
+                                        <div class="text-xs text-gray-500 dark:text-gray-400">Allowance: ₱1,200</div>
+                                    </td>
+                                    <td class="px-4 py-4 whitespace-nowrap">
+                                        <div class="text-sm amount-negative">-₱1,980</div>
+                                        <div class="text-xs text-gray-500 dark:text-gray-400">PhilHealth: ₱380</div>
+                                    </td>
+                                    <td class="px-4 py-4 whitespace-nowrap">
+                                        <div class="text-lg font-bold text-gray-900 dark:text-white">₱25,320</div>
+                                    </td>
+                                    <td class="px-4 py-4 whitespace-nowrap">
+                                        <span class="payroll-status-badge payroll-status-paid">
+                                            Paid
+                                        </span>
                                     </td>
                                     <td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
-                                        <button class="text-gray-400 dark:text-gray-600 mr-3 cursor-not-allowed" disabled>
-                                            <i class="fas fa-arrow-up mr-1"></i> Promote
-                                        </button>
-                                        <button class="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300 view-btn">
-                                            <i class="fas fa-eye"></i>
+                                        <button class="payroll-action-btn payroll-action-view view-payroll-btn" data-id="3">
+                                            <i class="fas fa-eye text-xs"></i>
                                         </button>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class="px-4 py-4 whitespace-nowrap">
-                                        <input type="checkbox" class="staff-checkbox rounded border-gray-300 text-blue-theme focus:ring-blue-500" data-id="4">
+                                        <input type="checkbox" class="payroll-checkbox rounded border-gray-300 text-blue-theme focus:ring-blue-500" data-id="4">
                                     </td>
                                     <td class="px-4 py-4 whitespace-nowrap">
                                         <div class="flex items-center">
@@ -984,39 +1017,44 @@
                                             </div>
                                             <div class="ml-4">
                                                 <div class="text-sm font-medium text-gray-900 dark:text-white">Robert Santos</div>
-                                                <div class="text-sm text-gray-500 dark:text-gray-400">EMP-HR-004</div>
+                                                <div class="text-sm text-gray-500 dark:text-gray-400">EMP-004</div>
                                             </div>
                                         </div>
                                     </td>
-                                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">Benefits Administrator</td>
                                     <td class="px-4 py-4 whitespace-nowrap">
                                         <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300">
-                                            Benefits
-                                        </span>
-                                    </td>
-                                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
-                                        4.5 years<br>
-                                        <span class="text-gray-500 dark:text-gray-400 text-xs">Since 2019</span>
-                                    </td>
-                                    <td class="px-4 py-4 whitespace-nowrap">
-                                        <span class="staff-status-badge staff-status-active">
-                                            Active
+                                            Quality Control
                                         </span>
                                     </td>
                                     <td class="px-4 py-4 whitespace-nowrap">
-                                        <div class="flex items-center">
-                                            <div class="promotion-badge promotion-pending">
-                                                <i class="fas fa-clock text-xs"></i>
-                                            </div>
-                                            <span class="text-sm text-gray-900 dark:text-white">Pending Review</span>
-                                        </div>
+                                        <div class="text-sm text-gray-900 dark:text-white">₱27,300</div>
+                                        <div class="text-xs text-gray-500 dark:text-gray-400">Monthly</div>
+                                    </td>
+                                    <td class="px-4 py-4 whitespace-nowrap">
+                                        <div class="text-sm amount-positive">+₱1,500</div>
+                                        <div class="text-xs text-gray-500 dark:text-gray-400">Attendance: ₱500</div>
+                                    </td>
+                                    <td class="px-4 py-4 whitespace-nowrap">
+                                        <div class="text-sm amount-negative">-₋₱3,200</div>
+                                        <div class="text-xs text-gray-500 dark:text-gray-400">Loan: ₱1,500</div>
+                                    </td>
+                                    <td class="px-4 py-4 whitespace-nowrap">
+                                        <div class="text-lg font-bold text-gray-900 dark:text-white">₱25,600</div>
+                                    </td>
+                                    <td class="px-4 py-4 whitespace-nowrap">
+                                        <span class="payroll-status-badge payroll-status-failed">
+                                            Discrepancy
+                                        </span>
                                     </td>
                                     <td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
-                                        <button class="text-gold-600 hover:text-gold-900 dark:text-gold-400 dark:hover:text-gold-300 mr-3 promote-btn" data-id="4" data-name="Robert Santos">
-                                            <i class="fas fa-arrow-up mr-1"></i> Promote
+                                        <button class="payroll-action-btn payroll-action-approve mr-2 approve-payroll-btn" data-id="4" data-name="Robert Santos">
+                                            <i class="fas fa-check text-xs"></i>
                                         </button>
-                                        <button class="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300 view-btn">
-                                            <i class="fas fa-eye"></i>
+                                        <button class="payroll-action-btn payroll-action-reject mr-2 reject-payroll-btn" data-id="4" data-name="Robert Santos">
+                                            <i class="fas fa-times text-xs"></i>
+                                        </button>
+                                        <button class="payroll-action-btn payroll-action-view view-payroll-btn" data-id="4">
+                                            <i class="fas fa-eye text-xs"></i>
                                         </button>
                                     </td>
                                 </tr>
@@ -1027,86 +1065,89 @@
                     <!-- Bulk Actions Footer -->
                     <div class="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700 flex justify-between items-center">
                         <div class="text-sm text-gray-500 dark:text-gray-400">
-                            <span id="selected-count">0</span> staff selected
+                            <span id="selected-payroll-count">0</span> payrolls selected
                         </div>
                         <div class="flex space-x-3">
-                            <button class="px-4 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 rounded-lg text-sm font-medium transition-colors" id="deselect-all-btn">
+                            <button class="px-4 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 rounded-lg text-sm font-medium transition-colors" id="deselect-all-payroll">
                                 Deselect All
                             </button>
-                            <button class="px-4 py-2 bg-gold-theme hover:bg-gold-600 text-white rounded-lg text-sm font-medium transition-colors flex items-center" id="bulk-promote-btn">
-                                <i class="fas fa-arrow-up mr-2"></i> Promote Selected
+                            <button class="px-4 py-2 bg-gold-theme hover:bg-gold-600 text-white rounded-lg text-sm font-medium transition-colors flex items-center" id="bulk-approve-btn">
+                                <i class="fas fa-check-double mr-2"></i> Approve Selected
                             </button>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Promotion History -->
+            <!-- Recent Payroll Transactions -->
             <div class="mt-8">
                 <div class="flex justify-between items-center mb-6">
-                    <h3 class="font-bold text-xl text-gray-900 dark:text-white">Recent Promotions History</h3>
+                    <h3 class="font-bold text-xl text-gray-900 dark:text-white">Recent Payroll Transactions</h3>
                     <a href="#" class="text-blue-theme font-medium flex items-center hover:text-blue-700 dark:hover:text-blue-400 text-sm">
-                        View Full History <i class="fas fa-chevron-right ml-2 text-xs"></i>
+                        View All Transactions <i class="fas fa-chevron-right ml-2 text-xs"></i>
                     </a>
                 </div>
                 
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 instructors-grid">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                     <div class="card p-5">
-                        <div class="flex items-center mb-4">
-                            <div class="rounded-full w-12 h-12 bg-blue-100 dark:bg-blue-900 flex items-center justify-center text-blue-600 dark:text-blue-300 text-xl mr-3">
-                                <i class="fas fa-user-graduate"></i>
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="rounded-full w-12 h-12 bg-blue-100 dark:bg-blue-900 flex items-center justify-center text-blue-600 dark:text-blue-300 text-xl">
+                                <i class="fas fa-money-check"></i>
                             </div>
-                            <div>
-                                <div class="text-gray-500 dark:text-gray-400 text-sm">Lisa Chen</div>
-                                <div class="text-sm font-medium text-gray-900 dark:text-white">HR Assistant → HR Officer</div>
+                            <div class="text-right">
+                                <div class="text-lg font-bold text-gray-900 dark:text-white">₱1,189,450</div>
+                                <div class="text-xs text-gray-500 dark:text-gray-400">Oct 31, 2023</div>
                             </div>
                         </div>
+                        <div class="text-sm text-gray-900 dark:text-white font-medium mb-2">October 2nd Half Payroll</div>
                         <div class="text-xs text-gray-500 dark:text-gray-400">
-                            Promoted: Oct 15, 2023
+                            240 employees processed
                         </div>
-                        <div class="mt-2">
+                        <div class="mt-3">
                             <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300">
-                                <i class="fas fa-check mr-1"></i> Approved
+                                <i class="fas fa-check-circle mr-1"></i> Completed
                             </span>
                         </div>
                     </div>
                     
                     <div class="card p-5">
-                        <div class="flex items-center mb-4">
-                            <div class="rounded-full w-12 h-12 bg-purple-100 dark:bg-purple-900 flex items-center justify-center text-purple-600 dark:text-purple-300 text-xl mr-3">
-                                <i class="fas fa-user-tie"></i>
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="rounded-full w-12 h-12 bg-purple-100 dark:bg-purple-900 flex items-center justify-center text-purple-600 dark:text-purple-300 text-xl">
+                                <i class="fas fa-university"></i>
                             </div>
-                            <div>
-                                <div class="text-gray-500 dark:text-gray-400 text-sm">David Park</div>
-                                <div class="text-sm font-medium text-gray-900 dark:text-white">HR Officer → Senior HR</div>
+                            <div class="text-right">
+                                <div class="text-lg font-bold text-gray-900 dark:text-white">₱1,245,800</div>
+                                <div class="text-xs text-gray-500 dark:text-gray-400">Processing</div>
                             </div>
                         </div>
+                        <div class="text-sm text-gray-900 dark:text-white font-medium mb-2">November 1st Half Payroll</div>
                         <div class="text-xs text-gray-500 dark:text-gray-400">
-                            Promoted: Sep 28, 2023
+                            156/240 processed
                         </div>
-                        <div class="mt-2">
-                            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300">
-                                <i class="fas fa-check mr-1"></i> Approved
+                        <div class="mt-3">
+                            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300">
+                                <i class="fas fa-spinner fa-spin mr-1"></i> Processing
                             </span>
                         </div>
                     </div>
                     
                     <div class="card p-5">
-                        <div class="flex items-center mb-4">
-                            <div class="rounded-full w-12 h-12 bg-gold-100 dark:bg-gold-900 flex items-center justify-center text-gold-600 dark:text-gold-300 text-xl mr-3">
-                                <i class="fas fa-user-shield"></i>
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="rounded-full w-12 h-12 bg-gold-100 dark:bg-gold-900 flex items-center justify-center text-gold-600 dark:text-gold-300 text-xl">
+                                <i class="fas fa-file-excel"></i>
                             </div>
-                            <div>
-                                <div class="text-gray-500 dark:text-gray-400 text-sm">Maria Cruz</div>
-                                <div class="text-sm font-medium text-gray-900 dark:text-white">Senior HR → HR Manager</div>
+                            <div class="text-right">
+                                <div class="text-lg font-bold text-gray-900 dark:text-white">BIR 2316</div>
+                                <div class="text-xs text-gray-500 dark:text-gray-400">Due Dec 15</div>
                             </div>
                         </div>
+                        <div class="text-sm text-gray-900 dark:text-white font-medium mb-2">Annual Tax Reports</div>
                         <div class="text-xs text-gray-500 dark:text-gray-400">
-                            Promoted: Aug 10, 2023
+                            Year-end tax filing
                         </div>
-                        <div class="mt-2">
-                            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300">
-                                <i class="fas fa-check mr-1"></i> Approved
+                        <div class="mt-3">
+                            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300">
+                                <i class="fas fa-clock mr-1"></i> Pending
                             </span>
                         </div>
                     </div>
@@ -1120,27 +1161,67 @@
         @csrf
     </form>
 
-    <!-- Promotion Confirmation Modal -->
-    <div id="promotion-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+    <!-- Payroll Approval Modal -->
+    <div id="payroll-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
         <div class="bg-white dark:bg-gray-800 rounded-xl p-8 max-w-md w-full mx-4">
             <div class="text-center mb-6">
                 <div class="w-16 h-16 rounded-full bg-gold-100 dark:bg-gold-900 flex items-center justify-center text-gold-600 dark:text-gold-300 text-2xl mx-auto mb-4">
-                    <i class="fas fa-trophy"></i>
+                    <i class="fas fa-file-invoice-dollar"></i>
                 </div>
-                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2" id="modal-title">Promote Staff</h3>
-                <p class="text-gray-600 dark:text-gray-400" id="modal-description">Are you sure you want to promote the selected staff?</p>
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2" id="modal-title">Approve Payroll</h3>
+                <p class="text-gray-600 dark:text-gray-400" id="modal-description">Are you sure you want to approve this payroll?</p>
             </div>
             
-            <div class="space-y-4 mb-6" id="promotion-details">
+            <div class="space-y-4 mb-6" id="payroll-details">
                 <!-- Details will be inserted here -->
             </div>
             
             <div class="flex space-x-3">
-                <button class="flex-1 py-3 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 rounded-xl font-medium transition-colors" id="cancel-promotion">
+                <button class="flex-1 py-3 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 rounded-xl font-medium transition-colors" id="cancel-payroll">
                     Cancel
                 </button>
-                <button class="flex-1 py-3 bg-gold-theme hover:bg-gold-600 text-white rounded-xl font-medium transition-colors" id="confirm-promotion">
-                    Confirm Promotion
+                <button class="flex-1 py-3 bg-gold-theme hover:bg-gold-600 text-white rounded-xl font-medium transition-colors" id="confirm-payroll">
+                    Confirm Approval
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Payroll Rejection Modal -->
+    <div id="rejection-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white dark:bg-gray-800 rounded-xl p-8 max-w-md w-full mx-4">
+            <div class="text-center mb-6">
+                <div class="w-16 h-16 rounded-full bg-red-100 dark:bg-red-900 flex items-center justify-center text-red-600 dark:text-red-300 text-2xl mx-auto mb-4">
+                    <i class="fas fa-times-circle"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Reject Payroll</h3>
+                <p class="text-gray-600 dark:text-gray-400" id="rejection-description">Please provide a reason for rejecting this payroll.</p>
+            </div>
+            
+            <div class="space-y-4 mb-6">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Reason for Rejection</label>
+                    <select class="w-full input-field" id="rejection-reason">
+                        <option value="">Select a reason</option>
+                        <option value="discrepancy">Salary Discrepancy</option>
+                        <option value="attendance">Attendance Issues</option>
+                        <option value="documents">Missing Documents</option>
+                        <option value="calculation">Calculation Error</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div id="other-reason-container" class="hidden">
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Specify Reason</label>
+                    <textarea class="w-full input-field" rows="3" id="other-reason" placeholder="Please specify the reason..."></textarea>
+                </div>
+            </div>
+            
+            <div class="flex space-x-3">
+                <button class="flex-1 py-3 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 rounded-xl font-medium transition-colors" id="cancel-rejection">
+                    Cancel
+                </button>
+                <button class="flex-1 py-3 bg-red-600 hover:bg-red-700 text-white rounded-xl font-medium transition-colors" id="confirm-rejection">
+                    Confirm Rejection
                 </button>
             </div>
         </div>
@@ -1150,31 +1231,43 @@
         // Toggle sidebar
         const sidebarToggle = document.getElementById('sidebar-toggle');
         const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
-        const mobileSearchToggle = document.getElementById('mobile-search-toggle');
-        const mobileSearchBar = document.getElementById('mobile-search-bar');
         const mobileOverlay = document.getElementById('mobile-overlay');
         const sidebar = document.getElementById('sidebar');
         const mainContent = document.getElementById('main-content');
         
-        // Promotion functionality
-        const promoteAllBtn = document.getElementById('promote-all-btn');
-        const selectAllBtn = document.getElementById('select-all-btn');
-        const selectAllCheckbox = document.getElementById('select-all-checkbox');
-        const deselectAllBtn = document.getElementById('deselect-all-btn');
-        const bulkPromoteBtn = document.getElementById('bulk-promote-btn');
-        const staffCheckboxes = document.querySelectorAll('.staff-checkbox');
-        const promoteBtns = document.querySelectorAll('.promote-btn');
-        const promotionModal = document.getElementById('promotion-modal');
-        const cancelPromotionBtn = document.getElementById('cancel-promotion');
-        const confirmPromotionBtn = document.getElementById('confirm-promotion');
+        // Payroll functionality
+        const processPayrollBtn = document.getElementById('process-payroll-btn');
+        const selectAllPayrollBtn = document.getElementById('select-all-payroll');
+        const selectAllPayrollCheckbox = document.getElementById('select-all-payroll-checkbox');
+        const deselectAllPayrollBtn = document.getElementById('deselect-all-payroll');
+        const bulkApproveBtn = document.getElementById('bulk-approve-btn');
+        const payrollCheckboxes = document.querySelectorAll('.payroll-checkbox');
+        const approveBtns = document.querySelectorAll('.approve-payroll-btn');
+        const rejectBtns = document.querySelectorAll('.reject-payroll-btn');
+        const viewBtns = document.querySelectorAll('.view-payroll-btn');
+        const payrollModal = document.getElementById('payroll-modal');
+        const rejectionModal = document.getElementById('rejection-modal');
+        const cancelPayrollBtn = document.getElementById('cancel-payroll');
+        const confirmPayrollBtn = document.getElementById('confirm-payroll');
+        const cancelRejectionBtn = document.getElementById('cancel-rejection');
+        const confirmRejectionBtn = document.getElementById('confirm-rejection');
         const modalTitle = document.getElementById('modal-title');
         const modalDescription = document.getElementById('modal-description');
-        const promotionDetails = document.getElementById('promotion-details');
+        const payrollDetails = document.getElementById('payroll-details');
+        const rejectionReason = document.getElementById('rejection-reason');
+        const otherReasonContainer = document.getElementById('other-reason-container');
+        const otherReason = document.getElementById('other-reason');
         
-        let selectedStaff = [];
-        let promotionAction = 'single'; // 'single' or 'bulk' or 'all'
-        let currentStaffId = null;
-        let currentStaffName = null;
+        // Quick action buttons
+        const generatePayslipsBtn = document.getElementById('generate-payslips');
+        const exportReportsBtn = document.getElementById('export-reports');
+        const bankTransferBtn = document.getElementById('bank-transfer');
+        
+        let selectedPayroll = [];
+        let payrollAction = 'single'; // 'single' or 'bulk'
+        let currentPayrollId = null;
+        let currentPayrollName = null;
+        let currentPayrollAction = 'approve'; // 'approve' or 'reject'
         
         // Function to toggle sidebar
         function toggleSidebar() {
@@ -1204,24 +1297,15 @@
         mobileMenuToggle.addEventListener('click', toggleSidebar);
         mobileOverlay.addEventListener('click', closeSidebar);
         
-        // Initialize progress animations
+        // Initialize on load
         document.addEventListener('DOMContentLoaded', () => {
-            const progressBars = document.querySelectorAll('.course-progress-fill');
-            progressBars.forEach(bar => {
-                const width = bar.style.width;
-                bar.style.width = '0';
-                setTimeout(() => {
-                    bar.style.width = width;
-                }, 300);
-            });
-            
             // Handle responsive behavior on load
             if (window.innerWidth < 1024) {
                 mainContent.style.marginLeft = '0';
             }
             
-            // Initialize selected staff count
-            updateSelectedCount();
+            // Initialize selected payroll count
+            updateSelectedPayrollCount();
         });
         
         // Handle window resize
@@ -1245,308 +1329,334 @@
             }
         });
         
-        // Update selected count
-        function updateSelectedCount() {
-            const selected = document.querySelectorAll('.staff-checkbox:checked');
+        // Update selected payroll count
+        function updateSelectedPayrollCount() {
+            const selected = document.querySelectorAll('.payroll-checkbox:checked');
             const count = selected.length;
-            document.getElementById('selected-count').textContent = count;
+            document.getElementById('selected-payroll-count').textContent = count;
             
             // Update select all checkbox state
-            const total = staffCheckboxes.length;
-            selectAllCheckbox.checked = count === total && total > 0;
-            selectAllCheckbox.indeterminate = count > 0 && count < total;
+            const total = payrollCheckboxes.length;
+            selectAllPayrollCheckbox.checked = count === total && total > 0;
+            selectAllPayrollCheckbox.indeterminate = count > 0 && count < total;
         }
         
-        // Select all functionality
-        selectAllBtn.addEventListener('click', () => {
-            staffCheckboxes.forEach(checkbox => {
+        // Select all payroll functionality
+        selectAllPayrollBtn.addEventListener('click', () => {
+            payrollCheckboxes.forEach(checkbox => {
                 checkbox.checked = true;
             });
-            updateSelectedCount();
-            showToast('All staff selected for promotion', 'info');
+            updateSelectedPayrollCount();
+            showToast('All payrolls selected for approval', 'info');
         });
         
-        selectAllCheckbox.addEventListener('change', () => {
-            staffCheckboxes.forEach(checkbox => {
-                checkbox.checked = selectAllCheckbox.checked;
+        selectAllPayrollCheckbox.addEventListener('change', () => {
+            payrollCheckboxes.forEach(checkbox => {
+                checkbox.checked = selectAllPayrollCheckbox.checked;
             });
-            updateSelectedCount();
+            updateSelectedPayrollCount();
         });
         
         // Deselect all functionality
-        deselectAllBtn.addEventListener('click', () => {
-            staffCheckboxes.forEach(checkbox => {
+        deselectAllPayrollBtn.addEventListener('click', () => {
+            payrollCheckboxes.forEach(checkbox => {
                 checkbox.checked = false;
             });
-            updateSelectedCount();
-            showToast('All staff deselected', 'info');
+            updateSelectedPayrollCount();
+            showToast('All payrolls deselected', 'info');
         });
         
         // Individual checkbox change
-        staffCheckboxes.forEach(checkbox => {
-            checkbox.addEventListener('change', updateSelectedCount);
+        payrollCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', updateSelectedPayrollCount);
         });
         
-        // Promote all eligible staff
-        promoteAllBtn.addEventListener('click', () => {
-            promotionAction = 'all';
-            const eligibleStaff = Array.from(staffCheckboxes)
-                .filter(cb => {
-                    const row = cb.closest('tr');
-                    const eligibility = row.querySelector('.promotion-badge');
-                    return eligibility && eligibility.classList.contains('promotion-eligible');
-                })
-                .map(cb => {
-                    const row = cb.closest('tr');
-                    const name = row.querySelector('.text-sm.font-medium').textContent;
-                    const position = row.querySelector('td:nth-child(3)').textContent;
-                    return { name, position };
-                });
+        // Process payroll run
+        processPayrollBtn.addEventListener('click', () => {
+            showToast('Initiating payroll processing for current period...', 'info');
             
-            if (eligibleStaff.length === 0) {
-                showToast('No eligible staff found for promotion', 'warning');
-                return;
-            }
-            
-            modalTitle.textContent = 'Promote All Eligible Staff';
-            modalDescription.textContent = `You are about to promote ${eligibleStaff.length} eligible staff members.`;
-            
-            promotionDetails.innerHTML = `
-                <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
-                    <h4 class="font-medium text-gray-900 dark:text-white mb-2">Staff to be promoted:</h4>
-                    <ul class="space-y-2 max-h-40 overflow-y-auto">
-                        ${eligibleStaff.map(staff => `
-                            <li class="flex items-center text-sm">
-                                <i class="fas fa-user text-blue-500 mr-2"></i>
-                                <span class="text-gray-700 dark:text-gray-300">${staff.name}</span>
-                                <span class="ml-auto text-gray-500 dark:text-gray-400">${staff.position}</span>
-                            </li>
-                        `).join('')}
-                    </ul>
-                </div>
-            `;
-            
-            promotionModal.classList.remove('hidden');
+            // Simulate processing
+            setTimeout(() => {
+                showToast('Payroll processing completed successfully!', 'success');
+            }, 2000);
         });
         
-        // Bulk promote selected staff
-        bulkPromoteBtn.addEventListener('click', () => {
-            const selected = Array.from(staffCheckboxes)
+        // Bulk approve selected payroll
+        bulkApproveBtn.addEventListener('click', () => {
+            const selected = Array.from(payrollCheckboxes)
                 .filter(cb => cb.checked)
                 .map(cb => {
                     const row = cb.closest('tr');
                     const name = row.querySelector('.text-sm.font-medium').textContent;
-                    const position = row.querySelector('td:nth-child(3)').textContent;
-                    const eligibility = row.querySelector('.promotion-badge');
-                    const isEligible = eligibility && eligibility.classList.contains('promotion-eligible');
-                    return { name, position, isEligible };
+                    const netPay = row.querySelector('td:nth-child(7) .text-lg').textContent;
+                    const status = row.querySelector('.payroll-status-badge').textContent;
+                    return { name, netPay, status };
                 });
             
             if (selected.length === 0) {
-                showToast('Please select staff to promote', 'warning');
+                showToast('Please select payrolls to approve', 'warning');
                 return;
             }
             
-            const eligibleStaff = selected.filter(s => s.isEligible);
-            const ineligibleStaff = selected.filter(s => !s.isEligible);
+            payrollAction = 'bulk';
+            currentPayrollAction = 'approve';
             
-            promotionAction = 'bulk';
-            
-            modalTitle.textContent = 'Promote Selected Staff';
-            modalDescription.textContent = `You are about to promote ${eligibleStaff.length} selected staff members.`;
+            modalTitle.textContent = 'Approve Selected Payroll';
+            modalDescription.textContent = `You are about to approve ${selected.length} selected payrolls.`;
             
             let detailsHtml = `
                 <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
-                    <h4 class="font-medium text-gray-900 dark:text-white mb-2">Staff to be promoted:</h4>
+                    <h4 class="font-medium text-gray-900 dark:text-white mb-2">Payrolls to be approved:</h4>
                     <ul class="space-y-2 max-h-40 overflow-y-auto">
             `;
             
-            if (eligibleStaff.length > 0) {
-                eligibleStaff.forEach(staff => {
-                    detailsHtml += `
-                        <li class="flex items-center text-sm">
-                            <i class="fas fa-check text-green-500 mr-2"></i>
-                            <span class="text-gray-700 dark:text-gray-300">${staff.name}</span>
-                            <span class="ml-auto text-gray-500 dark:text-gray-400">${staff.position}</span>
-                        </li>
-                    `;
-                });
-            }
-            
-            if (ineligibleStaff.length > 0) {
+            selected.forEach(payroll => {
                 detailsHtml += `
-                    </ul>
-                </div>
-                <div class="bg-yellow-50 dark:bg-yellow-900 rounded-lg p-4">
-                    <h4 class="font-medium text-yellow-800 dark:text-yellow-300 mb-2">Not eligible for promotion:</h4>
-                    <ul class="space-y-2">
+                    <li class="flex items-center text-sm">
+                        <i class="fas fa-user text-blue-500 mr-2"></i>
+                        <span class="text-gray-700 dark:text-gray-300">${payroll.name}</span>
+                        <span class="ml-auto text-gray-500 dark:text-gray-400">${payroll.netPay}</span>
+                    </li>
                 `;
-                
-                ineligibleStaff.forEach(staff => {
-                    detailsHtml += `
-                        <li class="flex items-center text-sm">
-                            <i class="fas fa-times text-red-500 mr-2"></i>
-                            <span class="text-yellow-700 dark:text-yellow-300">${staff.name}</span>
-                            <span class="ml-auto text-yellow-600 dark:text-yellow-400">${staff.position}</span>
-                        </li>
-                    `;
-                });
-            }
+            });
             
             detailsHtml += `
                     </ul>
                 </div>
+                <div class="bg-yellow-50 dark:bg-yellow-900 rounded-lg p-4">
+                    <p class="text-sm text-yellow-700 dark:text-yellow-300">
+                        <i class="fas fa-exclamation-triangle mr-2"></i>
+                        This action will initiate payment processing for selected employees.
+                    </p>
+                </div>
             `;
             
-            promotionDetails.innerHTML = detailsHtml;
-            promotionModal.classList.remove('hidden');
+            payrollDetails.innerHTML = detailsHtml;
+            payrollModal.classList.remove('hidden');
         });
         
-        // Individual promote buttons
-        promoteBtns.forEach(btn => {
+        // Individual approve buttons
+        approveBtns.forEach(btn => {
             btn.addEventListener('click', () => {
-                promotionAction = 'single';
-                currentStaffId = btn.getAttribute('data-id');
-                currentStaffName = btn.getAttribute('data-name');
+                payrollAction = 'single';
+                currentPayrollAction = 'approve';
+                currentPayrollId = btn.getAttribute('data-id');
+                currentPayrollName = btn.getAttribute('data-name');
                 
                 const row = btn.closest('tr');
-                const position = row.querySelector('td:nth-child(3)').textContent;
-                const department = row.querySelector('td:nth-child(4) span').textContent;
-                const tenure = row.querySelector('td:nth-child(5)').textContent.split('\n')[0];
+                const department = row.querySelector('td:nth-child(3) span').textContent;
+                const basicSalary = row.querySelector('td:nth-child(4) .text-sm').textContent;
+                const allowances = row.querySelector('td:nth-child(5) .text-sm').textContent;
+                const deductions = row.querySelector('td:nth-child(6) .text-sm').textContent;
+                const netPay = row.querySelector('td:nth-child(7) .text-lg').textContent;
                 
-                modalTitle.textContent = `Promote ${currentStaffName}`;
-                modalDescription.textContent = `You are about to promote this staff member.`;
+                modalTitle.textContent = `Approve Payroll for ${currentPayrollName}`;
+                modalDescription.textContent = `You are about to approve this payroll for processing.`;
                 
-                promotionDetails.innerHTML = `
+                payrollDetails.innerHTML = `
                     <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
                         <div class="space-y-3">
                             <div class="flex justify-between">
-                                <span class="text-gray-600 dark:text-gray-400">Name:</span>
-                                <span class="font-medium text-gray-900 dark:text-white">${currentStaffName}</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span class="text-gray-600 dark:text-gray-400">Current Position:</span>
-                                <span class="font-medium text-gray-900 dark:text-white">${position}</span>
+                                <span class="text-gray-600 dark:text-gray-400">Employee:</span>
+                                <span class="font-medium text-gray-900 dark:text-white">${currentPayrollName}</span>
                             </div>
                             <div class="flex justify-between">
                                 <span class="text-gray-600 dark:text-gray-400">Department:</span>
                                 <span class="font-medium text-gray-900 dark:text-white">${department}</span>
                             </div>
-                            <div class="flex justify-between">
-                                <span class="text-gray-600 dark:text-gray-400">Tenure:</span>
-                                <span class="font-medium text-gray-900 dark:text-white">${tenure}</span>
+                            <div class="border-t border-gray-200 dark:border-gray-600 pt-3">
+                                <div class="flex justify-between mb-1">
+                                    <span class="text-gray-600 dark:text-gray-400">Basic Salary:</span>
+                                    <span class="font-medium text-gray-900 dark:text-white">${basicSalary}</span>
+                                </div>
+                                <div class="flex justify-between mb-1">
+                                    <span class="text-gray-600 dark:text-gray-400">Allowances:</span>
+                                    <span class="font-medium text-green-600 dark:text-green-400">${allowances}</span>
+                                </div>
+                                <div class="flex justify-between mb-1">
+                                    <span class="text-gray-600 dark:text-gray-400">Deductions:</span>
+                                    <span class="font-medium text-red-600 dark:text-red-400">${deductions}</span>
+                                </div>
+                                <div class="flex justify-between font-bold text-lg mt-2 pt-2 border-t border-gray-200 dark:border-gray-600">
+                                    <span class="text-gray-900 dark:text-white">Net Pay:</span>
+                                    <span class="text-gold-600 dark:text-gold-400">${netPay}</span>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="bg-blue-50 dark:bg-blue-900 rounded-lg p-4">
-                        <h4 class="font-medium text-blue-800 dark:text-blue-300 mb-2">New Position:</h4>
-                        <select class="w-full input-field">
-                            <option>Senior ${position}</option>
-                            <option>Lead ${position.split(' ')[0]}</option>
-                            <option>${position.split(' ')[0]} Manager</option>
-                            <option>Department Head</option>
-                        </select>
-                    </div>
                 `;
                 
-                promotionModal.classList.remove('hidden');
+                payrollModal.classList.remove('hidden');
             });
         });
         
-        // Cancel promotion
-        cancelPromotionBtn.addEventListener('click', () => {
-            promotionModal.classList.add('hidden');
+        // Individual reject buttons
+        rejectBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                currentPayrollId = btn.getAttribute('data-id');
+                currentPayrollName = btn.getAttribute('data-name');
+                
+                const row = btn.closest('tr');
+                const netPay = row.querySelector('td:nth-child(7) .text-lg').textContent;
+                
+                document.getElementById('rejection-description').textContent = `Reject payroll for ${currentPayrollName} (${netPay})`;
+                rejectionModal.classList.remove('hidden');
+            });
         });
         
-        // Confirm promotion
-        confirmPromotionBtn.addEventListener('click', () => {
-            promotionModal.classList.add('hidden');
+        // View payroll details
+        viewBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const payrollId = this.getAttribute('data-id');
+                const row = this.closest('tr');
+                const name = row.querySelector('.text-sm.font-medium').textContent;
+                const netPay = row.querySelector('td:nth-child(7) .text-lg').textContent;
+                
+                showToast(`Viewing payroll details for ${name} (${netPay})`, 'info');
+            });
+        });
+        
+        // Quick action buttons
+        generatePayslipsBtn.addEventListener('click', () => {
+            showToast('Generating payslips for current period...', 'info');
+            setTimeout(() => {
+                showToast('Payslips generated successfully!', 'success');
+            }, 1500);
+        });
+        
+        exportReportsBtn.addEventListener('click', () => {
+            showToast('Exporting payroll reports...', 'info');
+            setTimeout(() => {
+                showToast('Reports exported successfully!', 'success');
+            }, 1500);
+        });
+        
+        bankTransferBtn.addEventListener('click', () => {
+            showToast('Initiating bank transfer process...', 'info');
+            setTimeout(() => {
+                showToast('Bank transfer initiated successfully!', 'success');
+            }, 1500);
+        });
+        
+        // Cancel payroll approval
+        cancelPayrollBtn.addEventListener('click', () => {
+            payrollModal.classList.add('hidden');
+        });
+        
+        // Confirm payroll approval
+        confirmPayrollBtn.addEventListener('click', () => {
+            payrollModal.classList.add('hidden');
             
-            if (promotionAction === 'single') {
-                // Update single staff
-                const row = document.querySelector(`.staff-checkbox[data-id="${currentStaffId}"]`).closest('tr');
-                const positionCell = row.querySelector('td:nth-child(3)');
-                const oldPosition = positionCell.textContent;
-                const newPosition = document.querySelector('#promotion-details select').value;
+            if (payrollAction === 'single') {
+                // Update single payroll
+                const row = document.querySelector(`.payroll-checkbox[data-id="${currentPayrollId}"]`).closest('tr');
+                const statusCell = row.querySelector('td:nth-child(8)');
                 
-                // Update position
-                positionCell.textContent = newPosition;
+                // Update status
+                const statusBadge = statusCell.querySelector('.payroll-status-badge');
+                statusBadge.className = 'payroll-status-badge payroll-status-paid';
+                statusBadge.textContent = 'Paid';
                 
-                // Update promotion eligibility
-                const eligibilityBadge = row.querySelector('.promotion-badge');
-                const eligibilityText = row.querySelector('.promotion-badge + span');
+                // Disable action buttons
+                const approveBtn = row.querySelector('.approve-payroll-btn');
+                const rejectBtn = row.querySelector('.reject-payroll-btn');
                 
-                eligibilityBadge.className = 'promotion-badge promotion-pending';
-                eligibilityBadge.innerHTML = '<i class="fas fa-clock text-xs"></i>';
-                eligibilityText.textContent = 'Recently Promoted';
+                if (approveBtn) {
+                    approveBtn.style.display = 'none';
+                }
+                if (rejectBtn) {
+                    rejectBtn.style.display = 'none';
+                }
                 
-                // Disable promote button
-                const promoteBtn = row.querySelector('.promote-btn');
-                promoteBtn.disabled = true;
-                promoteBtn.className = 'text-gray-400 dark:text-gray-600 mr-3 cursor-not-allowed';
+                showToast(`${currentPayrollName}'s payroll approved successfully!`, 'success');
                 
-                showToast(`${currentStaffName} promoted from ${oldPosition} to ${newPosition}`, 'success');
+            } else if (payrollAction === 'bulk') {
+                // Update all selected payrolls
+                const selectedCheckboxes = Array.from(payrollCheckboxes).filter(cb => cb.checked);
                 
-            } else if (promotionAction === 'bulk' || promotionAction === 'all') {
-                // Update all selected eligible staff
-                const checkboxes = promotionAction === 'all' 
-                    ? Array.from(staffCheckboxes).filter(cb => {
-                        const row = cb.closest('tr');
-                        const eligibility = row.querySelector('.promotion-badge');
-                        return eligibility && eligibility.classList.contains('promotion-eligible');
-                    })
-                    : Array.from(staffCheckboxes).filter(cb => cb.checked);
-                
-                let promotedCount = 0;
-                
-                checkboxes.forEach(checkbox => {
+                selectedCheckboxes.forEach(checkbox => {
                     const row = checkbox.closest('tr');
-                    const eligibilityBadge = row.querySelector('.promotion-badge');
+                    const name = row.querySelector('.text-sm.font-medium').textContent;
+                    const statusCell = row.querySelector('td:nth-child(8)');
                     
-                    if (eligibilityBadge && eligibilityBadge.classList.contains('promotion-eligible')) {
-                        const name = row.querySelector('.text-sm.font-medium').textContent;
-                        const positionCell = row.querySelector('td:nth-child(3)');
-                        const oldPosition = positionCell.textContent;
-                        const newPosition = `Senior ${oldPosition.split(' ')[0]}`;
-                        
-                        // Update position
-                        positionCell.textContent = newPosition;
-                        
-                        // Update promotion eligibility
-                        const eligibilityText = row.querySelector('.promotion-badge + span');
-                        
-                        eligibilityBadge.className = 'promotion-badge promotion-pending';
-                        eligibilityBadge.innerHTML = '<i class="fas fa-clock text-xs"></i>';
-                        eligibilityText.textContent = 'Recently Promoted';
-                        
-                        // Disable promote button
-                        const promoteBtn = row.querySelector('.promote-btn');
-                        if (promoteBtn) {
-                            promoteBtn.disabled = true;
-                            promoteBtn.className = 'text-gray-400 dark:text-gray-600 mr-3 cursor-not-allowed';
-                        }
-                        
-                        promotedCount++;
+                    // Update status
+                    const statusBadge = statusCell.querySelector('.payroll-status-badge');
+                    if (statusBadge) {
+                        statusBadge.className = 'payroll-status-badge payroll-status-paid';
+                        statusBadge.textContent = 'Paid';
+                    }
+                    
+                    // Disable action buttons
+                    const approveBtn = row.querySelector('.approve-payroll-btn');
+                    const rejectBtn = row.querySelector('.reject-payroll-btn');
+                    
+                    if (approveBtn) {
+                        approveBtn.style.display = 'none';
+                    }
+                    if (rejectBtn) {
+                        rejectBtn.style.display = 'none';
                     }
                 });
                 
                 // Deselect all checkboxes
-                staffCheckboxes.forEach(cb => cb.checked = false);
-                updateSelectedCount();
+                payrollCheckboxes.forEach(cb => cb.checked = false);
+                updateSelectedPayrollCount();
                 
-                showToast(`${promotedCount} staff members promoted successfully!`, 'success');
+                showToast(`${selectedCheckboxes.length} payrolls approved successfully!`, 'success');
             }
         });
         
-        // View staff details
-        document.querySelectorAll('.view-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const row = this.closest('tr');
-                const name = row.querySelector('.text-sm.font-medium').textContent;
-                const position = row.querySelector('td:nth-child(3)').textContent;
-                
-                showToast(`Viewing details for ${name} (${position})`, 'info');
-            });
+        // Handle rejection reason selection
+        rejectionReason.addEventListener('change', () => {
+            if (rejectionReason.value === 'other') {
+                otherReasonContainer.classList.remove('hidden');
+            } else {
+                otherReasonContainer.classList.add('hidden');
+            }
+        });
+        
+        // Cancel rejection
+        cancelRejectionBtn.addEventListener('click', () => {
+            rejectionModal.classList.add('hidden');
+            rejectionReason.value = '';
+            otherReasonContainer.classList.add('hidden');
+            otherReason.value = '';
+        });
+        
+        // Confirm rejection
+        confirmRejectionBtn.addEventListener('click', () => {
+            const reason = rejectionReason.value === 'other' ? otherReason.value : rejectionReason.value;
+            
+            if (!reason) {
+                showToast('Please provide a rejection reason', 'warning');
+                return;
+            }
+            
+            rejectionModal.classList.add('hidden');
+            
+            // Update payroll status
+            const row = document.querySelector(`.payroll-checkbox[data-id="${currentPayrollId}"]`).closest('tr');
+            const statusCell = row.querySelector('td:nth-child(8)');
+            
+            // Update status
+            const statusBadge = statusCell.querySelector('.payroll-status-badge');
+            statusBadge.className = 'payroll-status-badge payroll-status-failed';
+            statusBadge.textContent = 'Rejected';
+            
+            // Add rejection note
+            const actionsCell = row.querySelector('td:nth-child(9)');
+            actionsCell.innerHTML = `
+                <span class="text-xs text-gray-500 dark:text-gray-400" title="Reason: ${reason}">
+                    <i class="fas fa-ban text-red-500 mr-1"></i> Rejected
+                </span>
+            `;
+            
+            showToast(`${currentPayrollName}'s payroll rejected. Reason: ${reason}`, 'error');
+            
+            // Reset form
+            rejectionReason.value = '';
+            otherReasonContainer.classList.add('hidden');
+            otherReason.value = '';
         });
         
         function showToast(message, type) {
@@ -1555,6 +1665,7 @@
             toast.className = `fixed top-4 right-4 px-6 py-3 rounded-lg shadow-lg z-50 transform transition-transform duration-300 ${
                 type === 'success' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300' : 
                 type === 'warning' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300' :
+                type === 'error' ? 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300' :
                 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300'
             }`;
             toast.textContent = message;

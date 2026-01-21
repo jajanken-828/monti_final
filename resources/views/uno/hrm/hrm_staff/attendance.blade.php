@@ -575,8 +575,8 @@
                         </div>
                         <span class="bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 text-xs font-medium px-2 py-1 rounded">REALTIME</span>
                     </div>
-                    <h4 class="font-bold text-gray-900 dark:text-white text-lg mb-1">Biometric Tracking</h4>
-                    <p class="text-gray-500 dark:text-gray-400 text-sm mb-4">Live attendance monitoring</p>
+                    <h4 class="font-bold text-gray-900 dark:text-white text-lg mb-1">Time In & Time out Tracking</h4>
+                    <p class="text-gray-500 dark:text-gray-400 text-sm mb-4">Employee attendance monitoring</p>
                     
                     <div class="mb-3">
                         <div class="flex justify-between text-sm mb-1">

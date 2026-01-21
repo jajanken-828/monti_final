@@ -38,17 +38,13 @@ Route::post('/login', function (Request $request) {
 
         // Redirect based on role AND position
         if ($user->role === 'hrm') {
-            if ($user->position === 'manager') {
-                return redirect()->route('hrm.manager.dashboard');
-            } else {
-                return redirect()->route('hrm.staff.dashboard');
-            }
+            return $user->position === 'manager'
+                ? redirect()->route('hrm.manager.dashboard')
+                : redirect()->route('hrm.staff.dashboard');
         } else {
-            if ($user->position === 'manager') {
-                return redirect()->route('scm.manager.dashboard');
-            } else {
-                return redirect()->route('scm.staff.dashboard');
-            }
+            return $user->position === 'manager'
+                ? redirect()->route('scm.manager.dashboard')
+                : redirect()->route('scm.staff.dashboard');
         }
     }
 
@@ -74,33 +70,23 @@ Route::post('/register', function (Request $request) {
     ]);
 
     try {
-        // Create the user
         $user = User::create([
             'first_name' => $validated['first_name'],
             'last_name' => $validated['last_name'],
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
             'role' => $validated['role'],
-            'position' => 'staff', // Default position is staff
+            'position' => 'staff',
             'newsletter_opt_in' => $request->boolean('newsletter', false),
         ]);
 
-        // Log the user in
         auth()->login($user);
 
         // Redirect based on role AND position
         if ($user->role === 'hrm') {
-            if ($user->position === 'manager') {
-                return redirect()->route('hrm.manager.dashboard');
-            } else {
-                return redirect()->route('hrm.staff.dashboard');
-            }
+            return redirect()->route('hrm.staff.dashboard');
         } else {
-            if ($user->position === 'manager') {
-                return redirect()->route('scm.manager.dashboard');
-            } else {
-                return redirect()->route('scm.staff.dashboard');
-            }
+            return redirect()->route('scm.staff.dashboard');
         }
     } catch (\Exception $e) {
         \Log::error('Registration failed: '.$e->getMessage());
@@ -119,6 +105,22 @@ Route::post('/logout', function (Request $request) {
 
     return redirect('/');
 })->name('logout');
+
+// Helper function to check user access
+function checkAccess($requiredRole, $requiredPosition = null)
+{
+    $user = auth()->user();
+
+    if ($user->role !== $requiredRole) {
+        return redirect()->route('login');
+    }
+
+    if ($requiredPosition && $user->position !== $requiredPosition) {
+        return redirect()->route("{$requiredRole}.dashboard");
+    }
+
+    return null;
+}
 
 /*
 |--------------------------------------------------------------------------
@@ -139,22 +141,17 @@ Route::prefix('hrm')
                 return redirect()->route('login');
             }
 
-            if ($user->position === 'manager') {
-                return redirect()->route('hrm.manager.dashboard');
-            } else {
-                return redirect()->route('hrm.staff.dashboard');
-            }
+            return $user->position === 'manager'
+                ? redirect()->route('hrm.manager.dashboard')
+                : redirect()->route('hrm.staff.dashboard');
         })->name('dashboard');
 
         // HRM Staff Dashboard
         Route::get('/staff/dashboard', function () {
-            // Check if user is HRM staff
-            if (auth()->user()->role !== 'hrm' || auth()->user()->position !== 'staff') {
-                // Redirect to appropriate dashboard
-                return redirect()->route(auth()->user()->position === 'manager' ? 'hrm.manager.dashboard' : 'login');
+            if ($redirect = checkAccess('hrm', 'staff')) {
+                return $redirect;
             }
 
-            // Get all HRM staff members (if needed)
             $users = User::where('role', 'hrm')
                 ->orderBy('first_name')
                 ->get();
@@ -164,13 +161,10 @@ Route::prefix('hrm')
 
         // HRM Manager Dashboard
         Route::get('/manager/dashboard', function () {
-            // Check if user is HRM manager
-            if (auth()->user()->role !== 'hrm' || auth()->user()->position !== 'manager') {
-                // Redirect to appropriate dashboard
-                return redirect()->route(auth()->user()->position === 'staff' ? 'hrm.staff.dashboard' : 'login');
+            if ($redirect = checkAccess('hrm', 'manager')) {
+                return $redirect;
             }
 
-            // Get all HRM staff members for the manager to view
             $staff = User::where('role', 'hrm')
                 ->where('position', 'staff')
                 ->orderBy('first_name')
@@ -179,57 +173,124 @@ Route::prefix('hrm')
             return view('uno.hrm.hrm_manager.dashboard', compact('staff'));
         })->name('manager.dashboard');
 
-        // Promotion endpoint (only for HRM managers)
+        // HRM Manager Onboarding
+        Route::get('/manager/onboarding', function () {
+            if ($redirect = checkAccess('hrm', 'manager')) {
+                return $redirect;
+            }
+
+            return view('uno.hrm.hrm_manager.onboarding');
+        })->name('manager.onboarding');
+
+        // HRM Manager payroll
+        Route::get('/manager/payroll', function () {
+            if ($redirect = checkAccess('hrm', 'manager')) {
+                return $redirect;
+            }
+
+            return view('uno.hrm.hrm_manager.payroll');
+        })->name('manager.payroll');
+
+        // HRM Manager analytics
+        Route::get('/manager/analytics', function () {
+            if ($redirect = checkAccess('hrm', 'manager')) {
+                return $redirect;
+            }
+
+            return view('uno.hrm.hrm_manager.analytics');
+        })->name('manager.analytics');
+
+        // HRM Manager Settings
+        Route::get('/manager/settings', function () {
+            if ($redirect = checkAccess('hrm', 'manager')) {
+                return $redirect;
+            }
+
+            return view('uno.hrm.hrm_manager.settings');
+        })->name('manager.settings');
+
+        // Promotion endpoint
         Route::post('/promote/{user}', function (Request $request, User $user) {
-            // Check if current user is HRM manager
             if (auth()->user()->position !== 'manager' || auth()->user()->role !== 'hrm') {
                 return redirect()->route('hrm.staff.dashboard')->with('error', 'Unauthorized');
             }
 
-            // Check if user is HRM staff
             if ($user->role !== 'hrm' || $user->position === 'manager') {
                 return back()->with('error', 'Invalid user for promotion');
             }
 
-            // Promote to manager
             $user->position = 'manager';
             $user->save();
 
             return back()->with('success', 'User promoted to manager successfully!');
         })->name('promote');
 
-        // Other HRM staff routes - Updated to include role checks
-        Route::get('/staff/payroll', function () {
-            if (auth()->user()->role !== 'hrm' || auth()->user()->position !== 'staff') {
-                return redirect()->route(auth()->user()->position === 'manager' ? 'hrm.manager.dashboard' : 'login');
-            }
+        // HRM Staff Pages
+        Route::prefix('staff')->name('staff.')->group(function () {
+            Route::get('/payroll', function () {
+                if ($redirect = checkAccess('hrm', 'staff')) {
+                    return $redirect;
+                }
 
-            return view('uno.hrm.hrm_staff.payroll');
-        })->name('staff.payroll');
+                return view('uno.hrm.hrm_staff.payroll');
+            })->name('payroll');
 
-        Route::get('/staff/leave', function () {
-            if (auth()->user()->role !== 'hrm' || auth()->user()->position !== 'staff') {
-                return redirect()->route(auth()->user()->position === 'manager' ? 'hrm.manager.dashboard' : 'login');
-            }
+            Route::get('/leave', function () {
+                if ($redirect = checkAccess('hrm', 'staff')) {
+                    return $redirect;
+                }
 
-            return view('uno.hrm.hrm_staff.leave');
-        })->name('staff.leave');
+                return view('uno.hrm.hrm_staff.leave');
+            })->name('leave');
 
-        Route::get('/staff/attendance', function () {
-            if (auth()->user()->role !== 'hrm' || auth()->user()->position !== 'staff') {
-                return redirect()->route(auth()->user()->position === 'manager' ? 'hrm.manager.dashboard' : 'login');
-            }
+            Route::get('/attendance', function () {
+                if ($redirect = checkAccess('hrm', 'staff')) {
+                    return $redirect;
+                }
 
-            return view('uno.hrm.hrm_staff.attendance');
-        })->name('staff.attendance');
+                return view('uno.hrm.hrm_staff.attendance');
+            })->name('attendance');
 
-        Route::get('/staff/training', function () {
-            if (auth()->user()->role !== 'hrm' || auth()->user()->position !== 'staff') {
-                return redirect()->route(auth()->user()->position === 'manager' ? 'hrm.manager.dashboard' : 'login');
-            }
+            Route::get('/training', function () {
+                if ($redirect = checkAccess('hrm', 'staff')) {
+                    return $redirect;
+                }
 
-            return view('uno.hrm.hrm_staff.training');
-        })->name('staff.training');
+                return view('uno.hrm.hrm_staff.training');
+            })->name('training');
+
+            Route::get('/onboarding', function () {
+                if ($redirect = checkAccess('hrm', 'staff')) {
+                    return $redirect;
+                }
+
+                return view('uno.hrm.hrm_staff.onboarding');
+            })->name('onboarding');
+
+            Route::get('/recruitment', function () {
+                if ($redirect = checkAccess('hrm', 'staff')) {
+                    return $redirect;
+                }
+
+                return view('uno.hrm.hrm_staff.recruitment');
+            })->name('recruitment');
+
+            Route::get('/performance', function () {
+                if ($redirect = checkAccess('hrm', 'staff')) {
+                    return $redirect;
+                }
+
+                return view('uno.hrm.hrm_staff.performance');
+            })->name('performance');
+
+            Route::get('/settings', function () {
+                if ($redirect = checkAccess('hrm', 'staff')) {
+                    return $redirect;
+                }
+
+                return view('uno.hrm.hrm_staff.settings');
+            })->name('settings');
+        });
     });
 
 /*
@@ -251,22 +312,17 @@ Route::prefix('scm')
                 return redirect()->route('login');
             }
 
-            if ($user->position === 'manager') {
-                return redirect()->route('scm.manager.dashboard');
-            } else {
-                return redirect()->route('scm.staff.dashboard');
-            }
+            return $user->position === 'manager'
+                ? redirect()->route('scm.manager.dashboard')
+                : redirect()->route('scm.staff.dashboard');
         })->name('dashboard');
 
         // SCM Staff Dashboard
         Route::get('/staff/dashboard', function () {
-            // Check if user is SCM staff
-            if (auth()->user()->role !== 'scm' || auth()->user()->position !== 'staff') {
-                // Redirect to appropriate dashboard
-                return redirect()->route(auth()->user()->position === 'manager' ? 'scm.manager.dashboard' : 'login');
+            if ($redirect = checkAccess('scm', 'staff')) {
+                return $redirect;
             }
 
-            // Get SCM data if needed
             $users = User::where('role', 'scm')
                 ->orderBy('first_name')
                 ->get();
@@ -276,13 +332,10 @@ Route::prefix('scm')
 
         // SCM Manager Dashboard
         Route::get('/manager/dashboard', function () {
-            // Check if user is SCM manager
-            if (auth()->user()->role !== 'scm' || auth()->user()->position !== 'manager') {
-                // Redirect to appropriate dashboard
-                return redirect()->route(auth()->user()->position === 'staff' ? 'scm.staff.dashboard' : 'login');
+            if ($redirect = checkAccess('scm', 'manager')) {
+                return $redirect;
             }
 
-            // Get all SCM staff members for the manager to view
             $staff = User::where('role', 'scm')
                 ->where('position', 'staff')
                 ->orderBy('first_name')
@@ -291,22 +344,106 @@ Route::prefix('scm')
             return view('uno.scm.scm_manager.dashboard', compact('staff'));
         })->name('manager.dashboard');
 
-        // SCM Manager Promotion endpoint
+        // SCM Manager Onboarding
+        Route::get('/manager/onboarding', function () {
+            if ($redirect = checkAccess('scm', 'manager')) {
+                return $redirect;
+            }
+
+            return view('uno.scm.scm_manager.onboarding');
+        })->name('manager.onboarding');
+
+        // SCM Manager Inventory
+        Route::get('/manager/inventory', function () {
+            if ($redirect = checkAccess('scm', 'manager')) {
+                return $redirect;
+            }
+
+            return view('uno.scm.scm_manager.inventory');
+        })->name('manager.inventory');
+
+        // SCM Manager Orders
+        Route::get('/manager/orders', function () {
+            if ($redirect = checkAccess('scm', 'manager')) {
+                return $redirect;
+            }
+
+            return view('uno.scm.scm_manager.orders');
+        })->name('manager.orders');
+
+        // SCM Manager Settings
+        Route::get('/manager/settings', function () {
+            if ($redirect = checkAccess('scm', 'manager')) {
+                return $redirect;
+            }
+
+            return view('uno.scm.scm_manager.settings');
+        })->name('manager.settings');
+
+        // Promotion endpoint
         Route::post('/promote/{user}', function (Request $request, User $user) {
-            // Check if current user is SCM manager
             if (auth()->user()->position !== 'manager' || auth()->user()->role !== 'scm') {
                 return redirect()->route('scm.staff.dashboard')->with('error', 'Unauthorized');
             }
 
-            // Check if user is SCM staff
             if ($user->role !== 'scm' || $user->position === 'manager') {
                 return back()->with('error', 'Invalid user for promotion');
             }
 
-            // Promote to manager
             $user->position = 'manager';
             $user->save();
 
             return back()->with('success', 'User promoted to manager successfully!');
         })->name('promote');
+
+        // SCM Staff Pages
+        Route::prefix('staff')->name('staff.')->group(function () {
+            Route::get('/inventory', function () {
+                if ($redirect = checkAccess('scm', 'staff')) {
+                    return $redirect;
+                }
+
+                return view('uno.scm.scm_staff.inventory');
+            })->name('inventory');
+
+            Route::get('/orders', function () {
+                if ($redirect = checkAccess('scm', 'staff')) {
+                    return $redirect;
+                }
+
+                return view('uno.scm.scm_staff.orders');
+            })->name('orders');
+
+            Route::get('/suppliers', function () {
+                if ($redirect = checkAccess('scm', 'staff')) {
+                    return $redirect;
+                }
+
+                return view('uno.scm.scm_staff.suppliers');
+            })->name('suppliers');
+
+            Route::get('/warehouse', function () {
+                if ($redirect = checkAccess('scm', 'staff')) {
+                    return $redirect;
+                }
+
+                return view('uno.scm.scm_staff.warehouse');
+            })->name('warehouse');
+
+            Route::get('/onboarding', function () {
+                if ($redirect = checkAccess('scm', 'staff')) {
+                    return $redirect;
+                }
+
+                return view('uno.scm.scm_staff.onboarding');
+            })->name('onboarding');
+
+            Route::get('/settings', function () {
+                if ($redirect = checkAccess('scm', 'staff')) {
+                    return $redirect;
+                }
+
+                return view('uno.scm.scm_staff.settings');
+            })->name('settings');
+        });
     });
