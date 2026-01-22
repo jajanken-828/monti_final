@@ -588,9 +588,10 @@
                                 <div class="featured-banner-content mb-6 md:mb-0">
                                     <h2 class="text-2xl font-bold mb-3 text-white">Leave Request Dashboard</h2>
                                     <p class="text-blue-100 mb-6 max-w-lg">Manage employee leave applications, approvals, and track leave balances efficiently.</p>
-                                    <button class="px-6 py-3 bg-orange-theme hover:bg-orange-600 text-white font-semibold rounded-xl transition-colors shadow-md flex items-center featured-banner-button">
-                                       View All Leave Requests <i class="fas fa-arrow-right ml-3"></i>
-                                    </button>
+                                    <a href="{{ route('hrm.staff.LeaveRequest') }}"
+                                    class="inline-flex px-6 py-3 bg-orange-theme hover:bg-orange-600 text-white font-semibold rounded-xl transition-colors shadow-md items-center featured-banner-button">
+                                        View All Leave Requests <i class="fas fa-arrow-right ml-3"></i>
+                                    </a>
                                 </div>
                                 <div class="featured-banner-image animate-float">
                                     <div class="w-48 h-32 bg-gradient-to-r from-teal-400 to-teal-300 dark:from-teal-500 dark:to-teal-400 rounded-lg shadow-xl flex items-center justify-center">

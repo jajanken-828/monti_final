@@ -628,9 +628,11 @@
                                 <div class="featured-banner-content mb-6 md:mb-0">
                                     <h2 class="text-2xl font-bold mb-3 text-white">Training & Development Portal</h2>
                                     <p class="text-blue-100 mb-6 max-w-lg">Manage employee training programs, track certifications, and monitor skill development progress.</p>
-                                    <button class="px-6 py-3 bg-purple-theme hover:bg-purple-600 text-white font-semibold rounded-xl transition-colors shadow-md flex items-center featured-banner-button">
-                                        Schedule New Training <i class="fas fa-calendar-plus ml-2"></i>
-                                    </button>
+                                   <a href="{{ route('hrm.staff.trainee') }}"
+   class="inline-flex px-6 py-3 bg-purple-theme hover:bg-purple-600 text-white font-semibold rounded-xl transition-colors shadow-md items-center featured-banner-button">
+    Schedule New Training <i class="fas fa-calendar-plus ml-2"></i>
+</a>
+
                                 </div>
                                 <div class="featured-banner-image animate-float">
                                     <div class="w-48 h-32 bg-gradient-to-r from-purple-400 to-purple-300 dark:from-purple-500 dark:to-purple-400 rounded-lg shadow-xl flex items-center justify-center">

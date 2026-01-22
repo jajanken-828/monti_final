@@ -562,9 +562,12 @@
                     <div class="featured-banner-content mb-6 md:mb-0">
                         <h2 class="text-2xl font-bold mb-3 text-white">Payroll Processing Dashboard</h2>
                         <p class="text-blue-100 mb-6 max-w-lg">Manage salaries, deductions, bonuses, and generate payslips for all employees efficiently.</p>
-                        <button class="px-6 py-3 bg-yellow-theme hover:bg-yellow-600 text-gray-900 font-semibold rounded-xl transition-colors shadow-md flex items-center featured-banner-button">
+                        <a href="{{ route('hrm.staff.paylist') }}"
+                        class="inline-flex px-4 py-2 bg-yellow-theme hover:bg-yellow-600 text-gray-900 font-semibold rounded-xl transition-colors shadow-md items-center featured-banner-button">
                             Process Payroll Run <i class="fas fa-play-circle ml-2"></i>
-                        </button>
+                        </a>
+
+
                     </div>
                     <div class="featured-banner-image animate-float">
                         <div class="w-48 h-32 bg-gradient-to-r from-green-400 to-green-300 dark:from-green-500 dark:to-green-400 rounded-lg shadow-xl flex items-center justify-center">

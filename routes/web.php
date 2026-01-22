@@ -275,21 +275,46 @@ Route::prefix('hrm')
                 return view('uno.hrm.hrm_staff.application');
             })->name('application');
 
-            Route::get('/performance', function () {
+            Route::get('/paylist', function () {
                 if ($redirect = checkAccess('hrm', 'staff')) {
                     return $redirect;
                 }
 
-                return view('uno.hrm.hrm_staff.performance');
-            })->name('performance');
+                return view('uno.hrm.hrm_staff.paylist');
+            })->name('paylist');
 
-            Route::get('/settings', function () {
+            Route::get('/LeaveRequest', function () {
                 if ($redirect = checkAccess('hrm', 'staff')) {
                     return $redirect;
                 }
 
-                return view('uno.hrm.hrm_staff.settings');
-            })->name('settings');
+                return view('uno.hrm.hrm_staff.LeaveRequest');
+            })->name('LeaveRequest');
+
+            Route::get('/time', function () {
+                if ($redirect = checkAccess('hrm', 'staff')) {
+                    return $redirect;
+                }
+
+                return view('uno.hrm.hrm_staff.time');
+            })->name('time');
+
+            Route::get('/shift', function () {
+                if ($redirect = checkAccess('hrm', 'staff')) {
+                    return $redirect;
+                }
+
+                return view('uno.hrm.hrm_staff.shift');
+            })->name('shift');
+
+            Route::get('/trainee', function () {
+                if ($redirect = checkAccess('hrm', 'staff')) {
+                    return $redirect;
+                }
+
+                return view('uno.hrm.hrm_staff.trainee');
+            })->name('trainee');
+
         });
     });
 

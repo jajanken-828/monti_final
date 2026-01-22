@@ -661,6 +661,36 @@
         .modal-body {
             padding: 1.5rem;
         }
+
+         .monti-header {
+        background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+        border-bottom: 3px solid #fbbf24;
+    }
+    
+    /* Scrollbar Styling */
+    .modal-content::-webkit-scrollbar {
+        width: 8px;
+    }
+    
+    .modal-content::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 4px;
+    }
+    
+    .modal-content::-webkit-scrollbar-thumb {
+        background: #c1c1c1;
+        border-radius: 4px;
+    }
+    
+    .modal-content::-webkit-scrollbar-thumb:hover {
+        background: #a1a1a1;
+    }
+    
+    /* Focus styles */
+    input:focus, select:focus, textarea:focus {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
     </style>
 </head>
 <body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200">
@@ -1119,184 +1149,297 @@
     </div>
 
     <!-- Encode Applicant Modal -->
-    <div class="modal" id="encode-applicant-modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="text-xl font-bold text-gray-900 dark:text-white">Encode New Applicant</h3>
-                <button class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300" id="close-modal">
+   <div class="modal fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center p-4 z-50 hidden" id="encode-applicant-modal">
+    <div class="modal-content bg-white rounded-xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+        <!-- Modal Header with Monti Textile Branding -->
+        <div class="modal-header monti-header bg-gradient-to-r from-white to-blue-50 p-6 rounded-t-xl border-b border-blue-100">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-3">
+                    <div class="h-10 w-10 bg-yellow-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-industry text-yellow-600 text-lg"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-xl font-bold text-gray-800">Monti Textile</h2>
+                        <h3 class="text-lg font-semibold text-blue-700">Encode New Applicant</h3>
+                    </div>
+                </div>
+                <button class="text-gray-500 hover:text-red-500 opacity-0 transition-colors duration-200" id="close-modal">
                     <i class="fas fa-times text-xl"></i>
                 </button>
             </div>
-            <div class="modal-body">
-                <!-- Job Application Form (Based on provided image) -->
-                <form id="applicant-form">
-                    <div class="space-y-6">
-                        <!-- Full Name Section -->
-                        <div class="form-group">
-                            <h4 class="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Full Name</h4>
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        </div>
+
+        <!-- Modal Body -->
+        <div class="modal-body p-6">
+            <form id="applicant-form">
+                <div class="space-y-8">
+                    
+                    <!-- Full Name Section -->
+                    <div class="form-group bg-blue-50 p-5 rounded-xl border border-blue-100">
+                        <div class="flex items-center mb-4">
+                            <div class="h-8 w-8 bg-blue-600 rounded-lg flex items-center justify-center mr-3">
+                                <i class="fas fa-user text-white text-sm"></i>
+                            </div>
+                            <h4 class="text-lg font-bold text-blue-900">Full Name</h4>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">First Name</label>
+                                <input type="text" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" placeholder="First Name" required>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Middle Name</label>
+                                <input type="text" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" placeholder="Middle Name">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Last Name</label>
+                                <input type="text" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" placeholder="Last Name" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Birth Date Section -->
+                    <div class="form-group bg-white p-5 rounded-xl border border-gray-200">
+                        <div class="flex items-center mb-4">
+                            <div class="h-8 w-8 bg-yellow-500 rounded-lg flex items-center justify-center mr-3">
+                                <i class="fas fa-calendar text-white text-sm"></i>
+                            </div>
+                            <h4 class="text-lg font-bold text-gray-800">Birth Date</h4>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Month</label>
+                                <select class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" required>
+                                    <option value="">Select Month</option>
+                                    <option value="01">January</option>
+                                    <option value="02">February</option>
+                                    <option value="03">March</option>
+                                    <option value="04">April</option>
+                                    <option value="05">May</option>
+                                    <option value="06">June</option>
+                                    <option value="07">July</option>
+                                    <option value="08">August</option>
+                                    <option value="09">September</option>
+                                    <option value="10">October</option>
+                                    <option value="11">November</option>
+                                    <option value="12">December</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Day</label>
+                                <select class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" required>
+                                    <option value="">Select Day</option>
+                                    <!-- Days 1-31 -->
+                                    <script>
+                                        for(let i=1; i<=31; i++) {
+                                            document.write(`<option value="${i}">${i}</option>`);
+                                        }
+                                    </script>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Year</label>
+                                <select class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" required>
+                                    <option value="">Select Year</option>
+                                    <!-- Years 1960-2023 -->
+                                    <script>
+                                        const currentYear = new Date().getFullYear();
+                                        for(let i=currentYear; i>=1960; i--) {
+                                            document.write(`<option value="${i}">${i}</option>`);
+                                        }
+                                    </script>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Current Address Section -->
+                    <div class="form-group bg-blue-50 p-5 rounded-xl border border-blue-100">
+                        <div class="flex items-center mb-4">
+                            <div class="h-8 w-8 bg-blue-600 rounded-lg flex items-center justify-center mr-3">
+                                <i class="fas fa-home text-white text-sm"></i>
+                            </div>
+                            <h4 class="text-lg font-bold text-blue-900">Current Address</h4>
+                        </div>
+                        <div class="space-y-5">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Street Address</label>
+                                <input type="text" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" placeholder="Street Address" required>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Street Address Line 2</label>
+                                <input type="text" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" placeholder="Apartment, Suite, Unit, etc.">
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
                                 <div>
-                                    <label class="form-label">First Name</label>
-                                    <input type="text" class="form-control" placeholder="First Name" required>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">City</label>
+                                    <input type="text" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" placeholder="City" required>
                                 </div>
                                 <div>
-                                    <label class="form-label">Middle Name</label>
-                                    <input type="text" class="form-control" placeholder="Middle Name">
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">State / Province</label>
+                                    <input type="text" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" placeholder="State / Province" required>
                                 </div>
                                 <div>
-                                    <label class="form-label">Last Name</label>
-                                    <input type="text" class="form-control" placeholder="Last Name" required>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Postal / Zip Code</label>
+                                    <input type="text" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" placeholder="Postal / Zip Code" required>
                                 </div>
                             </div>
                         </div>
+                    </div>
 
-                        <!-- Birth Date Section -->
-                        <div class="form-group">
-                            <h4 class="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Birth Date</h4>
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                <div>
-                                    <label class="form-label">Month</label>
-                                    <select class="form-control" required>
-                                        <option value="">Select Month</option>
-                                        <option value="01">January</option>
-                                        <option value="02">February</option>
-                                        <!-- Add all months -->
-                                    </select>
+                    <!-- Contact Information -->
+                    <div class="form-group bg-white p-5 rounded-xl border border-gray-200">
+                        <div class="flex items-center mb-4">
+                            <div class="h-8 w-8 bg-blue-600 rounded-lg flex items-center justify-center mr-3">
+                                <i class="fas fa-phone text-white text-sm"></i>
+                            </div>
+                            <h4 class="text-lg font-bold text-gray-800">Contact Information</h4>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+                                <input type="email" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" placeholder="myname@example.com" required>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Phone Number</label>
+                                <input type="tel" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" placeholder="000 800-0600" required>
+                            </div>
+                        </div>
+                        <div class="mt-5">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">LinkedIn Profile (Optional)</label>
+                            <input type="url" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" placeholder="https://linkedin.com/in/username">
+                        </div>
+                    </div>
+
+                    <!-- Position Information -->
+                    <div class="form-group bg-blue-50 p-5 rounded-xl border border-blue-100">
+                        <div class="flex items-center mb-4">
+                            <div class="h-8 w-8 bg-yellow-500 rounded-lg flex items-center justify-center mr-3">
+                                <i class="fas fa-briefcase text-white text-sm"></i>
+                            </div>
+                            <h4 class="text-lg font-bold text-blue-900">Position Information</h4>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Position Applied For</label>
+                                <select class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" required>
+                                    <option value="">Please Select</option>
+                                    <option value="production_supervisor">Production Supervisor</option>
+                                    <option value="quality_inspector">Quality Control Inspector</option>
+                                    <option value="maintenance_tech">Maintenance Technician</option>
+                                    <option value="hr_assistant">HR Assistant</option>
+                                    <option value="warehouse_staff">Warehouse Staff</option>
+                                    <option value="textile_designer">Textile Designer</option>
+                                    <option value="machine_operator">Machine Operator</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">How did you hear about us?</label>
+                                <select class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" required>
+                                    <option value="">Please Select</option>
+                                    <option value="linkedin">LinkedIn</option>
+                                    <option value="job_portal">Job Portal</option>
+                                    <option value="referral">Employee Referral</option>
+                                    <option value="social_media">Social Media</option>
+                                    <option value="company_website">Company Website</option>
+                                    <option value="career_fair">Career Fair</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mt-5">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Available Start Date</label>
+                            <input type="date" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" required>
+                        </div>
+                    </div>
+
+                    <!-- Documents Section -->
+                    <div class="form-group bg-white p-5 rounded-xl border border-gray-200">
+                        <div class="flex items-center mb-4">
+                            <div class="h-8 w-8 bg-blue-600 rounded-lg flex items-center justify-center mr-3">
+                                <i class="fas fa-file-alt text-white text-sm"></i>
+                            </div>
+                            <h4 class="text-lg font-bold text-gray-800">Documents</h4>
+                        </div>
+                        <div class="space-y-5">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Upload Your Resume</label>
+                                <div class="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center transition-all duration-200 hover:border-blue-400 hover:bg-blue-50">
+                                    <i class="fas fa-cloud-upload-alt text-3xl text-blue-400 mb-3"></i>
+                                    <p class="text-gray-600 mb-2">Drag and drop your resume here</p>
+                                    <p class="text-gray-500 text-sm mb-4">or</p>
+                                    <button type="button" class="bg-white border border-blue-500 text-blue-600 hover:bg-blue-50 px-4 py-2 rounded-lg font-medium transition-colors duration-200">
+                                        <i class="fas fa-folder-open mr-2"></i> Browse Files
+                                    </button>
+                                    <p class="text-gray-400 text-xs mt-4">PDF, DOC, DOCX up to 5MB</p>
                                 </div>
-                                <div>
-                                    <label class="form-label">Day</label>
-                                    <select class="form-control" required>
-                                        <option value="">Select Day</option>
-                                        <!-- Add days 1-31 -->
-                                    </select>
-                                </div>
-                                <div>
-                                    <label class="form-label">Year</label>
-                                    <select class="form-control" required>
-                                        <option value="">Select Year</option>
-                                        <!-- Add years -->
-                                    </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Cover Letter (Optional)</label>
+                                <textarea class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" rows="4" placeholder="Write your cover letter here..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Additional Information Section -->
+                    <div class="form-group bg-yellow-50 p-5 rounded-xl border border-yellow-100">
+                        <div class="flex items-center mb-4">
+                            <div class="h-8 w-8 bg-yellow-500 rounded-lg flex items-center justify-center mr-3">
+                                <i class="fas fa-info-circle text-white text-sm"></i>
+                            </div>
+                            <h4 class="text-lg font-bold text-gray-800">Additional Information</h4>
+                        </div>
+                        <div class="space-y-5">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Expected Salary (per month)</label>
+                                <input type="text" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" placeholder="e.g., ₱25,000 - ₱30,000">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Notice Period (if currently employed)</label>
+                                <select class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200">
+                                    <option value="">Select Notice Period</option>
+                                    <option value="immediate">Immediate</option>
+                                    <option value="1_week">1 Week</option>
+                                    <option value="2_weeks">2 Weeks</option>
+                                    <option value="1_month">1 Month</option>
+                                    <option value="2_months">2 Months</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Do you have textile industry experience?</label>
+                                <div class="flex space-x-6 mt-2">
+                                    <label class="inline-flex items-center">
+                                        <input type="radio" name="experience" value="yes" class="text-blue-600 focus:ring-blue-500">
+                                        <span class="ml-2">Yes</span>
+                                    </label>
+                                    <label class="inline-flex items-center">
+                                        <input type="radio" name="experience" value="no" class="text-blue-600 focus:ring-blue-500">
+                                        <span class="ml-2">No</span>
+                                    </label>
                                 </div>
                             </div>
                         </div>
+                    </div>
 
-                        <!-- Current Address Section -->
-                        <div class="form-group">
-                            <h4 class="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Current Address</h4>
-                            <div class="space-y-4">
-                                <div>
-                                    <label class="form-label">Street Address</label>
-                                    <input type="text" class="form-control" placeholder="Street Address" required>
-                                </div>
-                                <div>
-                                    <label class="form-label">Street Address Line 2</label>
-                                    <input type="text" class="form-control" placeholder="Apartment, Suite, Unit, etc.">
-                                </div>
-                                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                    <div>
-                                        <label class="form-label">City</label>
-                                        <input type="text" class="form-control" placeholder="City" required>
-                                    </div>
-                                    <div>
-                                        <label class="form-label">State / Province</label>
-                                        <input type="text" class="form-control" placeholder="State / Province" required>
-                                    </div>
-                                    <div>
-                                        <label class="form-label">Postal / Zip Code</label>
-                                        <input type="text" class="form-control" placeholder="Postal / Zip Code" required>
-                                    </div>
-                                </div>
-                            </div>
+                    <!-- Form Actions -->
+                    <div class="flex flex-col sm:flex-row justify-between items-center pt-8 border-t border-gray-200 space-y-4 sm:space-y-0">
+                        <div class="text-sm text-gray-500">
+                            <i class="fas fa-shield-alt text-blue-400 mr-2"></i>
+                            Your information is secure and confidential
                         </div>
-
-                        <!-- Contact Information -->
-                        <div class="form-group">
-                            <h4 class="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Contact Information</h4>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div>
-                                    <label class="form-label">Email Address</label>
-                                    <input type="email" class="form-control" placeholder="myname@example.com" required>
-                                </div>
-                                <div>
-                                    <label class="form-label">Phone Number</label>
-                                    <input type="tel" class="form-control" placeholder="000 800-0600" required>
-                                </div>
-                            </div>
-                            <div class="mt-4">
-                                <label class="form-label">LinkedIn Profile (Optional)</label>
-                                <input type="url" class="form-control" placeholder="https://linkedin.com/in/username">
-                            </div>
-                        </div>
-
-                        <!-- Position Information -->
-                        <div class="form-group">
-                            <h4 class="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Position Information</h4>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div>
-                                    <label class="form-label">Position Applied For</label>
-                                    <select class="form-control" required>
-                                        <option value="">Please Select</option>
-                                        <option value="production_supervisor">Production Supervisor</option>
-                                        <option value="quality_inspector">Quality Control Inspector</option>
-                                        <option value="maintenance_tech">Maintenance Technician</option>
-                                        <option value="hr_assistant">HR Assistant</option>
-                                        <option value="warehouse_staff">Warehouse Staff</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label class="form-label">How did you hear about us?</label>
-                                    <select class="form-control" required>
-                                        <option value="">Please Select</option>
-                                        <option value="linkedin">LinkedIn</option>
-                                        <option value="job_portal">Job Portal</option>
-                                        <option value="referral">Employee Referral</option>
-                                        <option value="social_media">Social Media</option>
-                                        <option value="company_website">Company Website</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="mt-4">
-                                <label class="form-label">Available Start Date</label>
-                                <input type="date" class="form-control" required>
-                            </div>
-                        </div>
-
-                        <!-- Resume and Cover Letter -->
-                        <div class="form-group">
-                            <h4 class="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Documents</h4>
-                            <div class="space-y-4">
-                                <div>
-                                    <label class="form-label">Upload Your Resume</label>
-                                    <div class="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-8 text-center">
-                                        <i class="fas fa-cloud-upload-alt text-3xl text-gray-400 mb-2"></i>
-                                        <p class="text-gray-500 dark:text-gray-400 mb-2">Drag and drop files here</p>
-                                        <p class="text-gray-400 dark:text-gray-500 text-sm mb-4">or</p>
-                                        <button type="button" class="btn btn-outline">
-                                            <i class="fas fa-folder-open mr-2"></i> Browse Files
-                                        </button>
-                                    </div>
-                                </div>
-                                <div>
-                                    <label class="form-label">Cover Letter (Optional)</label>
-                                    <textarea class="form-control" rows="4" placeholder="Write your cover letter here..."></textarea>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Form Actions -->
-                        <div class="flex justify-end space-x-3 pt-6 border-t border-gray-200 dark:border-gray-700">
-                            <button type="button" class="btn btn-outline" id="cancel-form">
+                        <div class="flex space-x-4">
+                            <button type="button" class="bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 px-6 py-3 rounded-lg font-medium transition-colors duration-200" id="cancel-form">
                                 Cancel
                             </button>
-                            <button type="submit" class="btn btn-primary">
+                            <button type="submit" class="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-8 py-3 rounded-lg font-medium shadow-md hover:shadow-lg transition-all duration-200">
                                 <i class="fas fa-save mr-2"></i> Save Applicant
                             </button>
                         </div>
                     </div>
-                </form>
-            </div>
+                </div>
+            </form>
         </div>
     </div>
+</div>
 
     <!-- Logout Form -->
     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">

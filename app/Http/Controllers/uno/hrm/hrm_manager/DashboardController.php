@@ -25,4 +25,9 @@ class DashboardController extends Controller
     {
         return view('uno.hrm.hrm_manager.analytics');
     }
+
+    public function LeaveRequest()
+    {
+        return view('uno.hrm.hrm_manager.LeaveRequest');
+    }
 }

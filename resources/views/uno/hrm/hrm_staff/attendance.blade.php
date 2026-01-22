@@ -256,6 +256,91 @@
             display: block;
         }
         
+        /* Button styles for attendance management - UPDATED */
+        .attendance-btn {
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            outline: none;
+            border: 2px solid #e5e7eb;
+            display: block;
+            width: 100%;
+            background: white;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .attendance-btn:hover {
+            border-color: #3b82f6;
+            transform: translateY(-4px);
+            box-shadow: 0 15px 30px -5px rgba(0, 0, 0, 0.15);
+        }
+        
+        .attendance-btn:active {
+            transform: translateY(-1px);
+        }
+        
+        .attendance-btn:focus {
+            outline: 3px solid rgba(59, 130, 246, 0.3);
+            outline-offset: 2px;
+        }
+        
+        .attendance-btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(to right, #3b82f6, #60a5fa);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .attendance-btn:hover::after {
+            opacity: 1;
+        }
+        
+        /* Button indicator */
+        .btn-indicator {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #3b82f6;
+            animation: pulse 2s infinite;
+        }
+        
+        /* Clickable button text */
+        .btn-clickable {
+            display: inline-flex;
+            align-items: center;
+            color: #3b82f6;
+            font-weight: 600;
+            font-size: 0.875rem;
+            margin-top: 8px;
+        }
+        
+        .btn-clickable i {
+            margin-left: 4px;
+            transition: transform 0.2s ease;
+        }
+        
+        .attendance-btn:hover .btn-clickable i {
+            transform: translateX(4px);
+        }
+        
+        .dark .attendance-btn {
+            border-color: #4b5563;
+            background-color: #374151;
+        }
+        
+        .dark .attendance-btn:hover {
+            border-color: #60a5fa;
+        }
+        
         /* Dark mode adjustments */
         .dark .card {
             background-color: #374151;
@@ -568,39 +653,60 @@
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                <div class="bg-gray-50 dark:bg-gray-700 rounded-xl p-4 border border-gray-200 dark:border-gray-600 hover:border-blue-300 dark:hover:border-blue-500 transition-colors">
+                <!-- Time In & Time Out Tracking Button - UPDATED -->
+                <a href="{{ route('hrm.staff.time') }}" 
+                   class="attendance-btn bg-gray-50 dark:bg-gray-700 rounded-xl p-4 relative block">
+                    <div class="btn-indicator"></div>
                     <div class="flex items-start justify-between mb-4">
-                        <div class="w-12 h-12 rounded-lg bg-blue-theme flex items-center justify-center">
-                            <i class="fas fa-fingerprint text-white text-xl"></i>
+                        <div class="w-12 h-12 rounded-lg bg-blue-600 flex items-center justify-center">
+                            <i class="fas fa-clock text-white text-xl"></i>
                         </div>
-                        <span class="bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 text-xs font-medium px-2 py-1 rounded">REALTIME</span>
+                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs font-medium px-2 py-1 rounded">
+                            TRACKING
+                        </span>
                     </div>
-                    <h4 class="font-bold text-gray-900 dark:text-white text-lg mb-1">Time In & Time out Tracking</h4>
-                    <p class="text-gray-500 dark:text-gray-400 text-sm mb-4">Employee attendance monitoring</p>
-                    
+
+                    <h4 class="font-bold text-gray-900 dark:text-white text-lg mb-1">
+                        Time In & Time Out
+                    </h4>
+
+                    <p class="text-gray-500 dark:text-gray-400 text-sm mb-4">
+                        Record daily attendance logs
+                    </p>
+
                     <div class="mb-3">
                         <div class="flex justify-between text-sm mb-1">
-                            <span class="text-gray-600 dark:text-gray-300">System Uptime</span>
-                            <span class="text-blue-theme font-medium">99.2%</span>
+                            <span class="text-gray-600 dark:text-gray-300">Today's Records</span>
+                            <span class="text-blue-theme font-medium">230/250</span>
                         </div>
                         <div class="course-progress">
-                            <div class="course-progress-fill" style="width: 99.2%"></div>
+                            <div class="course-progress-fill" style="width: 92%"></div>
                         </div>
                     </div>
-                    
-                    <div class="flex justify-between text-xs text-gray-500 dark:text-gray-400">
-                        <span>6 Devices Active</span>
-                        <span>0 Issues</span>
+
+                    <div class="flex justify-between items-center">
+                        <div class="text-xs text-gray-500 dark:text-gray-400">
+                            <span>Click to manage time tracking</span>
+                        </div>
+                        <div class="btn-clickable">
+                            Open <i class="fas fa-arrow-right text-xs ml-1"></i>
+                        </div>
                     </div>
-                </div>
+                </a>
                 
-                <div class="bg-gray-50 dark:bg-gray-700 rounded-xl p-4 border border-gray-200 dark:border-gray-600 hover:border-blue-300 dark:hover:border-blue-500 transition-colors">
+                <!-- Shift Management Button - UPDATED -->
+                <a href="{{ route('hrm.staff.shift') }}" 
+                   class="attendance-btn bg-gray-50 dark:bg-gray-700 rounded-xl p-4 relative block">
+                    <div class="btn-indicator"></div>
                     <div class="flex items-start justify-between mb-4">
                         <div class="w-12 h-12 rounded-lg bg-purple-600 flex items-center justify-center">
                             <i class="fas fa-calendar-alt text-white text-xl"></i>
                         </div>
-                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs font-medium px-2 py-1 rounded">SCHEDULE</span>
+                        <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs font-medium px-2 py-1 rounded">
+                            SCHEDULE
+                        </span>
                     </div>
+                    
                     <h4 class="font-bold text-gray-900 dark:text-white text-lg mb-1">Shift Management</h4>
                     <p class="text-gray-500 dark:text-gray-400 text-sm mb-4">Employee schedules & rotations</p>
                     
@@ -614,11 +720,15 @@
                         </div>
                     </div>
                     
-                    <div class="flex justify-between text-xs text-gray-500 dark:text-gray-400">
-                        <span>14 Active Shifts</span>
-                        <span>3 Rotations</span>
+                    <div class="flex justify-between items-center">
+                        <div class="text-xs text-gray-500 dark:text-gray-400">
+                            <span>Click to manage shifts</span>
+                        </div>
+                        <div class="btn-clickable">
+                            Open <i class="fas fa-arrow-right text-xs ml-1"></i>
+                        </div>
                     </div>
-                </div>
+                </a>
             </div>
         </div>
     </div>
@@ -981,6 +1091,9 @@
             if (window.innerWidth < 1024) {
                 mainContent.style.marginLeft = '0';
             }
+            
+            // Remove the alert functionality as requested
+            // The buttons now properly link to their respective routes
         });
         
         // Handle window resize
