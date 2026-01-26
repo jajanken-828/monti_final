@@ -87,9 +87,102 @@
                 border-color: #60a5fa;
                 background-color: #1e3a8a;
             }
+            
+            /* Loading spinner */
+            .spinner {
+                display: inline-block;
+                width: 1.25rem;
+                height: 1.25rem;
+                border: 2px solid rgba(255, 255, 255, 0.3);
+                border-radius: 50%;
+                border-top-color: white;
+                animation: spin 0.8s linear infinite;
+                opacity: 0;
+                transition: opacity 0.3s;
+            }
+            
+            .spinner.active {
+                opacity: 1;
+            }
+            
+            .spinner-dark {
+                border: 2px solid rgba(59, 130, 246, 0.3);
+                border-top-color: #3b82f6;
+            }
+            
+            @keyframes spin {
+                to { transform: rotate(360deg); }
+            }
+            
+            /* Loading overlay */
+            .loading-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(255, 255, 255, 0.9);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 9999;
+                opacity: 0;
+                visibility: hidden;
+                transition: opacity 0.3s, visibility 0.3s;
+            }
+            
+            .loading-overlay.active {
+                opacity: 1;
+                visibility: visible;
+            }
+            
+            .dark .loading-overlay {
+                background: rgba(17, 24, 39, 0.9);
+            }
+            
+            /* Disabled state */
+            .btn-disabled {
+                opacity: 0.7;
+                cursor: not-allowed;
+            }
+            
+            /* Lazy loading for images */
+            img[data-src] {
+                opacity: 0;
+                transition: opacity 0.3s;
+            }
+            
+            img.lazy-loaded {
+                opacity: 1;
+            }
+            
+            /* Form validation styles - ONLY FOR ERRORS */
+            .input-field.error {
+                border-color: #ef4444;
+            }
+            
+            .validation-message {
+                font-size: 0.75rem;
+                margin-top: 0.25rem;
+                display: none;
+            }
+            
+            .validation-message.error {
+                color: #ef4444;
+                display: block;
+            }
         </style>
     </head>
     <body class="bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200 flex p-6 lg:p-8 items-center lg:justify-center min-h-screen flex-col">
+        <!-- Loading Overlay -->
+        <div id="loadingOverlay" class="loading-overlay">
+            <div class="text-center">
+                <div class="spinner spinner-dark mb-4"></div>
+                <p class="text-gray-700 dark:text-gray-300 font-medium">Creating your account...</p>
+                <p class="text-gray-600 dark:text-gray-400 text-sm mt-1">This may take a few moments</p>
+            </div>
+        </div>
+        
         <header class="w-full lg:max-w-4xl max-w-[335px] text-sm mb-6 not-has-[nav]:hidden">
             @if (Route::has('login'))
                 <nav class="flex items-center justify-between gap-4">
@@ -175,6 +268,7 @@
                                 @error('first_name')
                                     <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
                                 @enderror
+                                <div id="firstNameValidation" class="validation-message"></div>
                             </div>
 
                             <div>
@@ -194,6 +288,7 @@
                                 @error('last_name')
                                     <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
                                 @enderror
+                                <div id="lastNameValidation" class="validation-message"></div>
                             </div>
                         </div>
 
@@ -214,6 +309,7 @@
                             @error('email')
                                 <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
                             @enderror
+                            <div id="emailValidation" class="validation-message"></div>
                         </div>
 
                         <div>
@@ -232,6 +328,7 @@
                             @error('password')
                                 <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
                             @enderror
+                            <div id="passwordValidation" class="validation-message"></div>
                             <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
                                 Must be at least 8 characters with letters and numbers
                             </p>
@@ -250,6 +347,7 @@
                                 class="input-field"
                                 placeholder="Confirm your password"
                             >
+                            <div id="confirmPasswordValidation" class="validation-message"></div>
                         </div>
 
                         <div class="space-y-4">
@@ -267,44 +365,15 @@
                                     and 
                                     <a href="#" class="text-blue-theme hover:underline">Privacy Policy</a>
                                 </label>
+                                <div id="termsValidation" class="validation-message mt-2"></div>
                             </div>
-
-                            {{-- <div class="flex items-start">
-                                <input 
-                                    id="newsletter" 
-                                    type="checkbox" 
-                                    name="newsletter"
-                                    class="w-4 h-4 text-blue-theme border-gray-300 rounded focus:ring-blue-theme mt-1"
-                                >
-                                <label for="newsletter" class="ml-2 text-sm text-gray-700 dark:text-gray-300">
-                                    I want to receive learning tips and course updates via email
-                                </label>
-                            </div> --}}
                         </div>
 
                         <div class="space-y-4">
-                            <button type="submit" class="w-full bg-blue-theme hover:bg-blue-700 text-white font-medium py-2.5 px-4 rounded-sm transition-colors focus:outline-none focus:ring-2 focus:ring-blue-theme focus:ring-offset-2">
-                                Create Account as <span id="roleText">SCM Professional</span>
+                            <button type="submit" id="registerBtn" class="w-full bg-blue-theme hover:bg-blue-700 text-white font-medium py-2.5 px-4 rounded-sm transition-colors focus:outline-none focus:ring-2 focus:ring-blue-theme focus:ring-offset-2 flex items-center justify-center gap-2">
+                                <span id="btnText">Create Account as <span id="roleText">SCM Professional</span></span>
+                                <div id="registerSpinner" class="spinner"></div>
                             </button>
-
-                            {{-- <div class="relative my-6">
-                                <div class="absolute inset-0 flex items-center">
-                                    <div class="w-full border-t border-gray-300 dark:border-gray-700"></div>
-                                </div>
-                                <div class="relative flex justify-center text-sm">
-                                    <span class="px-2 bg-white dark:bg-gray-800 text-gray-500">Or sign up with</span>
-                                </div>
-                            </div> --}}
-
-                            {{-- <button type="button" class="w-full flex items-center justify-center gap-2 border border-gray-300 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 font-medium py-2.5 px-4 rounded-sm transition-colors">
-                                <svg class="w-5 h-5" viewBox="0 0 24 24">
-                                    <path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-                                    <path fill="currentColor" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                                    <path fill="currentColor" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
-                                    <path fill="currentColor" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
-                                </svg>
-                                Continue with Google
-                            </button> --}}
                         </div>
 
                         <p class="text-center text-sm text-gray-600 dark:text-gray-400">
@@ -333,7 +402,7 @@
                     <!-- Professional Illustration -->
                     <div class="absolute inset-0 flex items-center justify-center">
                         <div class="relative w-64 h-64">
-                            <!-- Professional Journey -->
+                            <!-- Main illustration -->
                             <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
                                 <div class="w-40 h-40 bg-white dark:bg-gray-800 rounded-full shadow-xl flex items-center justify-center">
                                     <div class="w-32 h-32 rounded-full bg-gradient-to-r from-blue-theme to-yellow-theme flex items-center justify-center">
@@ -341,27 +410,6 @@
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                                         </svg>
                                     </div>
-                                </div>
-                            </div>
-                            
-                            <!-- Certificate -->
-                            <div class="absolute top-8 right-8">
-                                <div class="w-14 h-20 bg-yellow-theme rounded-lg transform rotate-12 shadow-lg flex items-center justify-center">
-                                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
-                                    </svg>
-                                </div>
-                            </div>
-                            
-                            <!-- Progress Arrows -->
-                            <div class="absolute bottom-12 left-12">
-                                <div class="flex gap-2">
-                                    <svg class="w-8 h-8 text-blue-theme" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                                    </svg>
-                                    <svg class="w-8 h-8 text-yellow-theme" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                                    </svg>
                                 </div>
                             </div>
                         </div>
@@ -403,6 +451,7 @@
         @endif
 
         <script>
+            // Role selection function
             function selectRole(role) {
                 // Update button styles
                 const scmBtn = document.getElementById('scmBtn');
@@ -446,15 +495,233 @@
                 }
             }
             
+            // Form validation functions
+            function validateEmail(email) {
+                const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return re.test(email);
+            }
+            
+            function validatePassword(password) {
+                return password.length >= 8 && /[a-zA-Z]/.test(password) && /\d/.test(password);
+            }
+            
+            function validateField(field, validationElement) {
+                const value = field.value.trim();
+                let isValid = true;
+                let message = '';
+                
+                if (field.type === 'email') {
+                    isValid = validateEmail(value);
+                    if (!isValid && value !== '') {
+                        message = 'Please enter a valid email address';
+                    }
+                } else if (field.id === 'password') {
+                    isValid = validatePassword(value);
+                    if (!isValid && value !== '') {
+                        message = 'Password must be at least 8 characters with letters and numbers';
+                    }
+                } else if (field.id === 'password_confirmation') {
+                    const password = document.getElementById('password').value;
+                    isValid = value === password && value !== '';
+                    if (!isValid && value !== '') {
+                        message = 'Passwords do not match';
+                    }
+                } else if (field.id === 'first_name' || field.id === 'last_name') {
+                    isValid = value.length >= 2;
+                    if (!isValid && value !== '') {
+                        message = 'Name must be at least 2 characters';
+                    }
+                }
+                
+                // Update field styling - ONLY show errors
+                if (value === '') {
+                    field.classList.remove('error');
+                    validationElement.textContent = '';
+                    validationElement.className = 'validation-message';
+                } else if (!isValid) {
+                    field.classList.add('error');
+                    validationElement.textContent = message;
+                    validationElement.className = 'validation-message error';
+                } else {
+                    field.classList.remove('error');
+                    validationElement.textContent = '';
+                    validationElement.className = 'validation-message';
+                }
+                
+                return isValid;
+            }
+            
             // Form submission handler
             document.getElementById('registerForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const submitBtn = document.getElementById('registerBtn');
+                const btnText = document.getElementById('btnText');
+                const spinner = document.getElementById('registerSpinner');
+                const loadingOverlay = document.getElementById('loadingOverlay');
+                const termsCheckbox = document.getElementById('terms');
+                
+                // Validate role selection
                 const role = document.getElementById('formRole').value;
                 if (!role) {
-                    e.preventDefault();
                     alert('Please select whether you want to register as SCM or HRM Professional.');
                     return false;
                 }
-                return true;
+                
+                // Validate terms agreement
+                if (!termsCheckbox.checked) {
+                    document.getElementById('termsValidation').textContent = 'You must agree to the terms and conditions';
+                    document.getElementById('termsValidation').className = 'validation-message error mt-2';
+                    return false;
+                }
+                
+                // Validate all fields
+                const fields = [
+                    { field: document.getElementById('first_name'), validation: document.getElementById('firstNameValidation') },
+                    { field: document.getElementById('last_name'), validation: document.getElementById('lastNameValidation') },
+                    { field: document.getElementById('email'), validation: document.getElementById('emailValidation') },
+                    { field: document.getElementById('password'), validation: document.getElementById('passwordValidation') },
+                    { field: document.getElementById('password_confirmation'), validation: document.getElementById('confirmPasswordValidation') }
+                ];
+                
+                let allValid = true;
+                fields.forEach(({ field, validation }) => {
+                    if (!validateField(field, validation)) {
+                        allValid = false;
+                    }
+                });
+                
+                if (!allValid) {
+                    alert('Please correct the errors in the form before submitting.');
+                    return false;
+                }
+                
+                // Show loading state only now (after validation passes)
+                submitBtn.classList.add('btn-disabled');
+                submitBtn.disabled = true;
+                btnText.innerHTML = 'Creating Account...';
+                spinner.classList.add('active');
+                
+                // Show loading overlay
+                loadingOverlay.classList.add('active');
+                
+                // Submit the form after a short delay to show loading animation
+                setTimeout(() => {
+                    // Actually submit the form
+                    this.submit();
+                }, 800);
+                
+                return false;
+            });
+            
+            // Real-time validation on blur (only show errors)
+            document.addEventListener('DOMContentLoaded', function() {
+                // Set up validation for each field
+                const fieldsToValidate = [
+                    { field: 'first_name', validation: 'firstNameValidation' },
+                    { field: 'last_name', validation: 'lastNameValidation' },
+                    { field: 'email', validation: 'emailValidation' },
+                    { field: 'password', validation: 'passwordValidation' },
+                    { field: 'password_confirmation', validation: 'confirmPasswordValidation' }
+                ];
+                
+                fieldsToValidate.forEach(({ field, validation }) => {
+                    const fieldElement = document.getElementById(field);
+                    const validationElement = document.getElementById(validation);
+                    
+                    if (fieldElement && validationElement) {
+                        fieldElement.addEventListener('blur', () => validateField(fieldElement, validationElement));
+                        fieldElement.addEventListener('input', () => {
+                            if (fieldElement.value.trim() === '') {
+                                fieldElement.classList.remove('error');
+                                validationElement.textContent = '';
+                                validationElement.className = 'validation-message';
+                            }
+                        });
+                    }
+                });
+                
+                // Terms checkbox validation
+                const termsCheckbox = document.getElementById('terms');
+                const termsValidation = document.getElementById('termsValidation');
+                
+                if (termsCheckbox && termsValidation) {
+                    termsCheckbox.addEventListener('change', function() {
+                        if (this.checked) {
+                            termsValidation.textContent = '';
+                            termsValidation.className = 'validation-message';
+                        }
+                    });
+                }
+                
+                // Lazy loading for images
+                const lazyImages = document.querySelectorAll('img.lazy');
+                
+                if ('IntersectionObserver' in window) {
+                    const imageObserver = new IntersectionObserver((entries, observer) => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting) {
+                                const img = entry.target;
+                                img.src = img.dataset.src;
+                                img.classList.add('lazy-loaded');
+                                imageObserver.unobserve(img);
+                            }
+                        });
+                    }, {
+                        rootMargin: '50px 0px',
+                        threshold: 0.1
+                    });
+                    
+                    lazyImages.forEach(img => imageObserver.observe(img));
+                }
+                
+                // Password strength indicator (optional - only shows on error)
+                const passwordField = document.getElementById('password');
+                const passwordValidation = document.getElementById('passwordValidation');
+                
+                if (passwordField && passwordValidation) {
+                    passwordField.addEventListener('input', function() {
+                        const password = this.value;
+                        
+                        if (password === '') {
+                            passwordValidation.textContent = '';
+                            passwordValidation.className = 'validation-message';
+                            this.classList.remove('error');
+                        } else if (password.length < 8 || !/[a-zA-Z]/.test(password) || !/\d/.test(password)) {
+                            this.classList.add('error');
+                            passwordValidation.textContent = 'Password must be at least 8 characters with letters and numbers';
+                            passwordValidation.className = 'validation-message error';
+                        } else {
+                            this.classList.remove('error');
+                            passwordValidation.textContent = '';
+                            passwordValidation.className = 'validation-message';
+                        }
+                    });
+                }
+                
+                // Clear validation errors when user starts typing
+                const formFields = ['first_name', 'last_name', 'email', 'password', 'password_confirmation'];
+                formFields.forEach(fieldId => {
+                    const field = document.getElementById(fieldId);
+                    const validation = document.getElementById(fieldId + 'Validation');
+                    
+                    if (field && validation) {
+                        field.addEventListener('input', function() {
+                            if (this.value.trim() !== '') {
+                                this.classList.remove('error');
+                                validation.textContent = '';
+                                validation.className = 'validation-message';
+                            }
+                        });
+                    }
+                });
+            });
+            
+            // Handle Enter key press in form
+            document.getElementById('registerForm').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter' && !e.target.matches('button, a')) {
+                    e.preventDefault();
+                }
             });
         </script>
     </body>

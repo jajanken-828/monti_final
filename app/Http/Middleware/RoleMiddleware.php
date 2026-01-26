@@ -10,8 +10,6 @@ class RoleMiddleware
 {
     /**
      * Handle an incoming request.
-     *
-     * @return mixed
      */
     public function handle(Request $request, Closure $next, string $role): Response
     {
@@ -22,24 +20,27 @@ class RoleMiddleware
 
         // Check if user has the required role
         if (auth()->user()->role !== $role) {
-            // Redirect to appropriate dashboard based on role and position
-            $user = auth()->user();
-
-            if ($user->role === 'hrm') {
-                if ($user->position === 'manager') {
-                    return redirect()->route('hrm.manager.dashboard');
-                } else {
-                    return redirect()->route('hrm.staff.dashboard');
-                }
-            } else {
-                if ($user->position === 'manager') {
-                    return redirect()->route('scm.manager.dashboard');
-                } else {
-                    return redirect()->route('scm.staff.dashboard');
-                }
-            }
+            return $this->redirectToDefaultDashboard();
         }
 
         return $next($request);
+    }
+
+    /**
+     * Redirect user to their appropriate dashboard
+     */
+    public function redirectToDefaultDashboard(): Response
+    {
+        $user = auth()->user();
+
+        if ($user->role === 'hrm') {
+            return $user->position === 'manager'
+                ? redirect()->route('hrm.manager.dashboard')
+                : redirect()->route('hrm.staff.dashboard');
+        } else {
+            return $user->position === 'manager'
+                ? redirect()->route('scm.manager.dashboard')
+                : redirect()->route('scm.staff.dashboard');
+        }
     }
 }

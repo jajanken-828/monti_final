@@ -33,239 +33,363 @@
             .dark .bg-yellow-theme { background-color: #d97706; }
             .dark .text-blue-theme { color: #60a5fa; }
             .dark .text-yellow-theme { color: #fbbf24; }
+            
+            /* Loading overlay styles */
+            #loading-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                z-index: 9999;
+                transition: opacity 0.5s ease;
+            }
+            
+            #loading-overlay.hidden {
+                opacity: 0;
+                pointer-events: none;
+            }
+            
+            .loading-spinner {
+                width: 70px;
+                height: 70px;
+                border: 5px solid rgba(255, 255, 255, 0.3);
+                border-radius: 50%;
+                border-top-color: #fbbf24;
+                animation: spin 1s linear infinite;
+                margin-bottom: 20px;
+            }
+            
+            .loading-text {
+                color: white;
+                font-size: 1.2rem;
+                font-weight: 500;
+                margin-top: 15px;
+                text-align: center;
+            }
+            
+            .loading-subtext {
+                color: rgba(255, 255, 255, 0.8);
+                font-size: 0.9rem;
+                margin-top: 5px;
+                text-align: center;
+            }
+            
+            .loading-progress {
+                width: 200px;
+                height: 4px;
+                background: rgba(255, 255, 255, 0.2);
+                border-radius: 2px;
+                margin-top: 20px;
+                overflow: hidden;
+            }
+            
+            .loading-progress-bar {
+                height: 100%;
+                width: 0%;
+                background: #fbbf24;
+                border-radius: 2px;
+                animation: progress 3s linear forwards;
+            }
+            
+            @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
+            
+            @keyframes progress {
+                0% { width: 0%; }
+                100% { width: 100%; }
+            }
+            
+            .content-wrapper {
+                opacity: 0;
+                transition: opacity 0.5s ease;
+            }
+            
+            .content-wrapper.loaded {
+                opacity: 1;
+            }
         </style>
     </head>
-    <body class="bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200 flex p-6 lg:p-8 items-center lg:justify-center min-h-screen flex-col">
-        <header class="w-full lg:max-w-4xl max-w-[335px] text-sm mb-6 not-has-[nav]:hidden">
-            @if (Route::has('login'))
-                <nav class="flex items-center justify-between gap-4">
-                    <div class="flex items-center gap-2">
-                        <div class="w-8 h-8 rounded-full bg-blue-theme flex items-center justify-center">
-                            <span class="text-white font-bold">MT</span>
+    <body class="bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200">
+        <!-- Loading Overlay -->
+        <div id="loading-overlay">
+            <div class="loading-spinner"></div>
+            <div class="flex flex-col items-center">
+                <div class="w-16 h-16 rounded-full bg-white flex items-center justify-center mb-4">
+                    <span class="text-blue-theme font-bold text-2xl">MT</span>
+                </div>
+                <div class="loading-text">Monti Textile ERP System</div>
+                <div class="loading-subtext">Initializing manufacturing modules...</div>
+                <div class="loading-progress">
+                    <div class="loading-progress-bar"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Content Wrapper - Now matches the original body layout -->
+        <div class="content-wrapper flex p-6 lg:p-8 items-center lg:justify-center min-h-screen flex-col w-full">
+            <header class="w-full lg:max-w-4xl max-w-[335px] text-sm mb-6 not-has-[nav]:hidden">
+                @if (Route::has('login'))
+                    <nav class="flex items-center justify-between gap-4">
+                        <div class="flex items-center gap-2">
+                            <div class="w-8 h-8 rounded-full bg-blue-theme flex items-center justify-center">
+                                <span class="text-white font-bold">MT</span>
+                            </div>
+                            <span class="font-semibold text-blue-theme">Monti Textile ERP</span>
                         </div>
-                        <span class="font-semibold text-blue-theme">Monti Textile ERP</span>
-                    </div>
-                    
-                    <div class="flex items-center gap-4">
-                        @auth
-                            <a
-                                href="{{ url('/dashboard') }}"
-                                class="inline-block px-5 py-1.5 text-blue-theme border-blue-theme border hover:bg-blue-theme hover:text-white rounded-sm text-sm leading-normal transition-colors"
-                            >
-                                Dashboard
-                            </a>
-                        @else
-                            <a
-                                href="{{ route('login') }}"
-                                class="inline-block px-5 py-1.5 text-blue-theme border border-transparent hover:border-blue-theme rounded-sm text-sm leading-normal transition-colors"
-                            >
-                                Employee Login
-                            </a>
-
-                            @if (Route::has('register'))
+                        
+                        <div class="flex items-center gap-4">
+                            @auth
                                 <a
-                                    href="{{ route('register') }}"
-                                    class="inline-block px-5 py-1.5 bg-blue-theme text-white border-blue-theme border hover:bg-blue-700 rounded-sm text-sm leading-normal transition-colors">
-                                    Register
+                                    href="{{ url('/dashboard') }}"
+                                    class="inline-block px-5 py-1.5 text-blue-theme border-blue-theme border hover:bg-blue-theme hover:text-white rounded-sm text-sm leading-normal transition-colors"
+                                >
+                                    Dashboard
                                 </a>
-                            @endif
-                        @endauth
+                            @else
+                                <a
+                                    href="{{ route('login') }}"
+                                    class="inline-block px-5 py-1.5 text-blue-theme border border-transparent hover:border-blue-theme rounded-sm text-sm leading-normal transition-colors"
+                                >
+                                    Employee Login
+                                </a>
+
+                                @if (Route::has('register'))
+                                    <a
+                                        href="{{ route('register') }}"
+                                        class="inline-block px-5 py-1.5 bg-blue-theme text-white border-blue-theme border hover:bg-blue-700 rounded-sm text-sm leading-normal transition-colors">
+                                        Register
+                                    </a>
+                                @endif
+                            @endauth
+                        </div>
+                    </nav>
+                @endif
+            </header>
+            <div class="flex items-center justify-center w-full transition-opacity opacity-100 duration-750 lg:grow starting:opacity-0">
+                <main class="flex max-w-[335px] w-full flex-col-reverse lg:max-w-4xl lg:flex-row">
+                    <div class="text-[13px] leading-[20px] flex-1 p-6 pb-12 lg:p-20 bg-white dark:bg-gray-800 shadow-[inset_0px_0px_0px_1px_rgba(37,99,235,0.1)] dark:shadow-[inset_0px_0px_0px_1px_rgba(59,130,246,0.2)] rounded-bl-lg rounded-br-lg lg:rounded-tl-lg lg:rounded-br-none">
+                        <h1 class="mb-1 font-medium text-2xl text-blue-theme">Welcome to Monti Textile ERP</h1>
+                        <p class="mb-2 text-gray-600 dark:text-gray-400">Streamline your textile and fabric manufacturing operations with our comprehensive ERP solution. <br>Manage production, inventory, and orders seamlessly.</p>
+                        
+                        <div class="mb-4 lg:mb-6">
+                            <h2 class="font-medium text-lg mb-3 text-blue-theme">Get Started Today</h2>
+                            <ul class="flex flex-col mb-4 lg:mb-6">
+                                <li class="flex items-center gap-4 py-2 relative before:border-l before:border-gray-200 dark:before:border-gray-700 before:top-1/2 before:bottom-0 before:left-[0.4rem] before:absolute">
+                                    <span class="relative py-1 bg-white dark:bg-gray-800">
+                                        <span class="flex items-center justify-center rounded-full bg-white dark:bg-gray-800 shadow-[0px_0px_1px_0px_rgba(0,0,0,0.03),0px_1px_2px_0px_rgba(0,0,0,0.06)] w-3.5 h-3.5 border dark:border-gray-700 border-gray-200">
+                                            <span class="rounded-full bg-yellow-theme w-1.5 h-1.5"></span>
+                                        </span>
+                                    </span>
+                                    <span>
+                                        Monitor real-time
+                                        <a href="#" class="inline-flex items-center space-x-1 font-medium underline underline-offset-4 text-blue-theme ml-1">
+                                            <span>Production Status</span>
+                                            <svg width="10" height="11" viewBox="0 0 10 11" fill="none" class="w-2.5 h-2.5">
+                                                <path d="M7.70833 6.95834V2.79167H3.54167M2.5 8L7.5 3.00001" stroke="currentColor" stroke-linecap="square"/>
+                                            </svg>
+                                        </a>
+                                    </span>
+                                </li>
+                                <li class="flex items-center gap-4 py-2 relative before:border-l before:border-gray-200 dark:before:border-gray-700 before:bottom-1/2 before:top-0 before:left-[0.4rem] before:absolute">
+                                    <span class="relative py-1 bg-white dark:bg-gray-800">
+                                        <span class="flex items-center justify-center rounded-full bg-white dark:bg-gray-800 shadow-[0px_0px_1px_0px_rgba(0,0,0,0.03),0px_1px_2px_0px_rgba(0,0,0,0.06)] w-3.5 h-3.5 border dark:border-gray-700 border-gray-200">
+                                            <span class="rounded-full bg-yellow-theme w-1.5 h-1.5"></span>
+                                        </span>
+                                    </span>
+                                    <span>
+                                        Track inventory with
+                                        <a href="#" class="inline-flex items-center space-x-1 font-medium underline underline-offset-4 text-blue-theme ml-1">
+                                            <span>Smart Analytics</span>
+                                            <svg width="10" height="11" viewBox="0 0 10 11" fill="none" class="w-2.5 h-2.5">
+                                                <path d="M7.70833 6.95834V2.79167H3.54167M2.5 8L7.5 3.00001" stroke="currentColor" stroke-linecap="square"/>
+                                            </svg>
+                                        </a>
+                                    </span>
+                                </li>
+                                <li class="flex items-center gap-4 py-2">
+                                    <span class="relative py-1 bg-white dark:bg-gray-800">
+                                        <span class="flex items-center justify-center rounded-full bg-white dark:bg-gray-800 shadow-[0px_0px_1px_0px_rgba(0,0,0,0.03),0px_1px_2px_0px_rgba(0,0,0,0.06)] w-3.5 h-3.5 border dark:border-gray-700 border-gray-200">
+                                            <span class="rounded-full bg-yellow-theme w-1.5 h-1.5"></span>
+                                        </span>
+                                    </span>
+                                    <span>
+                                        Optimize supply chain with
+                                        <a href="#" class="inline-flex items-center space-x-1 font-medium underline underline-offset-4 text-blue-theme ml-1">
+                                            <span>Order Management</span>
+                                            <svg width="10" height="11" viewBox="0 0 10 11" fill="none" class="w-2.5 h-2.5">
+                                                <path d="M7.70833 6.95834V2.79167H3.54167M2.5 8L7.5 3.00001" stroke="currentColor" stroke-linecap="square"/>
+                                            </svg>
+                                        </a>
+                                    </span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="mb-6">
+                            <h2 class="font-medium text-lg mb-3 text-blue-theme">ERP Features</h2>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+                                <div class="flex items-center gap-2">
+                                    <div class="w-2 h-2 rounded-full bg-yellow-theme"></div>
+                                    <span>Production Scheduling</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <div class="w-2 h-2 rounded-full bg-yellow-theme"></div>
+                                    <span>Inventory Management</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <div class="w-2 h-2 rounded-full bg-yellow-theme"></div>
+                                    <span>Quality Control</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <div class="w-2 h-2 rounded-full bg-yellow-theme"></div>
+                                    <span>Order Processing</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <div class="w-2 h-2 rounded-full bg-yellow-theme"></div>
+                                    <span>Fabric Grading</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <div class="w-2 h-2 rounded-full bg-yellow-theme"></div>
+                                    <span>Shipping & Logistics</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-6">
+                            <h2 class="font-medium text-lg mb-3 text-blue-theme">Modules</h2>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+                                <div class="flex items-center gap-2">
+                                    <div class="w-2 h-2 rounded-full bg-blue-theme"></div>
+                                    <span>Yarn & Raw Material</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <div class="w-2 h-2 rounded-full bg-blue-theme"></div>
+                                    <span>Weaving & Knitting</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <div class="w-2 h-2 rounded-full bg-blue-theme"></div>
+                                    <span>Dyeing & Printing</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <div class="w-2 h-2 rounded-full bg-blue-theme"></div>
+                                    <span>Finishing Department</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </nav>
-            @endif
-        </header>
-        <div class="flex items-center justify-center w-full transition-opacity opacity-100 duration-750 lg:grow starting:opacity-0">
-            <main class="flex max-w-[335px] w-full flex-col-reverse lg:max-w-4xl lg:flex-row">
-                <div class="text-[13px] leading-[20px] flex-1 p-6 pb-12 lg:p-20 bg-white dark:bg-gray-800 shadow-[inset_0px_0px_0px_1px_rgba(37,99,235,0.1)] dark:shadow-[inset_0px_0px_0px_1px_rgba(59,130,246,0.2)] rounded-bl-lg rounded-br-lg lg:rounded-tl-lg lg:rounded-br-none">
-                    <h1 class="mb-1 font-medium text-2xl text-blue-theme">Welcome to Monti Textile ERP</h1>
-                    <p class="mb-2 text-gray-600 dark:text-gray-400">Streamline your textile and fabric manufacturing operations with our comprehensive ERP solution. <br>Manage production, inventory, and orders seamlessly.</p>
                     
-                    <div class="mb-4 lg:mb-6">
-                        <h2 class="font-medium text-lg mb-3 text-blue-theme">Get Started Today</h2>
-                        <ul class="flex flex-col mb-4 lg:mb-6">
-                            <li class="flex items-center gap-4 py-2 relative before:border-l before:border-gray-200 dark:before:border-gray-700 before:top-1/2 before:bottom-0 before:left-[0.4rem] before:absolute">
-                                <span class="relative py-1 bg-white dark:bg-gray-800">
-                                    <span class="flex items-center justify-center rounded-full bg-white dark:bg-gray-800 shadow-[0px_0px_1px_0px_rgba(0,0,0,0.03),0px_1px_2px_0px_rgba(0,0,0,0.06)] w-3.5 h-3.5 border dark:border-gray-700 border-gray-200">
-                                        <span class="rounded-full bg-yellow-theme w-1.5 h-1.5"></span>
-                                    </span>
-                                </span>
-                                <span>
-                                    Monitor real-time
-                                    <a href="#" class="inline-flex items-center space-x-1 font-medium underline underline-offset-4 text-blue-theme ml-1">
-                                        <span>Production Status</span>
-                                        <svg width="10" height="11" viewBox="0 0 10 11" fill="none" class="w-2.5 h-2.5">
-                                            <path d="M7.70833 6.95834V2.79167H3.54167M2.5 8L7.5 3.00001" stroke="currentColor" stroke-linecap="square"/>
-                                        </svg>
-                                    </a>
-                                </span>
-                            </li>
-                            <li class="flex items-center gap-4 py-2 relative before:border-l before:border-gray-200 dark:before:border-gray-700 before:bottom-1/2 before:top-0 before:left-[0.4rem] before:absolute">
-                                <span class="relative py-1 bg-white dark:bg-gray-800">
-                                    <span class="flex items-center justify-center rounded-full bg-white dark:bg-gray-800 shadow-[0px_0px_1px_0px_rgba(0,0,0,0.03),0px_1px_2px_0px_rgba(0,0,0,0.06)] w-3.5 h-3.5 border dark:border-gray-700 border-gray-200">
-                                        <span class="rounded-full bg-yellow-theme w-1.5 h-1.5"></span>
-                                    </span>
-                                </span>
-                                <span>
-                                    Track inventory with
-                                    <a href="#" class="inline-flex items-center space-x-1 font-medium underline underline-offset-4 text-blue-theme ml-1">
-                                        <span>Smart Analytics</span>
-                                        <svg width="10" height="11" viewBox="0 0 10 11" fill="none" class="w-2.5 h-2.5">
-                                            <path d="M7.70833 6.95834V2.79167H3.54167M2.5 8L7.5 3.00001" stroke="currentColor" stroke-linecap="square"/>
-                                        </svg>
-                                    </a>
-                                </span>
-                            </li>
-                            <li class="flex items-center gap-4 py-2">
-                                <span class="relative py-1 bg-white dark:bg-gray-800">
-                                    <span class="flex items-center justify-center rounded-full bg-white dark:bg-gray-800 shadow-[0px_0px_1px_0px_rgba(0,0,0,0.03),0px_1px_2px_0px_rgba(0,0,0,0.06)] w-3.5 h-3.5 border dark:border-gray-700 border-gray-200">
-                                        <span class="rounded-full bg-yellow-theme w-1.5 h-1.5"></span>
-                                    </span>
-                                </span>
-                                <span>
-                                    Optimize supply chain with
-                                    <a href="#" class="inline-flex items-center space-x-1 font-medium underline underline-offset-4 text-blue-theme ml-1">
-                                        <span>Order Management</span>
-                                        <svg width="10" height="11" viewBox="0 0 10 11" fill="none" class="w-2.5 h-2.5">
-                                            <path d="M7.70833 6.95834V2.79167H3.54167M2.5 8L7.5 3.00001" stroke="currentColor" stroke-linecap="square"/>
-                                        </svg>
-                                    </a>
-                                </span>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <div class="mb-6">
-                        <h2 class="font-medium text-lg mb-3 text-blue-theme">ERP Features</h2>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
-                            <div class="flex items-center gap-2">
-                                <div class="w-2 h-2 rounded-full bg-yellow-theme"></div>
-                                <span>Production Scheduling</span>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <div class="w-2 h-2 rounded-full bg-yellow-theme"></div>
-                                <span>Inventory Management</span>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <div class="w-2 h-2 rounded-full bg-yellow-theme"></div>
-                                <span>Quality Control</span>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <div class="w-2 h-2 rounded-full bg-yellow-theme"></div>
-                                <span>Order Processing</span>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <div class="w-2 h-2 rounded-full bg-yellow-theme"></div>
-                                <span>Fabric Grading</span>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <div class="w-2 h-2 rounded-full bg-yellow-theme"></div>
-                                <span>Shipping & Logistics</span>
+                    <div class="bg-gradient-to-br from-blue-50 to-yellow-50 dark:from-blue-950 dark:to-gray-900 relative lg:-ml-px -mb-px lg:mb-0 rounded-t-lg lg:rounded-t-none lg:rounded-r-lg aspect-[335/376] lg:aspect-auto w-full lg:w-[438px] shrink-0 overflow-hidden">
+                        <!-- Monti Textile Logo -->
+                        <div class="absolute top-8 left-8">
+                            <div class="flex items-center gap-3">
+                                <div class="w-12 h-12 rounded-full bg-blue-theme flex items-center justify-center shadow-lg">
+                                    <span class="text-white font-bold text-xl">MT</span>
+                                </div>
+                                <div>
+                                    <div class="text-2xl font-bold text-blue-theme">Monti Textile</div>
+                                    <div class="text-sm text-gray-600 dark:text-gray-400">ERP System</div>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="mb-6">
-                        <h2 class="font-medium text-lg mb-3 text-blue-theme">Modules</h2>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
-                            <div class="flex items-center gap-2">
-                                <div class="w-2 h-2 rounded-full bg-blue-theme"></div>
-                                <span>Yarn & Raw Material</span>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <div class="w-2 h-2 rounded-full bg-blue-theme"></div>
-                                <span>Weaving & Knitting</span>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <div class="w-2 h-2 rounded-full bg-blue-theme"></div>
-                                <span>Dyeing & Printing</span>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <div class="w-2 h-2 rounded-full bg-blue-theme"></div>
-                                <span>Finishing Department</span>
+                        <!-- Textile Manufacturing Graphic -->
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <div class="relative w-64 h-64">
+                                <!-- Fabric Roll -->
+                                <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                                    <div class="w-40 h-32 bg-white dark:bg-gray-800 rounded-lg shadow-xl rotate-6 border-2 border-blue-100 dark:border-blue-900">
+                                        <div class="absolute inset-0 p-4">
+                                            <div class="h-2 bg-yellow-theme rounded mb-2"></div>
+                                            <div class="h-2 bg-blue-theme rounded mb-2 w-3/4"></div>
+                                            <div class="h-2 bg-yellow-theme rounded mb-2 w-1/2"></div>
+                                            <div class="h-2 bg-blue-theme rounded mb-2"></div>
+                                            <div class="h-2 bg-yellow-theme rounded mb-2 w-2/3"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Spool Icon -->
+                                <div class="absolute top-8 left-12">
+                                    <div class="w-16 h-8 bg-yellow-theme rounded-t-lg">
+                                        <div class="w-12 h-6 bg-yellow-200 mx-auto mt-1 rounded"></div>
+                                    </div>
+                                    <div class="w-4 h-4 bg-yellow-600 rounded-full mx-auto mt-1"></div>
+                                </div>
+                                
+                                <!-- Quality Control Check -->
+                                <div class="absolute bottom-12 right-12">
+                                    <div class="w-20 h-20 rounded-full border-4 border-blue-200 dark:border-blue-800 flex items-center justify-center">
+                                        <div class="w-16 h-16 rounded-full border-4 border-green-500 border-t-transparent flex items-center justify-center">
+                                            <span class="text-green-500 font-bold">✓</span>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+
+                        <!-- Manufacturing Stats -->
+                        <div class="absolute bottom-8 left-0 right-0 px-8">
+                            <div class="flex justify-between">
+                                <div class="text-center">
+                                    <div class="text-2xl font-bold text-blue-theme">5K+</div>
+                                    <div class="text-sm text-gray-600 dark:text-gray-400">Rolls Daily</div>
+                                </div>
+                                <div class="text-center">
+                                    <div class="text-2xl font-bold text-yellow-theme">99.8%</div>
+                                    <div class="text-sm text-gray-600 dark:text-gray-400">Quality Rate</div>
+                                </div>
+                                <div class="text-center">
+                                    <div class="text-2xl font-bold text-blue-theme">24/7</div>
+                                    <div class="text-sm text-gray-600 dark:text-gray-400">Production</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="absolute inset-0 rounded-t-lg lg:rounded-t-none lg:rounded-r-lg shadow-[inset_0px_0px_0px_1px_rgba(37,99,235,0.1)] dark:shadow-[inset_0px_0px_0px_1px_rgba(59,130,246,0.2)]"></div>
                     </div>
-                </div>
+                </main>
+            </div>
+
+            <footer class="mt-8 text-center text-gray-500 dark:text-gray-400 text-sm">
+                <p>© 2026 Monti Textile Manufacturing ERP System. All rights reserved.</p>
                 
-                <div class="bg-gradient-to-br from-blue-50 to-yellow-50 dark:from-blue-950 dark:to-gray-900 relative lg:-ml-px -mb-px lg:mb-0 rounded-t-lg lg:rounded-t-none lg:rounded-r-lg aspect-[335/376] lg:aspect-auto w-full lg:w-[438px] shrink-0 overflow-hidden">
-                    <!-- Monti Textile Logo -->
-                    <div class="absolute top-8 left-8">
-                        <div class="flex items-center gap-3">
-                            <div class="w-12 h-12 rounded-full bg-blue-theme flex items-center justify-center shadow-lg">
-                                <span class="text-white font-bold text-xl">MT</span>
-                            </div>
-                            <div>
-                                <div class="text-2xl font-bold text-blue-theme">Monti Textile</div>
-                                <div class="text-sm text-gray-600 dark:text-gray-400">ERP System</div>
-                            </div>
-                        </div>
-                    </div>
+            </footer>
 
-                    <!-- Textile Manufacturing Graphic -->
-                    <div class="absolute inset-0 flex items-center justify-center">
-                        <div class="relative w-64 h-64">
-                            <!-- Fabric Roll -->
-                            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                                <div class="w-40 h-32 bg-white dark:bg-gray-800 rounded-lg shadow-xl rotate-6 border-2 border-blue-100 dark:border-blue-900">
-                                    <div class="absolute inset-0 p-4">
-                                        <div class="h-2 bg-yellow-theme rounded mb-2"></div>
-                                        <div class="h-2 bg-blue-theme rounded mb-2 w-3/4"></div>
-                                        <div class="h-2 bg-yellow-theme rounded mb-2 w-1/2"></div>
-                                        <div class="h-2 bg-blue-theme rounded mb-2"></div>
-                                        <div class="h-2 bg-yellow-theme rounded mb-2 w-2/3"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <!-- Spool Icon -->
-                            <div class="absolute top-8 left-12">
-                                <div class="w-16 h-8 bg-yellow-theme rounded-t-lg">
-                                    <div class="w-12 h-6 bg-yellow-200 mx-auto mt-1 rounded"></div>
-                                </div>
-                                <div class="w-4 h-4 bg-yellow-600 rounded-full mx-auto mt-1"></div>
-                            </div>
-                            
-                            <!-- Quality Control Check -->
-                            <div class="absolute bottom-12 right-12">
-                                <div class="w-20 h-20 rounded-full border-4 border-blue-200 dark:border-blue-800 flex items-center justify-center">
-                                    <div class="w-16 h-16 rounded-full border-4 border-green-500 border-t-transparent flex items-center justify-center">
-                                        <span class="text-green-500 font-bold">✓</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Manufacturing Stats -->
-                    <div class="absolute bottom-8 left-0 right-0 px-8">
-                        <div class="flex justify-between">
-                            <div class="text-center">
-                                <div class="text-2xl font-bold text-blue-theme">5K+</div>
-                                <div class="text-sm text-gray-600 dark:text-gray-400">Rolls Daily</div>
-                            </div>
-                            <div class="text-center">
-                                <div class="text-2xl font-bold text-yellow-theme">99.8%</div>
-                                <div class="text-sm text-gray-600 dark:text-gray-400">Quality Rate</div>
-                            </div>
-                            <div class="text-center">
-                                <div class="text-2xl font-bold text-blue-theme">24/7</div>
-                                <div class="text-sm text-gray-600 dark:text-gray-400">Production</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="absolute inset-0 rounded-t-lg lg:rounded-t-none lg:rounded-r-lg shadow-[inset_0px_0px_0px_1px_rgba(37,99,235,0.1)] dark:shadow-[inset_0px_0px_0px_1px_rgba(59,130,246,0.2)]"></div>
-                </div>
-            </main>
+            @if (Route::has('login'))
+                <div class="h-14.5 hidden lg:block"></div>
+            @endif
         </div>
 
-        <footer class="mt-8 text-center text-gray-500 dark:text-gray-400 text-sm">
-            <p>© 2026 Monti Textile Manufacturing ERP System. All rights reserved.</p>
-            
-        </footer>
-
-        @if (Route::has('login'))
-            <div class="h-14.5 hidden lg:block"></div>
-        @endif
+        <!-- JavaScript for lazy loading -->
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const loadingOverlay = document.getElementById('loading-overlay');
+                const contentWrapper = document.querySelector('.content-wrapper');
+                
+                // Hide the content initially
+                contentWrapper.style.opacity = '0';
+                contentWrapper.style.pointerEvents = 'none';
+                
+                // Show content and hide overlay after 3 seconds
+                setTimeout(function() {
+                    loadingOverlay.classList.add('hidden');
+                    
+                    // Small delay before showing content for smoother transition
+                    setTimeout(function() {
+                        contentWrapper.classList.add('loaded');
+                        contentWrapper.style.opacity = '1';
+                        contentWrapper.style.pointerEvents = 'all';
+                    }, 300);
+                }, 3000);
+            });
+        </script>
     </body>
 </html>
