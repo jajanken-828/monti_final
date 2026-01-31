@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\uno\hrm\hrm_manager\DashboardController as HRMManagerDashboardController;
+use App\Http\Controllers\uno\hrm\hrm_staff\ApplicantController;
 use App\Http\Controllers\uno\hrm\hrm_staff\DashboardController as HRMStaffDashboardController;
+use App\Http\Controllers\uno\hrm\hrm_staff\InterviewController;
 use App\Http\Controllers\uno\scm\scm_manager\DashboardController as SCMManagerDashboardController;
 use App\Http\Controllers\uno\scm\scm_staff\DashboardController as SCMStaffDashboardController;
 use Illuminate\Support\Facades\Route;
@@ -65,20 +67,54 @@ Route::prefix('hrm')
         Route::prefix('staff')
             ->middleware('position:staff')
             ->name('staff.')
-            ->controller(HRMStaffDashboardController::class)
             ->group(function () {
-                Route::get('/dashboard', 'dashboard')->name('dashboard');
-                Route::get('/payroll', 'payroll')->name('payroll');
-                Route::get('/leave', 'leave')->name('leave');
-                Route::get('/attendance', 'attendance')->name('attendance');
-                Route::get('/training', 'training')->name('training');
-                Route::get('/employee', 'employee')->name('employee');
-                Route::get('/application', 'application')->name('application');
-                Route::get('/paylist', 'paylist')->name('paylist');
-                Route::get('/leave-request', 'leaveRequest')->name('LeaveRequest');
-                Route::get('/time', 'time')->name('time');
-                Route::get('/shift', 'shift')->name('shift');
-                Route::get('/trainee', 'trainee')->name('trainee');
+
+                // Dashboard Controller Routes
+                Route::controller(HRMStaffDashboardController::class)->group(function () {
+                    Route::get('/dashboard', 'dashboard')->name('dashboard');
+                    Route::get('/payroll', 'payroll')->name('payroll');
+                    Route::get('/leave', 'leave')->name('leave');
+                    Route::get('/attendance', 'attendance')->name('attendance');
+                    Route::get('/training', 'training')->name('training');
+                    Route::get('/employee', 'employee')->name('employee');
+                    Route::get('/application', 'application')->name('application');
+                    Route::get('/paylist', 'paylist')->name('paylist');
+                    Route::get('/leave-request', 'leaveRequest')->name('LeaveRequest');
+                    Route::get('/time', 'time')->name('time');
+                    Route::get('/shift', 'shift')->name('shift');
+                    Route::get('/trainee', 'trainee')->name('trainee');
+                    // Note: interview route has been moved to InterviewController
+                });
+
+                // Application Management Routes (ApplicantController)
+                Route::prefix('application')
+                    ->name('application.')
+                    ->controller(ApplicantController::class)
+                    ->group(function () {
+                        Route::get('/', 'index')->name('index'); // This will be the main application page
+                        Route::get('/{id}', 'show')->name('show'); // View single applicant
+                        Route::post('/', 'store')->name('store');
+                        Route::put('/{id}', 'update')->name('update');
+                        Route::delete('/{id}', 'destroy')->name('destroy');
+                        Route::post('/{id}/schedule-interview', 'scheduleInterview')->name('schedule-interview');
+                        Route::put('/{id}/status', 'updateStatus')->name('update-status');
+                        Route::get('/statistics', 'getStatistics')->name('statistics');
+                        // ADD THE MISSING ROUTE HERE
+                        Route::get('/{id}/interview-schedules', 'getInterviewSchedules')->name('interview-schedules');
+                    });
+
+                // Interview Management Routes (InterviewController)
+                Route::controller(InterviewController::class)->group(function () {
+                    // Main interview page (GET /hrm/staff/interview)
+                    Route::get('/interview', 'interviews')->name('interview');
+
+                    // API routes for interview operations
+                    Route::get('/interviews/{id}', 'getInterview')->name('interviews.show'); // GET /hrm/staff/interviews/{id}
+                    Route::post('/interviews/{id}/start-now', 'startInterviewNow')->name('interviews.start-now'); // POST /hrm/staff/interviews/{id}/start-now
+                    Route::post('/interviews/{id}/complete', 'completeInterview')->name('interviews.complete'); // POST /hrm/staff/interviews/{id}/complete
+                    Route::post('/interviews/{id}/reschedule', 'rescheduleInterview')->name('interviews.reschedule'); // POST /hrm/staff/interviews/{id}/reschedule
+                    Route::post('/interviews/{id}/cancel', 'cancelInterview')->name('interviews.cancel'); // POST /hrm/staff/interviews/{id}/cancel
+                });
 
             });
     });

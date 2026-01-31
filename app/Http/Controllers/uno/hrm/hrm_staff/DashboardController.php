@@ -62,7 +62,8 @@ class DashboardController extends Controller
      */
     public function application()
     {
-        return $this->view('application');
+        // Redirect to the ApplicantController index method
+        return app(\App\Http\Controllers\uno\hrm\hrm_staff\ApplicantController::class)->index();
     }
 
     /**
@@ -103,6 +104,11 @@ class DashboardController extends Controller
     public function trainee()
     {
         return $this->view('trainee');
+    }
+
+    public function interview()
+    {
+        return $this->view('interview');
     }
 
     /**

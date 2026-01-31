@@ -8,6 +8,7 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <!-- Styles / Scripts -->
     @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
@@ -22,7 +23,7 @@
         .content-loading-overlay {
             position: fixed;
             top: 0;
-            left: 260px; /* Sidebar width */
+            left: 260px;
             right: 0;
             bottom: 0;
             background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
@@ -34,7 +35,6 @@
             transition: opacity 0.5s ease, visibility 0.5s ease;
         }
         
-        /* Adjust for collapsed sidebar */
         .sidebar.collapsed ~ .content-loading-overlay {
             left: 80px;
         }
@@ -287,23 +287,6 @@
             border-radius: 3px 3px 0 0;
         }
         
-        .status-indicator {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            display: inline-block;
-        }
-        
-        .status-online {
-            background-color: #10b981;
-            box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.3);
-        }
-        
-        .status-offline {
-            background-color: #94a3b8;
-            box-shadow: 0 0 0 2px rgba(148, 163, 184, 0.3);
-        }
-        
         .search-input:focus {
             box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
             border-color: #3b82f6;
@@ -345,15 +328,6 @@
         @keyframes float {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-10px); }
-        }
-        
-        .animate-pulse-slow {
-            animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-        }
-        
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.8; }
         }
         
         /* Custom scrollbar */
@@ -481,23 +455,6 @@
                 width: 100%;
                 justify-content: space-between;
             }
-            
-            .featured-banner {
-                text-align: center;
-                padding: 1.5rem !important;
-            }
-            
-            .featured-banner-content {
-                padding-right: 0 !important;
-            }
-            
-            .featured-banner img {
-                display: none;
-            }
-            
-            .instructors-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
         }
         
         @media (max-width: 640px) {
@@ -505,20 +462,8 @@
                 grid-template-columns: 1fr;
             }
             
-            .instructors-grid {
-                grid-template-columns: 1fr;
-            }
-            
             .header-title {
                 font-size: 1.5rem;
-            }
-            
-            .featured-banner {
-                text-align: center;
-            }
-            
-            .featured-banner-button {
-                width: 100%;
             }
         }
     </style>
@@ -560,7 +505,7 @@
                         
                         <button class="relative p-2.5 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-600 text-gray-600 dark:text-gray-300">
                             <i class="fas fa-bell"></i>
-                            <span class="notification-badge">8</span>
+                            <span class="notification-badge">0</span>
                         </button>
                         
                         <button class="md:hidden p-2.5 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-600 text-gray-600 dark:text-gray-300" id="mobile-menu-toggle">
@@ -585,7 +530,7 @@
                     </div>
                     <div>
                         <div class="text-gray-500 dark:text-gray-400 text-sm">Pending Requests</div>
-                        <div class="text-2xl font-bold text-gray-900 dark:text-white">18</div>
+                        <div class="text-2xl font-bold text-gray-900 dark:text-white" id="pending-count">0</div>
                     </div>
                 </div>
                 
@@ -595,7 +540,7 @@
                     </div>
                     <div>
                         <div class="text-gray-500 dark:text-gray-400 text-sm">Approved This Month</div>
-                        <div class="text-2xl font-bold text-gray-900 dark:text-white">42</div>
+                        <div class="text-2xl font-bold text-gray-900 dark:text-white" id="approved-count">0</div>
                     </div>
                 </div>
                 
@@ -605,7 +550,7 @@
                     </div>
                     <div>
                         <div class="text-gray-500 dark:text-gray-400 text-sm">Rejected This Month</div>
-                        <div class="text-2xl font-bold text-gray-900 dark:text-white">7</div>
+                        <div class="text-2xl font-bold text-gray-900 dark:text-white" id="rejected-count">0</div>
                     </div>
                 </div>
                 
@@ -615,7 +560,7 @@
                     </div>
                     <div>
                         <div class="text-gray-500 dark:text-gray-400 text-sm">Total Leave Days</div>
-                        <div class="text-2xl font-bold text-gray-900 dark:text-white">245</div>
+                        <div class="text-2xl font-bold text-gray-900 dark:text-white" id="total-days">0</div>
                     </div>
                 </div>
             </div>
@@ -667,16 +612,16 @@
                                 <div class="mb-3">
                                     <div class="flex justify-between text-sm mb-1">
                                         <span class="text-gray-600 dark:text-gray-300">Processing Rate</span>
-                                        <span class="text-blue-theme font-medium">85%</span>
+                                        <span class="text-blue-theme font-medium">0%</span>
                                     </div>
                                     <div class="course-progress">
-                                        <div class="course-progress-fill" style="width: 85%"></div>
+                                        <div class="course-progress-fill" style="width: 0%"></div>
                                     </div>
                                 </div>
                                 
                                 <div class="flex justify-between text-xs text-gray-500 dark:text-gray-400">
-                                    <span>18 Pending</span>
-                                    <span>42 Processed</span>
+                                    <span>0 Pending</span>
+                                    <span>0 Processed</span>
                                 </div>
                             </div>
                             
@@ -693,10 +638,10 @@
                                 <div class="mb-3">
                                     <div class="flex justify-between text-sm mb-1">
                                         <span class="text-gray-600 dark:text-gray-300">Report Completion</span>
-                                        <span class="text-blue-theme font-medium">92%</span>
+                                        <span class="text-blue-theme font-medium">0%</span>
                                     </div>
                                     <div class="course-progress">
-                                        <div class="course-progress-fill" style="width: 92%"></div>
+                                        <div class="course-progress-fill" style="width: 0%"></div>
                                     </div>
                                 </div>
                                 
@@ -730,11 +675,11 @@
                             </p>
                             
                             <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5 mt-5">
-                                <div class="bg-teal-theme h-2.5 rounded-full" style="width: 88%"></div>
+                                <div class="bg-teal-theme h-2.5 rounded-full" style="width: 0%"></div>
                             </div>
                             <div class="w-full flex justify-between text-sm text-gray-500 dark:text-gray-400 mt-2">
                                 <span>Approval Efficiency</span>
-                                <span class="text-gray-900 dark:text-white font-medium">88%</span>
+                                <span class="text-gray-900 dark:text-white font-medium">0%</span>
                             </div>
                             
                             <a href="#" class="w-full mt-5">
@@ -752,45 +697,8 @@
                             <a href="#" class="text-blue-theme text-sm font-medium hover:text-blue-700 dark:hover:text-blue-400">View Calendar</a>
                         </div>
                         
-                        <div class="space-y-4">
-                            <div class="flex items-center justify-between p-3 rounded-xl bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600">
-                                <div class="flex items-center">
-                                    <div class="w-10 h-10 rounded-lg bg-orange-100 dark:bg-orange-900 flex items-center justify-center mr-3">
-                                        <i class="fas fa-umbrella-beach text-orange-600 dark:text-orange-300"></i>
-                                    </div>
-                                    <div>
-                                        <h4 class="font-medium text-gray-900 dark:text-white">VACATION LEAVE</h4>
-                                        <p class="text-gray-500 dark:text-gray-400 text-xs">John Dela Cruz</p>
-                                    </div>
-                                </div>
-                                <span class="text-gray-500 dark:text-gray-400 text-sm font-medium">Nov 20-25</span>
-                            </div>
-                            
-                            <div class="flex items-center justify-between p-3 rounded-xl bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600">
-                                <div class="flex items-center">
-                                    <div class="w-10 h-10 rounded-lg bg-blue-100 dark:bg-blue-900 flex items-center justify-center mr-3">
-                                        <i class="fas fa-stethoscope text-blue-600 dark:text-blue-300"></i>
-                                    </div>
-                                    <div>
-                                        <h4 class="font-medium text-gray-900 dark:text-white">SICK LEAVE</h4>
-                                        <p class="text-gray-500 dark:text-gray-400 text-xs">Maria Santos</p>
-                                    </div>
-                                </div>
-                                <span class="text-gray-500 dark:text-gray-400 text-sm font-medium">Nov 22-24</span>
-                            </div>
-                            
-                            <div class="flex items-center justify-between p-3 rounded-xl bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600">
-                                <div class="flex items-center">
-                                    <div class="w-10 h-10 rounded-lg bg-red-100 dark:bg-red-900 flex items-center justify-center mr-3">
-                                        <i class="fas fa-heart text-red-600 dark:text-red-300"></i>
-                                    </div>
-                                    <div>
-                                        <h4 class="font-medium text-gray-900 dark:text-white">MATERNITY LEAVE</h4>
-                                        <p class="text-gray-500 dark:text-gray-400 text-xs">Anna Gomez</p>
-                                    </div>
-                                </div>
-                                <span class="text-gray-500 dark:text-gray-400 text-sm font-medium">Dec 1-31</span>
-                            </div>
+                        <div class="space-y-4" id="upcoming-leaves">
+                            <!-- Upcoming leaves will be populated here -->
                         </div>
                     </div>
                 </div>
@@ -818,118 +726,8 @@
                                     <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Action</th>
                                 </tr>
                             </thead>
-                            <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-                                <tr>
-                                    <td class="px-4 py-4 whitespace-nowrap">
-                                        <div class="flex items-center">
-                                            <div class="flex-shrink-0 h-10 w-10 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center text-blue-600 dark:text-blue-300 font-medium">
-                                                JD
-                                            </div>
-                                            <div class="ml-4">
-                                                <div class="text-sm font-medium text-gray-900 dark:text-white">John Dela Cruz</div>
-                                                <div class="text-sm text-gray-500 dark:text-gray-400">Production Dept.</div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="px-4 py-4 whitespace-nowrap">
-                                        <div class="flex items-center">
-                                            <div class="w-8 h-8 rounded-full bg-orange-100 dark:bg-orange-900 flex items-center justify-center mr-2">
-                                                <i class="fas fa-umbrella-beach text-orange-600 dark:text-orange-300 text-xs"></i>
-                                            </div>
-                                            <span class="text-sm text-gray-900 dark:text-white">Vacation</span>
-                                        </div>
-                                    </td>
-                                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
-                                        Nov 20 - 25, 2023<br>
-                                        <span class="text-gray-500 dark:text-gray-400 text-xs">6 days</span>
-                                    </td>
-                                    <td class="px-4 py-4 whitespace-nowrap">
-                                        <span class="leave-status-badge leave-status-pending">
-                                            Pending
-                                        </span>
-                                    </td>
-                                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">Nov 10, 2023</td>
-                                    <td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
-                                        <button class="text-green-600 hover:text-green-900 dark:text-green-400 dark:hover:text-green-300 mr-3">
-                                            <i class="fas fa-check"></i> Approve
-                                        </button>
-                                        <button class="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300">
-                                            <i class="fas fa-times"></i> Reject
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="px-4 py-4 whitespace-nowrap">
-                                        <div class="flex items-center">
-                                            <div class="flex-shrink-0 h-10 w-10 rounded-full bg-purple-100 dark:bg-purple-900 flex items-center justify-center text-purple-600 dark:text-purple-300 font-medium">
-                                                MS
-                                            </div>
-                                            <div class="ml-4">
-                                                <div class="text-sm font-medium text-gray-900 dark:text-white">Maria Santos</div>
-                                                <div class="text-sm text-gray-500 dark:text-gray-400">Quality Control</div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="px-4 py-4 whitespace-nowrap">
-                                        <div class="flex items-center">
-                                            <div class="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center mr-2">
-                                                <i class="fas fa-stethoscope text-blue-600 dark:text-blue-300 text-xs"></i>
-                                            </div>
-                                            <span class="text-sm text-gray-900 dark:text-white">Sick Leave</span>
-                                        </div>
-                                    </td>
-                                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
-                                        Nov 22 - 24, 2023<br>
-                                        <span class="text-gray-500 dark:text-gray-400 text-xs">3 days</span>
-                                    </td>
-                                    <td class="px-4 py-4 whitespace-nowrap">
-                                        <span class="leave-status-badge leave-status-approved">
-                                            Approved
-                                        </span>
-                                    </td>
-                                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">Nov 12, 2023</td>
-                                    <td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
-                                        <button class="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300">
-                                            <i class="fas fa-eye"></i> View
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="px-4 py-4 whitespace-nowrap">
-                                        <div class="flex items-center">
-                                            <div class="flex-shrink-0 h-10 w-10 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center text-green-600 dark:text-green-300 font-medium">
-                                                RG
-                                            </div>
-                                            <div class="ml-4">
-                                                <div class="text-sm font-medium text-gray-900 dark:text-white">Robert Garcia</div>
-                                                <div class="text-sm text-gray-500 dark:text-gray-400">Maintenance</div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="px-4 py-4 whitespace-nowrap">
-                                        <div class="flex items-center">
-                                            <div class="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-900 flex items-center justify-center mr-2">
-                                                <i class="fas fa-gavel text-gray-600 dark:text-gray-300 text-xs"></i>
-                                            </div>
-                                            <span class="text-sm text-gray-900 dark:text-white">Emergency</span>
-                                        </div>
-                                    </td>
-                                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
-                                        Nov 18, 2023<br>
-                                        <span class="text-gray-500 dark:text-gray-400 text-xs">1 day</span>
-                                    </td>
-                                    <td class="px-4 py-4 whitespace-nowrap">
-                                        <span class="leave-status-badge leave-status-rejected">
-                                            Rejected
-                                        </span>
-                                    </td>
-                                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">Nov 15, 2023</td>
-                                    <td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
-                                        <button class="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300">
-                                            <i class="fas fa-eye"></i> View
-                                        </button>
-                                    </td>
-                                </tr>
+                            <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700" id="recent-leaves-tbody">
+                                <!-- Recent leave requests will be populated here -->
                             </tbody>
                         </table>
                     </div>
@@ -953,11 +751,11 @@
                             </div>
                             <div>
                                 <div class="text-gray-500 dark:text-gray-400 text-sm">Vacation Leave</div>
-                                <div class="text-xl font-bold text-gray-900 dark:text-white">15 days</div>
+                                <div class="text-xl font-bold text-gray-900 dark:text-white" id="vacation-balance">0 days</div>
                             </div>
                         </div>
                         <div class="text-xs text-gray-500 dark:text-gray-400">
-                            Average used: 8 days per employee
+                            Average used: 0 days per employee
                         </div>
                     </div>
                     
@@ -968,11 +766,11 @@
                             </div>
                             <div>
                                 <div class="text-gray-500 dark:text-gray-400 text-sm">Sick Leave</div>
-                                <div class="text-xl font-bold text-gray-900 dark:text-white">10 days</div>
+                                <div class="text-xl font-bold text-gray-900 dark:text-white" id="sick-balance">0 days</div>
                             </div>
                         </div>
                         <div class="text-xs text-gray-500 dark:text-gray-400">
-                            Average used: 3 days per employee
+                            Average used: 0 days per employee
                         </div>
                     </div>
                     
@@ -983,11 +781,11 @@
                             </div>
                             <div>
                                 <div class="text-gray-500 dark:text-gray-400 text-sm">Maternity Leave</div>
-                                <div class="text-xl font-bold text-gray-900 dark:text-white">105 days</div>
+                                <div class="text-xl font-bold text-gray-900 dark:text-white" id="maternity-balance">0 days</div>
                             </div>
                         </div>
                         <div class="text-xs text-gray-500 dark:text-gray-400">
-                            3 employees currently on leave
+                            0 employees currently on leave
                         </div>
                     </div>
                     
@@ -998,11 +796,11 @@
                             </div>
                             <div>
                                 <div class="text-gray-500 dark:text-gray-400 text-sm">Emergency Leave</div>
-                                <div class="text-xl font-bold text-gray-900 dark:text-white">5 days</div>
+                                <div class="text-xl font-bold text-gray-900 dark:text-white" id="emergency-balance">0 days</div>
                             </div>
                         </div>
                         <div class="text-xs text-gray-500 dark:text-gray-400">
-                            Used 12 times this quarter
+                            Used 0 times this quarter
                         </div>
                     </div>
                 </div>
@@ -1173,34 +971,85 @@
             });
         });
 
-        // Leave request actions
+        // Placeholder for leave data loading
         document.addEventListener('DOMContentLoaded', () => {
-            // Approve button functionality
-            document.querySelectorAll('button').forEach(button => {
-                if (button.textContent.includes('Approve')) {
-                    button.addEventListener('click', function() {
-                        const row = this.closest('tr');
-                        const statusCell = row.querySelector('.leave-status-badge');
-                        statusCell.textContent = 'Approved';
-                        statusCell.className = 'leave-status-badge leave-status-approved';
-                        
-                        // Show success message
-                        showToast('Leave request approved successfully!', 'success');
-                    });
+            // This is where you would load leave data from your backend
+            // For now, we'll leave the tables empty
+            
+            // Example structure for how to populate the recent leaves table:
+            /*
+            const recentLeaves = [
+                {
+                    employeeName: 'John Dela Cruz',
+                    department: 'Production Dept.',
+                    employeeId: 'EMP-00123',
+                    leaveType: 'Vacation',
+                    dateRange: 'Nov 20 - 25, 2023',
+                    days: 6,
+                    status: 'pending',
+                    appliedDate: 'Nov 10, 2023',
+                    initials: 'JD'
                 }
+            ];
+            
+            // Populate recent leaves function
+            function populateRecentLeaves(leaves) {
+                const tbody = document.getElementById('recent-leaves-tbody');
+                tbody.innerHTML = '';
                 
-                if (button.textContent.includes('Reject')) {
-                    button.addEventListener('click', function() {
-                        const row = this.closest('tr');
-                        const statusCell = row.querySelector('.leave-status-badge');
-                        statusCell.textContent = 'Rejected';
-                        statusCell.className = 'leave-status-badge leave-status-rejected';
-                        
-                        // Show success message
-                        showToast('Leave request rejected.', 'info');
-                    });
-                }
-            });
+                leaves.forEach(leave => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td class="px-4 py-4 whitespace-nowrap">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0 h-10 w-10 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center text-blue-600 dark:text-blue-300 font-medium">
+                                    ${leave.initials}
+                                </div>
+                                <div class="ml-4">
+                                    <div class="text-sm font-medium text-gray-900 dark:text-white">${leave.employeeName}</div>
+                                    <div class="text-sm text-gray-500 dark:text-gray-400">${leave.department}</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-4 py-4 whitespace-nowrap">
+                            <div class="flex items-center">
+                                <div class="w-8 h-8 rounded-full bg-orange-100 dark:bg-orange-900 flex items-center justify-center mr-2">
+                                    <i class="fas fa-umbrella-beach text-orange-600 dark:text-orange-300 text-xs"></i>
+                                </div>
+                                <span class="text-sm text-gray-900 dark:text-white">${leave.leaveType}</span>
+                            </div>
+                        </td>
+                        <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                            ${leave.dateRange}<br>
+                            <span class="text-gray-500 dark:text-gray-400 text-xs">${leave.days} days</span>
+                        </td>
+                        <td class="px-4 py-4 whitespace-nowrap">
+                            <span class="leave-status-badge leave-status-${leave.status}">
+                                ${leave.status.charAt(0).toUpperCase() + leave.status.slice(1)}
+                            </span>
+                        </td>
+                        <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">${leave.appliedDate}</td>
+                        <td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
+                            ${leave.status === 'pending' ? 
+                                `<button class="text-green-600 hover:text-green-900 dark:text-green-400 dark:hover:text-green-300 mr-3 approve-btn">
+                                    <i class="fas fa-check"></i> Approve
+                                </button>
+                                <button class="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300 reject-btn">
+                                    <i class="fas fa-times"></i> Reject
+                                </button>` : 
+                                `<button class="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300">
+                                    <i class="fas fa-eye"></i> View
+                                </button>`
+                            }
+                        </td>
+                    `;
+                    tbody.appendChild(row);
+                });
+            }
+            
+            // Call this function with your leave data
+            populateRecentLeaves(recentLeaves);
+            */
         });
         
         function showToast(message, type) {
@@ -1220,15 +1069,6 @@
                 toast.remove();
             }, 3000);
         }
-        
-        // Add Font Awesome JS
-        document.addEventListener('DOMContentLoaded', function() {
-            if (!document.querySelector('script[src*="font-awesome"]')) {
-                const script = document.createElement('script');
-                script.src = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js';
-                document.head.appendChild(script);
-            }
-        });
     </script>
 </body>
 </html>

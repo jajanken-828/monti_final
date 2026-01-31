@@ -9,6 +9,8 @@
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 
     <!-- Styles / Scripts -->
     @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
@@ -436,44 +438,54 @@
             font-weight: 500;
         }
         
-        .badge-success {
-            background-color: #d1fae5;
-            color: #065f46;
-        }
-        
-        .dark .badge-success {
-            background-color: #064e3b;
-            color: #a7f3d0;
-        }
-        
-        .badge-warning {
+        .badge-pending {
             background-color: #fef3c7;
             color: #92400e;
         }
         
-        .dark .badge-warning {
-            background-color: #78350f;
-            color: #fcd34d;
-        }
-        
-        .badge-danger {
-            background-color: #fee2e2;
-            color: #991b1b;
-        }
-        
-        .dark .badge-danger {
-            background-color: #7f1d1d;
-            color: #fca5a5;
-        }
-        
-        .badge-info {
+        .badge-under-review {
             background-color: #dbeafe;
             color: #1e40af;
         }
         
-        .dark .badge-info {
+        .badge-interview {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+        
+        .badge-accepted {
+            background-color: #10b981;
+            color: white;
+        }
+        
+        .badge-rejected {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+        
+        .dark .badge-pending {
+            background-color: #78350f;
+            color: #fcd34d;
+        }
+        
+        .dark .badge-under-review {
             background-color: #1e3a8a;
             color: #93c5fd;
+        }
+        
+        .dark .badge-interview {
+            background-color: #064e3b;
+            color: #a7f3d0;
+        }
+        
+        .dark .badge-accepted {
+            background-color: #047857;
+            color: white;
+        }
+        
+        .dark .badge-rejected {
+            background-color: #7f1d1d;
+            color: #fca5a5;
         }
         
         /* Button Styles */
@@ -679,6 +691,59 @@
             border-bottom: 3px solid #fbbf24;
         }
         
+        /* File upload styles */
+        .file-upload-area {
+            border: 2px dashed #cbd5e1;
+            border-radius: 0.75rem;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.2s ease;
+            background: #f8fafc;
+        }
+        
+        .file-upload-area:hover {
+            border-color: #3b82f6;
+            background: #eff6ff;
+        }
+        
+        .file-upload-area.dragover {
+            border-color: #10b981;
+            background: #ecfdf5;
+        }
+        
+        .file-upload-area .file-input {
+            display: none;
+        }
+        
+        .file-upload-area .file-label {
+            cursor: pointer;
+            color: #3b82f6;
+            font-weight: 500;
+        }
+        
+        .file-preview {
+            margin-top: 1rem;
+        }
+        
+        .file-preview-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .file-preview-item .file-name {
+            flex: 1;
+            margin-right: 1rem;
+            font-size: 0.875rem;
+        }
+        
+        /* Action dropdown - REMOVED */
+        
         /* Scrollbar Styling */
         .modal-content::-webkit-scrollbar {
             width: 8px;
@@ -702,6 +767,67 @@
         input:focus, select:focus, textarea:focus {
             outline: none;
             box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+        
+        /* Status colors */
+        .status-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 6px;
+        }
+        
+        .status-dot-pending { background-color: #f59e0b; }
+        .status-dot-under-review { background-color: #3b82f6; }
+        .status-dot-interview { background-color: #10b981; }
+        .status-dot-accepted { background-color: #059669; }
+        .status-dot-rejected { background-color: #ef4444; }
+        
+        /* Calendar Styles */
+        .flatpickr-calendar {
+            background: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e5e7eb;
+        }
+
+        .flatpickr-day.selected {
+            background: #2563eb;
+            border-color: #2563eb;
+        }
+
+        .flatpickr-day.today {
+            border-color: #fbbf24;
+        }
+
+        .flatpickr-day:hover {
+            background: #eff6ff;
+            border-color: #dbeafe;
+        }
+
+        /* Modal Calendar Container */
+        #interview-calendar {
+            width: 100%;
+            min-height: 300px;
+        }
+
+        /* Time Select Styles */
+        #interview-time {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 0.5rem center;
+            background-repeat: no-repeat;
+            background-size: 1.5em 1.5em;
+            padding-right: 2.5rem;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+
+        /* Selected Date Display */
+        #selected-date {
+            background-color: #f8fafc;
+            font-weight: 500;
+            color: #1e293b;
         }
         
         /* Responsive Design */
@@ -773,6 +899,12 @@
             .instructors-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
+            
+            /* Make buttons stack on mobile */
+            .data-table td:last-child .flex {
+                flex-direction: column;
+                gap: 8px;
+            }
         }
         
         @media (max-width: 640px) {
@@ -800,6 +932,12 @@
                 display: block;
                 overflow-x: auto;
                 white-space: nowrap;
+            }
+            
+            /* Adjust modal widths on mobile */
+            .modal-content {
+                width: 95%;
+                max-width: 95%;
             }
         }
     </style>
@@ -834,6 +972,10 @@
                 </div>
                 
                 <div class="flex items-center space-x-4 header-actions">
+                    <button id="encode-applicant-btn" class="btn btn-primary">
+                        <i class="fas fa-plus mr-2"></i> Encode New Applicant
+                    </button>
+                    
                     <div class="flex items-center space-x-3">
                         <button class="md:hidden p-2.5 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-600 text-gray-600 dark:text-gray-300" id="mobile-search-toggle">
                             <i class="fas fa-search"></i>
@@ -866,7 +1008,7 @@
                     </div>
                     <div>
                         <div class="text-gray-500 dark:text-gray-400 text-sm">Total Applications</div>
-                        <div class="text-2xl font-bold text-gray-900 dark:text-white">12</div>
+                        <div class="text-2xl font-bold text-gray-900 dark:text-white">{{ $totalApplications ?? 0 }}</div>
                     </div>
                 </div>
                 
@@ -876,7 +1018,7 @@
                     </div>
                     <div>
                         <div class="text-gray-500 dark:text-gray-400 text-sm">Pending Review</div>
-                        <div class="text-2xl font-bold text-gray-900 dark:text-white">5</div>
+                        <div class="text-2xl font-bold text-gray-900 dark:text-white">{{ $pendingReview ?? 0 }}</div>
                     </div>
                 </div>
                 
@@ -886,7 +1028,7 @@
                     </div>
                     <div>
                         <div class="text-gray-500 dark:text-gray-400 text-sm">Scheduled Interviews</div>
-                        <div class="text-2xl font-bold text-gray-900 dark:text-white">3</div>
+                        <div class="text-2xl font-bold text-gray-900 dark:text-white">{{ $scheduledInterviews ?? 0 }}</div>
                     </div>
                 </div>
                 
@@ -896,16 +1038,53 @@
                     </div>
                     <div>
                         <div class="text-gray-500 dark:text-gray-400 text-sm">Rejected</div>
-                        <div class="text-2xl font-bold text-gray-900 dark:text-white">4</div>
+                        <div class="text-2xl font-bold text-gray-900 dark:text-white">{{ $rejected ?? 0 }}</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Search and Filters -->
+            <div class="card p-6 mb-8 content-fade-in stagger-delay-1">
+                <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                    <div class="flex-1">
+                        <div class="relative">
+                            <input type="text" id="search-applicants" class="w-full px-4 py-2 pl-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600" placeholder="Search applicants...">
+                            <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                        </div>
+                    </div>
+                    <div class="flex gap-3">
+                        <select id="filter-status" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600">
+                            <option value="">All Status</option>
+                            <option value="pending">Pending</option>
+                            <option value="under_review">Under Review</option>
+                            <option value="interview_scheduled">Interview Scheduled</option>
+                            <option value="accepted">Accepted</option>
+                            <option value="rejected">Rejected</option>
+                        </select>
+                        <select id="filter-position" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600">
+                            <option value="">All Positions</option>
+                            <option value="production_supervisor">Production Supervisor</option>
+                            <option value="quality_inspector">Quality Control Inspector</option>
+                            <option value="maintenance_tech">Maintenance Technician</option>
+                            <option value="hr_assistant">HR Assistant</option>
+                            <option value="warehouse_staff">Warehouse Staff</option>
+                            <option value="textile_designer">Textile Designer</option>
+                            <option value="machine_operator">Machine Operator</option>
+                        </select>
                     </div>
                 </div>
             </div>
 
             <!-- Applications Table -->
             <div class="card overflow-hidden mb-8 content-fade-in stagger-delay-1">
-                <div class="p-6 border-b border-gray-200 dark:border-gray-700">
-                    <h2 class="text-lg font-bold text-gray-900 dark:text-white">Job Applications</h2>
-                    <p class="text-gray-500 dark:text-gray-400 text-sm">Recent applications for various positions</p>
+                <div class="p-6 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
+                    <div>
+                        <h2 class="text-lg font-bold text-gray-900 dark:text-white">New Applicants (No Scheduled Interviews)</h2>
+                        <p class="text-gray-500 dark:text-gray-400 text-sm">Applicants without scheduled interviews</p>
+                    </div>
+                    <div class="text-sm text-gray-500">
+                        Showing {{ $applicants->firstItem() ?? 0 }} to {{ $applicants->lastItem() ?? 0 }} of {{ $applicants->total() ?? 0 }} entries
+                    </div>
                 </div>
                 
                 <div class="overflow-x-auto">
@@ -920,269 +1099,113 @@
                                 <th>Actions</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="applicants-table-body">
+                            @forelse($applicants as $applicant)
+                                <tr data-id="{{ $applicant->id }}">
+                                    <td>
+                                        <div class="font-medium text-gray-900 dark:text-white">{{ $applicant->full_name }}</div>
+                                        <div class="text-sm text-gray-500">{{ $applicant->email }}</div>
+                                    </td>
+                                    <td>
+                                        <div class="font-medium">{{ ucwords(str_replace('_', ' ', $applicant->position_applied)) }}</div>
+                                        <div class="text-sm text-gray-500">Start: {{ $applicant->available_start_date->format('M d, Y') }}</div>
+                                    </td>
+                                    <td>
+                                        <div class="font-medium">{{ $applicant->created_at->format('M d, Y') }}</div>
+                                        <div class="text-sm text-gray-500">{{ $applicant->created_at->diffForHumans() }}</div>
+                                    </td>
+                                    <td>
+                                        @php
+                                            $statusClasses = [
+                                                'pending' => 'badge-pending',
+                                                'under_review' => 'badge-under-review',
+                                                'interview_scheduled' => 'badge-interview',
+                                                'accepted' => 'badge-accepted',
+                                                'rejected' => 'badge-rejected'
+                                            ];
+                                        @endphp
+                                        <span class="badge {{ $statusClasses[$applicant->status] ?? 'badge-pending' }}">
+                                            <span class="status-dot status-dot-{{ str_replace('_', '-', $applicant->status) }}"></span>
+                                            {{ ucwords(str_replace('_', ' ', $applicant->status)) }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <div class="text-gray-900 dark:text-white">{{ $applicant->phone_number }}</div>
+                                        <div class="text-sm text-gray-500">{{ $applicant->city }}, {{ $applicant->state_province }}</div>
+                                    </td>
+                                    <td>
+                                        <div class="flex space-x-2">
+                                            <!-- View Button -->
+                                            <button class="btn btn-sm btn-primary view-applicant" data-id="{{ $applicant->id }}" title="View Details">
+                                                <i class="fas fa-eye"></i> View
+                                            </button>
+                                            
+                                            <!-- Schedule Button -->
+                                            <button class="btn btn-sm btn-success schedule-interview-btn" data-id="{{ $applicant->id }}" data-name="{{ $applicant->full_name }}" title="Schedule Interview">
+                                                <i class="fas fa-calendar-alt"></i>  Schedule
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @empty
                             <tr>
-                                <td>
-                                    <div class="flex items-center">
-                                        <div class="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center text-blue-600 dark:text-blue-300 font-bold mr-3">
-                                            JM
-                                        </div>
-                                        <div>
-                                            <div class="font-medium text-gray-900 dark:text-white">John Michael Santos</div>
-                                            <div class="text-gray-500 dark:text-gray-400 text-sm">Applied: 2025-09-15</div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="font-medium">Production Supervisor</div>
-                                    <div class="text-gray-500 dark:text-gray-400 text-sm">Production Department</div>
-                                </td>
-                                <td>2025-09-15</td>
-                                <td>
-                                    <span class="badge badge-warning">
-                                        <i class="fas fa-clock text-xs mr-1"></i> Pending Review
-                                    </span>
-                                </td>
-                                <td>
-                                    <div class="text-sm">
-                                        <div class="text-gray-900 dark:text-white">john.santos@email.com</div>
-                                        <div class="text-gray-500 dark:text-gray-400">+63 912 345 6789</div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="flex space-x-2">
-                                        <button class="btn btn-success btn-sm" onclick="scheduleInterview(1)">
-                                            <i class="fas fa-calendar-alt mr-1"></i> Schedule
-                                        </button>
-                                        <button class="btn btn-danger btn-sm" onclick="rejectApplication(1)">
-                                            <i class="fas fa-times mr-1"></i> Reject
-                                        </button>
-                                        <button class="btn btn-outline btn-sm">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                    </div>
+                                <td colspan="6" class="text-center py-8 text-gray-500">
+                                    <i class="fas fa-inbox text-4xl mb-4 text-gray-300"></i>
+                                    <p class="text-lg">No new applicants found</p>
+                                    <p class="text-sm mt-2">All applicants have scheduled interviews or no applications yet</p>
                                 </td>
                             </tr>
-                            
-                            <tr>
-                                <td>
-                                    <div class="flex items-center">
-                                        <div class="w-10 h-10 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center text-green-600 dark:text-green-300 font-bold mr-3">
-                                            AS
-                                        </div>
-                                        <div>
-                                            <div class="font-medium text-gray-900 dark:text-white">Ana Sophia Reyes</div>
-                                            <div class="text-gray-500 dark:text-gray-400 text-sm">Applied: 2025-09-14</div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="font-medium">Quality Control Inspector</div>
-                                    <div class="text-gray-500 dark:text-gray-400 text-sm">Quality Department</div>
-                                </td>
-                                <td>2025-09-14</td>
-                                <td>
-                                    <span class="badge badge-info">
-                                        <i class="fas fa-calendar-check text-xs mr-1"></i> Interview Scheduled
-                                    </span>
-                                </td>
-                                <td>
-                                    <div class="text-sm">
-                                        <div class="text-gray-900 dark:text-white">ana.reyes@email.com</div>
-                                        <div class="text-gray-500 dark:text-gray-400">+63 923 456 7890</div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="flex space-x-2">
-                                        <button class="btn btn-warning btn-sm" onclick="rescheduleInterview(2)">
-                                            <i class="fas fa-calendar-edit mr-1"></i> Reschedule
-                                        </button>
-                                        <button class="btn btn-success btn-sm" onclick="markAsHired(2)">
-                                            <i class="fas fa-check mr-1"></i> Hire
-                                        </button>
-                                        <button class="btn btn-outline btn-sm">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            
-                            <tr>
-                                <td>
-                                    <div class="flex items-center">
-                                        <div class="w-10 h-10 rounded-full bg-red-100 dark:bg-red-900 flex items-center justify-center text-red-600 dark:text-red-300 font-bold mr-3">
-                                            CR
-                                        </div>
-                                        <div>
-                                            <div class="font-medium text-gray-900 dark:text-white">Carlos Ramirez</div>
-                                            <div class="text-gray-500 dark:text-gray-400 text-sm">Applied: 2025-09-12</div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="font-medium">Maintenance Technician</div>
-                                    <div class="text-gray-500 dark:text-gray-400 text-sm">Maintenance Department</div>
-                                </td>
-                                <td>2025-09-12</td>
-                                <td>
-                                    <span class="badge badge-danger">
-                                        <i class="fas fa-times-circle text-xs mr-1"></i> Rejected
-                                    </span>
-                                </td>
-                                <td>
-                                    <div class="text-sm">
-                                        <div class="text-gray-900 dark:text-white">carlos.ramirez@email.com</div>
-                                        <div class="text-gray-500 dark:text-gray-400">+63 934 567 8901</div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="flex space-x-2">
-                                        <button class="btn btn-outline btn-sm" onclick="reconsiderApplication(3)">
-                                            <i class="fas fa-redo mr-1"></i> Reconsider
-                                        </button>
-                                        <button class="btn btn-outline btn-sm">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            
-                            <tr>
-                                <td>
-                                    <div class="flex items-center">
-                                        <div class="w-10 h-10 rounded-full bg-purple-100 dark:bg-purple-900 flex items-center justify-center text-purple-600 dark:text-purple-300 font-bold mr-3">
-                                            MG
-                                        </div>
-                                        <div>
-                                            <div class="font-medium text-gray-900 dark:text-white">Maria Gonzales</div>
-                                            <div class="text-gray-500 dark:text-gray-400 text-sm">Applied: 2025-09-10</div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="font-medium">HR Assistant</div>
-                                    <div class="text-gray-500 dark:text-gray-400 text-sm">Administration</div>
-                                </td>
-                                <td>2025-09-10</td>
-                                <td>
-                                    <span class="badge badge-success">
-                                        <i class="fas fa-check-circle text-xs mr-1"></i> Hired
-                                    </span>
-                                </td>
-                                <td>
-                                    <div class="text-sm">
-                                        <div class="text-gray-900 dark:text-white">maria.gonzales@email.com</div>
-                                        <div class="text-gray-500 dark:text-gray-400">+63 945 678 9012</div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="flex space-x-2">
-                                        <button class="btn btn-primary btn-sm" onclick="viewOfferLetter(4)">
-                                            <i class="fas fa-file-contract mr-1"></i> Offer Letter
-                                        </button>
-                                        <button class="btn btn-outline btn-sm">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            
-                            <tr>
-                                <td>
-                                    <div class="flex items-center">
-                                        <div class="w-10 h-10 rounded-full bg-yellow-100 dark:bg-yellow-900 flex items-center justify-center text-yellow-600 dark:text-yellow-300 font-bold mr-3">
-                                            LR
-                                        </div>
-                                        <div>
-                                            <div class="font-medium text-gray-900 dark:text-white">Luis Rivera</div>
-                                            <div class="text-gray-500 dark:text-gray-400 text-sm">Applied: 2025-09-08</div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="font-medium">Warehouse Staff</div>
-                                    <div class="text-gray-500 dark:text-gray-400 text-sm">Logistics Department</div>
-                                </td>
-                                <td>2025-09-08</td>
-                                <td>
-                                    <span class="badge badge-warning">
-                                        <i class="fas fa-clock text-xs mr-1"></i> Pending Review
-                                    </span>
-                                </td>
-                                <td>
-                                    <div class="text-sm">
-                                        <div class="text-gray-900 dark:text-white">luis.rivera@email.com</div>
-                                        <div class="text-gray-500 dark:text-gray-400">+63 956 789 0123</div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="flex space-x-2">
-                                        <button class="btn btn-success btn-sm" onclick="scheduleInterview(5)">
-                                            <i class="fas fa-calendar-alt mr-1"></i> Schedule
-                                        </button>
-                                        <button class="btn btn-danger btn-sm" onclick="rejectApplication(5)">
-                                            <i class="fas fa-times mr-1"></i> Reject
-                                        </button>
-                                        <button class="btn btn-outline btn-sm">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
+                            @endforelse
                         </tbody>
                     </table>
                 </div>
                 
                 <!-- Pagination -->
+                @if($applicants->hasPages())
                 <div class="p-6 border-t border-gray-200 dark:border-gray-700 flex items-center justify-between">
                     <div class="text-gray-500 dark:text-gray-400 text-sm">
-                        Showing 1 to 5 of 12 entries
+                        Showing {{ $applicants->firstItem() }} to {{ $applicants->lastItem() }} of {{ $applicants->total() }} entries
                     </div>
                     <div class="flex space-x-2">
-                        <button class="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
-                            Previous
-                        </button>
-                        <button class="px-3 py-1 bg-blue-600 text-white rounded-lg">1</button>
-                        <button class="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
-                            2
-                        </button>
-                        <button class="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
-                            3
-                        </button>
-                        <button class="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
-                            Next
-                        </button>
+                        @if($applicants->onFirstPage())
+                            <button class="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-400 cursor-not-allowed" disabled>
+                                Previous
+                            </button>
+                        @else
+                            <a href="{{ $applicants->previousPageUrl() }}" class="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
+                                Previous
+                            </a>
+                        @endif
+
+                        @foreach($applicants->links()->elements[0] as $page => $url)
+                            @if($page == $applicants->currentPage())
+                                <span class="px-3 py-1 bg-blue-600 text-white rounded-lg">{{ $page }}</span>
+                            @else
+                                <a href="{{ $url }}" class="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
+                                    {{ $page }}
+                                </a>
+                            @endif
+                        @endforeach
+
+                        @if($applicants->hasMorePages())
+                            <a href="{{ $applicants->nextPageUrl() }}" class="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
+                                Next
+                            </a>
+                        @else
+                            <button class="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-400 cursor-not-allowed" disabled>
+                                Next
+                            </button>
+                        @endif
                     </div>
                 </div>
+                @endif
             </div>
 
             <!-- Application Status Chart -->
             <div class="card p-6 content-fade-in stagger-delay-2">
                 <h2 class="text-lg font-bold text-gray-900 dark:text-white mb-4">Application Status Overview</h2>
                 <div class="flex items-center justify-center h-64">
-                    <div class="text-center">
-                        <div class="text-gray-500 dark:text-gray-400 mb-4">Status Distribution</div>
-                        <div class="flex items-center justify-center space-x-8">
-                            <div class="text-center">
-                                <div class="w-20 h-20 rounded-full bg-yellow-100 dark:bg-yellow-900 flex items-center justify-center mx-auto mb-2">
-                                    <span class="text-2xl font-bold text-yellow-600 dark:text-yellow-300">5</span>
-                                </div>
-                                <div class="text-sm font-medium">Pending</div>
-                            </div>
-                            <div class="text-center">
-                                <div class="w-20 h-20 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center mx-auto mb-2">
-                                    <span class="text-2xl font-bold text-green-600 dark:text-green-300">3</span>
-                                </div>
-                                <div class="text-sm font-medium">Interview</div>
-                            </div>
-                            <div class="text-center">
-                                <div class="w-20 h-20 rounded-full bg-red-100 dark:bg-red-900 flex items-center justify-center mx-auto mb-2">
-                                    <span class="text-2xl font-bold text-red-600 dark:text-red-300">4</span>
-                                </div>
-                                <div class="text-sm font-medium">Rejected</div>
-                            </div>
-                        </div>
-                    </div>
+                    <canvas id="statusChart"></canvas>
                 </div>
             </div>
         </main>
@@ -1203,7 +1226,7 @@
                             <h3 class="text-lg font-semibold text-blue-700">Encode New Applicant</h3>
                         </div>
                     </div>
-                    <button class="text-gray-500 hover:text-red-500 opacity-0 transition-colors duration-200" id="close-modal">
+                    <button class="text-gray-500 hover:text-red-500 transition-colors duration-200" id="close-modal">
                         <i class="fas fa-times text-xl"></i>
                     </button>
                 </div>
@@ -1211,7 +1234,8 @@
 
             <!-- Modal Body -->
             <div class="modal-body p-6">
-                <form id="applicant-form">
+                <form id="applicant-form" enctype="multipart/form-data">
+                    @csrf
                     <div class="space-y-8">
                         
                         <!-- Full Name Section -->
@@ -1224,16 +1248,18 @@
                             </div>
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">First Name</label>
-                                    <input type="text" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" placeholder="First Name" required>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">First Name *</label>
+                                    <input type="text" name="first_name" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" placeholder="First Name" required>
+                                    <div class="text-red-500 text-sm mt-1 error-message" id="error-first_name"></div>
                                 </div>
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-2">Middle Name</label>
-                                    <input type="text" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" placeholder="Middle Name">
+                                    <input type="text" name="middle_name" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" placeholder="Middle Name">
                                 </div>
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">Last Name</label>
-                                    <input type="text" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" placeholder="Last Name" required>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Last Name *</label>
+                                    <input type="text" name="last_name" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" placeholder="Last Name" required>
+                                    <div class="text-red-500 text-sm mt-1 error-message" id="error-last_name"></div>
                                 </div>
                             </div>
                         </div>
@@ -1244,51 +1270,38 @@
                                 <div class="h-8 w-8 bg-yellow-500 rounded-lg flex items-center justify-center mr-3">
                                     <i class="fas fa-calendar text-white text-sm"></i>
                                 </div>
-                                <h4 class="text-lg font-bold text-gray-800">Birth Date</h4>
+                                <h4 class="text-lg font-bold text-gray-800">Birth Date *</h4>
                             </div>
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">Month</label>
-                                    <select class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" required>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Month *</label>
+                                    <select name="birth_month" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" required>
                                         <option value="">Select Month</option>
-                                        <option value="01">January</option>
-                                        <option value="02">February</option>
-                                        <option value="03">March</option>
-                                        <option value="04">April</option>
-                                        <option value="05">May</option>
-                                        <option value="06">June</option>
-                                        <option value="07">July</option>
-                                        <option value="08">August</option>
-                                        <option value="09">September</option>
-                                        <option value="10">October</option>
-                                        <option value="11">November</option>
-                                        <option value="12">December</option>
+                                        @for($i = 1; $i <= 12; $i++)
+                                            <option value="{{ str_pad($i, 2, '0', STR_PAD_LEFT) }}">{{ date('F', mktime(0, 0, 0, $i, 1)) }}</option>
+                                        @endfor
                                     </select>
+                                    <div class="text-red-500 text-sm mt-1 error-message" id="error-birth_month"></div>
                                 </div>
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">Day</label>
-                                    <select class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" required>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Day *</label>
+                                    <select name="birth_day" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" required>
                                         <option value="">Select Day</option>
-                                        <!-- Days 1-31 -->
-                                        <script>
-                                            for(let i=1; i<=31; i++) {
-                                                document.write(`<option value="${i}">${i}</option>`);
-                                            }
-                                        </script>
+                                        @for($i = 1; $i <= 31; $i++)
+                                            <option value="{{ $i }}">{{ $i }}</option>
+                                        @endfor
                                     </select>
+                                    <div class="text-red-500 text-sm mt-1 error-message" id="error-birth_day"></div>
                                 </div>
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">Year</label>
-                                    <select class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" required>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Year *</label>
+                                    <select name="birth_year" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" required>
                                         <option value="">Select Year</option>
-                                        <!-- Years 1960-2023 -->
-                                        <script>
-                                            const currentYear = new Date().getFullYear();
-                                            for(let i=currentYear; i>=1960; i--) {
-                                                document.write(`<option value="${i}">${i}</option>`);
-                                            }
-                                        </script>
+                                        @for($i = date('Y'); $i >= 1960; $i--)
+                                            <option value="{{ $i }}">{{ $i }}</option>
+                                        @endfor
                                     </select>
+                                    <div class="text-red-500 text-sm mt-1 error-message" id="error-birth_year"></div>
                                 </div>
                             </div>
                         </div>
@@ -1303,25 +1316,29 @@
                             </div>
                             <div class="space-y-5">
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">Street Address</label>
-                                    <input type="text" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" placeholder="Street Address" required>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Street Address *</label>
+                                    <input type="text" name="street_address" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" placeholder="Street Address" required>
+                                    <div class="text-red-500 text-sm mt-1 error-message" id="error-street_address"></div>
                                 </div>
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-2">Street Address Line 2</label>
-                                    <input type="text" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" placeholder="Apartment, Suite, Unit, etc.">
+                                    <input type="text" name="street_address_line2" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" placeholder="Apartment, Suite, Unit, etc.">
                                 </div>
                                 <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">City</label>
-                                        <input type="text" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" placeholder="City" required>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">City *</label>
+                                        <input type="text" name="city" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" placeholder="City" required>
+                                        <div class="text-red-500 text-sm mt-1 error-message" id="error-city"></div>
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">State / Province</label>
-                                        <input type="text" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" placeholder="State / Province" required>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">State / Province *</label>
+                                        <input type="text" name="state_province" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" placeholder="State / Province" required>
+                                        <div class="text-red-500 text-sm mt-1 error-message" id="error-state_province"></div>
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Postal / Zip Code</label>
-                                        <input type="text" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" placeholder="Postal / Zip Code" required>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Postal / Zip Code *</label>
+                                        <input type="text" name="postal_zip_code" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" placeholder="Postal / Zip Code" required>
+                                        <div class="text-red-500 text-sm mt-1 error-message" id="error-postal_zip_code"></div>
                                     </div>
                                 </div>
                             </div>
@@ -1337,17 +1354,19 @@
                             </div>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
-                                    <input type="email" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" placeholder="myname@example.com" required>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Email Address *</label>
+                                    <input type="email" name="email" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" placeholder="myname@example.com" required>
+                                    <div class="text-red-500 text-sm mt-1 error-message" id="error-email"></div>
                                 </div>
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">Phone Number</label>
-                                    <input type="tel" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" placeholder="000 800-0600" required>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Phone Number *</label>
+                                    <input type="tel" name="phone_number" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" placeholder="000 800-0600" required>
+                                    <div class="text-red-500 text-sm mt-1 error-message" id="error-phone_number"></div>
                                 </div>
                             </div>
                             <div class="mt-5">
                                 <label class="block text-sm font-medium text-gray-700 mb-2">LinkedIn Profile (Optional)</label>
-                                <input type="url" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" placeholder="https://linkedin.com/in/username">
+                                <input type="url" name="linkedin_profile" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" placeholder="https://linkedin.com/in/username">
                             </div>
                         </div>
 
@@ -1361,8 +1380,8 @@
                             </div>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">Position Applied For</label>
-                                    <select class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" required>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Position Applied For *</label>
+                                    <select name="position_applied" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" required>
                                         <option value="">Please Select</option>
                                         <option value="production_supervisor">Production Supervisor</option>
                                         <option value="quality_inspector">Quality Control Inspector</option>
@@ -1372,10 +1391,11 @@
                                         <option value="textile_designer">Textile Designer</option>
                                         <option value="machine_operator">Machine Operator</option>
                                     </select>
+                                    <div class="text-red-500 text-sm mt-1 error-message" id="error-position_applied"></div>
                                 </div>
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">How did you hear about us?</label>
-                                    <select class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" required>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">How did you hear about us? *</label>
+                                    <select name="referral_source" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" required>
                                         <option value="">Please Select</option>
                                         <option value="linkedin">LinkedIn</option>
                                         <option value="job_portal">Job Portal</option>
@@ -1384,38 +1404,69 @@
                                         <option value="company_website">Company Website</option>
                                         <option value="career_fair">Career Fair</option>
                                     </select>
+                                    <div class="text-red-500 text-sm mt-1 error-message" id="error-referral_source"></div>
                                 </div>
                             </div>
                             <div class="mt-5">
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Available Start Date</label>
-                                <input type="date" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" required>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Available Start Date *</label>
+                                <input type="date" name="available_start_date" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" required>
+                                <div class="text-red-500 text-sm mt-1 error-message" id="error-available_start_date"></div>
                             </div>
                         </div>
 
-                        <!-- Documents Section -->
+                        <!-- Government Documents Section -->
                         <div class="form-group bg-white p-5 rounded-xl border border-gray-200">
                             <div class="flex items-center mb-4">
                                 <div class="h-8 w-8 bg-blue-600 rounded-lg flex items-center justify-center mr-3">
                                     <i class="fas fa-file-alt text-white text-sm"></i>
                                 </div>
-                                <h4 class="text-lg font-bold text-gray-800">Documents</h4>
+                                <h4 class="text-lg font-bold text-gray-800">Government Documents</h4>
                             </div>
                             <div class="space-y-5">
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">Upload Your Resume</label>
-                                    <div class="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center transition-all duration-200 hover:border-blue-400 hover:bg-blue-50">
-                                        <i class="fas fa-cloud-upload-alt text-3xl text-blue-400 mb-3"></i>
-                                        <p class="text-gray-600 mb-2">Drag and drop your resume here</p>
-                                        <p class="text-gray-500 text-sm mb-4">or</p>
-                                        <button type="button" class="bg-white border border-blue-500 text-blue-600 hover:bg-blue-50 px-4 py-2 rounded-lg font-medium transition-colors duration-200">
-                                            <i class="fas fa-folder-open mr-2"></i> Browse Files
-                                        </button>
-                                        <p class="text-gray-400 text-xs mt-4">PDF, DOC, DOCX up to 5MB</p>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">SSS ID/Number</label>
+                                    <div class="file-upload-area" id="sss-upload-area">
+                                        <input type="file" name="sss_file" class="file-input" id="sss-file" accept=".pdf,.jpg,.jpeg,.png">
+                                        <label for="sss-file" class="file-label">
+                                            <i class="fas fa-cloud-upload-alt text-2xl text-blue-400 mb-2"></i>
+                                            <p class="text-gray-600 mb-2">Upload SSS ID or Number Document</p>
+                                            <button type="button" class="bg-white border border-blue-500 text-blue-600 hover:bg-blue-50 px-4 py-2 rounded-lg font-medium transition-colors duration-200">
+                                                <i class="fas fa-folder-open mr-2"></i> Choose File
+                                            </button>
+                                            <p class="text-gray-400 text-xs mt-2">PDF, JPG, PNG up to 5MB</p>
+                                        </label>
+                                        <div class="file-preview" id="sss-preview"></div>
                                     </div>
                                 </div>
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">Cover Letter (Optional)</label>
-                                    <textarea class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" rows="4" placeholder="Write your cover letter here..."></textarea>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">PhilHealth ID/Number</label>
+                                    <div class="file-upload-area" id="philhealth-upload-area">
+                                        <input type="file" name="philhealth_file" class="file-input" id="philhealth-file" accept=".pdf,.jpg,.jpeg,.png">
+                                        <label for="philhealth-file" class="file-label">
+                                            <i class="fas fa-cloud-upload-alt text-2xl text-blue-400 mb-2"></i>
+                                            <p class="text-gray-600 mb-2">Upload PhilHealth ID or Number Document</p>
+                                            <button type="button" class="bg-white border border-blue-500 text-blue-600 hover:bg-blue-50 px-4 py-2 rounded-lg font-medium transition-colors duration-200">
+                                                <i class="fas fa-folder-open mr-2"></i> Choose File
+                                            </button>
+                                            <p class="text-gray-400 text-xs mt-2">PDF, JPG, PNG up to 5MB</p>
+                                        </label>
+                                        <div class="file-preview" id="philhealth-preview"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Pag-IBIG ID/Number</label>
+                                    <div class="file-upload-area" id="pagibig-upload-area">
+                                        <input type="file" name="pagibig_file" class="file-input" id="pagibig-file" accept=".pdf,.jpg,.jpeg,.png">
+                                        <label for="pagibig-file" class="file-label">
+                                            <i class="fas fa-cloud-upload-alt text-2xl text-blue-400 mb-2"></i>
+                                            <p class="text-gray-600 mb-2">Upload Pag-IBIG ID or Number Document</p>
+                                            <button type="button" class="bg-white border border-blue-500 text-blue-600 hover:bg-blue-50 px-4 py-2 rounded-lg font-medium transition-colors duration-200">
+                                                <i class="fas fa-folder-open mr-2"></i> Choose File
+                                            </button>
+                                            <p class="text-gray-400 text-xs mt-2">PDF, JPG, PNG up to 5MB</p>
+                                        </label>
+                                        <div class="file-preview" id="pagibig-preview"></div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -1431,11 +1482,11 @@
                             <div class="space-y-5">
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-2">Expected Salary (per month)</label>
-                                    <input type="text" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" placeholder="e.g., ₱25,000 - ₱30,000">
+                                    <input type="text" name="expected_salary" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200" placeholder="e.g., ₱25,000 - ₱30,000">
                                 </div>
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-2">Notice Period (if currently employed)</label>
-                                    <select class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200">
+                                    <select name="notice_period" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200">
                                         <option value="">Select Notice Period</option>
                                         <option value="immediate">Immediate</option>
                                         <option value="1_week">1 Week</option>
@@ -1448,11 +1499,11 @@
                                     <label class="block text-sm font-medium text-gray-700 mb-2">Do you have textile industry experience?</label>
                                     <div class="flex space-x-6 mt-2">
                                         <label class="inline-flex items-center">
-                                            <input type="radio" name="experience" value="yes" class="text-blue-600 focus:ring-blue-500">
+                                            <input type="radio" name="textile_experience" value="yes" class="text-blue-600 focus:ring-blue-500">
                                             <span class="ml-2">Yes</span>
                                         </label>
                                         <label class="inline-flex items-center">
-                                            <input type="radio" name="experience" value="no" class="text-blue-600 focus:ring-blue-500">
+                                            <input type="radio" name="textile_experience" value="no" class="text-blue-600 focus:ring-blue-500" checked>
                                             <span class="ml-2">No</span>
                                         </label>
                                     </div>
@@ -1470,7 +1521,7 @@
                                 <button type="button" class="bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 px-6 py-3 rounded-lg font-medium transition-colors duration-200" id="cancel-form">
                                     Cancel
                                 </button>
-                                <button type="submit" class="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-8 py-3 rounded-lg font-medium shadow-md hover:shadow-lg transition-all duration-200">
+                                <button type="submit" class="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-8 py-3 rounded-lg font-medium shadow-md hover:shadow-lg transition-all duration-200" id="submit-form">
                                     <i class="fas fa-save mr-2"></i> Save Applicant
                                 </button>
                             </div>
@@ -1481,11 +1532,205 @@
         </div>
     </div>
 
+    <!-- View Applicant Details Modal -->
+    <div class="modal fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center p-4 z-50 hidden" id="view-applicant-modal">
+        <div class="modal-content bg-white rounded-xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+            <div class="modal-header monti-header bg-gradient-to-r from-white to-blue-50 p-6 rounded-t-xl border-b border-blue-100">
+                <div class="flex justify-between items-center">
+                    <div class="flex items-center space-x-3">
+                        <div class="h-10 w-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-user text-blue-600 text-lg"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-xl font-bold text-gray-800" id="applicant-name"></h2>
+                            <h3 class="text-lg font-semibold text-blue-700">Applicant Details</h3>
+                        </div>
+                    </div>
+                    <button class="text-gray-500 hover:text-red-500 transition-colors duration-200 close-view-modal">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="modal-body p-6">
+                <div class="space-y-6" id="applicant-details">
+                    <!-- Details will be loaded via JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Enhanced Schedule Interview Modal -->
+    <div class="modal fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center p-4 z-50 hidden" id="schedule-interview-modal">
+    <div class="modal-content bg-white rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+        <div class="modal-header monti-header bg-gradient-to-r from-white to-green-50 p-6 rounded-t-xl border-b border-green-100">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-3">
+                    <div class="h-10 w-10 bg-green-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-calendar-alt text-green-600 text-lg"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-xl font-bold text-gray-800">Schedule Interview</h2>
+                        <h3 class="text-lg font-semibold text-green-700" id="interview-applicant-name"></h3>
+                    </div>
+                </div>
+                <button class="text-gray-500 hover:text-red-500 transition-colors duration-200 close-schedule-modal">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="modal-body p-6">
+            <form id="schedule-interview-form">
+                @csrf
+                <input type="hidden" id="schedule-applicant-id" name="applicant_id">
+
+                <div class="space-y-6">
+                    <!-- Calendar Section -->
+                    <div class="bg-gray-50 p-5 rounded-xl border border-gray-200">
+                        <div class="flex items-center mb-4">
+                            <div class="h-8 w-8 bg-blue-600 rounded-lg flex items-center justify-center mr-3">
+                                <i class="fas fa-calendar text-white text-sm"></i>
+                            </div>
+                            <h4 class="text-lg font-bold text-gray-800">Select Date & Time</h4>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Calendar -->
+                            <div class="flex items-start justify-center">
+                                <div id="interview-calendar" class="mb-4"></div>
+                            </div>
+
+                            <!-- Right inputs -->
+                            <div class="flex flex-col justify-start">
+                                <div class="mb-4">
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                                        Selected Date
+                                    </label>
+                                    <input
+                                        type="text"
+                                        id="selected-date"
+                                        class="w-full px-4 py-3 border border-gray-300 rounded-lg bg-gray-50"
+                                        readonly
+                                    >
+                                </div>
+
+                                <div class="mb-4">
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                                        Time Slot
+                                    </label>
+                                    <select
+                                        id="interview-time"
+                                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                    >
+                                        <option value="">Select Time</option>
+                                        <option value="09:00">09:00 AM</option>
+                                        <option value="10:00" selected>10:00 AM</option>
+                                        <option value="11:00">11:00 AM</option>
+                                        <option value="13:00">01:00 PM</option>
+                                        <option value="14:00">02:00 PM</option>
+                                        <option value="15:00">03:00 PM</option>
+                                        <option value="16:00">04:00 PM</option>
+                                    </select>
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                                        Duration
+                                    </label>
+                                    <select
+                                        name="duration"
+                                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                    >
+                                        <option value="30">30 minutes</option>
+                                        <option value="45">45 minutes</option>
+                                        <option value="60" selected>60 minutes</option>
+                                        <option value="90">90 minutes</option>
+                                        <option value="120">120 minutes</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <input type="hidden" name="interview_date" id="interview-date-time">
+                    </div>
+
+                    <!-- Interview Details -->
+                    <div class="bg-white p-5 rounded-xl border border-gray-200">
+                        <div class="flex items-center mb-4">
+                            <div class="h-8 w-8 bg-blue-600 rounded-lg flex items-center justify-center mr-3">
+                                <i class="fas fa-info-circle text-white text-sm"></i>
+                            </div>
+                            <h4 class="text-lg font-bold text-gray-800">Interview Details</h4>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">
+                                    Interview Type *
+                                </label>
+                                <select
+                                    name="interview_type"
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                    required
+                                >
+                                    <option value="">Select Type</option>
+                                    <option value="phone">Phone Interview</option>
+                                    <option value="video">Video Interview</option>
+                                    <option value="in_person" selected>In-Person Interview</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">
+                                    Location
+                                </label>
+                                <input
+                                    type="text"
+                                    name="location"
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                    placeholder="Meeting Room, Office Address"
+                                >
+                            </div>
+                        </div>
+
+                        <div class="mt-5">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                                Additional Notes
+                            </label>
+                            <textarea
+                                name="notes"
+                                rows="3"
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                placeholder="Any special instructions or notes..."
+                            ></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Form Actions -->
+                    <div class="flex justify-end space-x-4 pt-6 border-t border-gray-200">
+                        <button type="button" class="btn btn-outline close-schedule-modal">
+                            Cancel
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-calendar-check mr-2"></i> Schedule Interview
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
     <!-- Logout Form -->
     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
         @csrf
     </form>
 
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/default.js"></script>
     <script>
         // Content loading functionality
         const contentLoadingOverlay = document.getElementById('content-loading-overlay');
@@ -1496,7 +1741,7 @@
         // Adjust loading overlay position when sidebar collapses/expands
         function adjustLoadingOverlay() {
             if (window.innerWidth >= 1024) {
-                if (sidebar.classList.contains('collapsed')) {
+                if (sidebar && sidebar.classList.contains('collapsed')) {
                     contentLoadingOverlay.style.left = '80px';
                 } else {
                     contentLoadingOverlay.style.left = '260px';
@@ -1537,6 +1782,9 @@
                     el.style.animationDelay = (index * 0.1) + 's';
                     el.style.opacity = '1';
                 });
+                
+                // Initialize chart
+                initStatusChart();
                 
                 // Remove loading overlay from DOM after animation
                 setTimeout(() => {
@@ -1644,25 +1892,103 @@
             });
         });
 
+        // Initialize date picker for available start date
+        flatpickr("input[name='available_start_date']", {
+            minDate: "today",
+            dateFormat: "Y-m-d",
+        });
+
+        // File upload functionality
+        function setupFileUpload(inputId, previewId, areaId) {
+            const fileInput = document.getElementById(inputId);
+            const preview = document.getElementById(previewId);
+            const uploadArea = document.getElementById(areaId);
+
+            fileInput.addEventListener('change', function(e) {
+                preview.innerHTML = '';
+                const files = Array.from(e.target.files);
+                
+                files.forEach(file => {
+                    if (file.size > 5 * 1024 * 1024) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'File too large',
+                            text: 'File must be less than 5MB'
+                        });
+                        return;
+                    }
+
+                    const fileItem = document.createElement('div');
+                    fileItem.className = 'file-preview-item';
+                    fileItem.innerHTML = `
+                        <div class="file-name">
+                            <i class="fas fa-file-pdf text-red-500 mr-2"></i>
+                            ${file.name} (${(file.size / 1024).toFixed(2)} KB)
+                        </div>
+                        <button type="button" class="text-red-500 hover:text-red-700 remove-file">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    `;
+
+                    fileItem.querySelector('.remove-file').addEventListener('click', () => {
+                        fileInput.value = '';
+                        preview.innerHTML = '';
+                    });
+
+                    preview.appendChild(fileItem);
+                });
+            });
+
+            // Drag and drop functionality
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                uploadArea.addEventListener(eventName, preventDefaults, false);
+            });
+
+            function preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+
+            ['dragenter', 'dragover'].forEach(eventName => {
+                uploadArea.addEventListener(eventName, highlight, false);
+            });
+
+            ['dragleave', 'drop'].forEach(eventName => {
+                uploadArea.addEventListener(eventName, unhighlight, false);
+            });
+
+            function highlight() {
+                uploadArea.classList.add('dragover');
+            }
+
+            function unhighlight() {
+                uploadArea.classList.remove('dragover');
+            }
+
+            uploadArea.addEventListener('drop', handleDrop, false);
+
+            function handleDrop(e) {
+                const dt = e.dataTransfer;
+                const files = dt.files;
+                fileInput.files = files;
+                fileInput.dispatchEvent(new Event('change'));
+            }
+        }
+
+        // Setup file uploads
+        setupFileUpload('sss-file', 'sss-preview', 'sss-upload-area');
+        setupFileUpload('philhealth-file', 'philhealth-preview', 'philhealth-upload-area');
+        setupFileUpload('pagibig-file', 'pagibig-preview', 'pagibig-upload-area');
+
         // Modal functionality
         const encodeBtn = document.getElementById('encode-applicant-btn');
         const modal = document.getElementById('encode-applicant-modal');
         const closeModal = document.getElementById('close-modal');
         const cancelForm = document.getElementById('cancel-form');
         const applicantForm = document.getElementById('applicant-form');
+        const submitBtn = document.getElementById('submit-form');
         
-        // Create encode button if not exists in DOM
-        if (!encodeBtn) {
-            const newEncodeBtn = document.createElement('button');
-            newEncodeBtn.className = 'btn btn-primary';
-            newEncodeBtn.id = 'encode-applicant-btn';
-            newEncodeBtn.innerHTML = '<i class="fas fa-plus mr-2"></i> Encode New Applicant';
-            document.querySelector('.header-actions .flex').prepend(newEncodeBtn);
-        }
-        
-        const encodeBtnElement = document.getElementById('encode-applicant-btn');
-        
-        encodeBtnElement.addEventListener('click', () => {
+        encodeBtn.addEventListener('click', () => {
             modal.classList.add('active');
             document.body.style.overflow = 'hidden';
         });
@@ -1670,11 +1996,13 @@
         closeModal.addEventListener('click', () => {
             modal.classList.remove('active');
             document.body.style.overflow = '';
+            clearFormErrors();
         });
         
         cancelForm.addEventListener('click', () => {
             modal.classList.remove('active');
             document.body.style.overflow = '';
+            clearFormErrors();
         });
         
         // Close modal when clicking outside
@@ -1682,53 +2010,546 @@
             if (e.target === modal) {
                 modal.classList.remove('active');
                 document.body.style.overflow = '';
+                clearFormErrors();
             }
         });
-        
-        // Form submission
-        applicantForm.addEventListener('submit', (e) => {
+
+        // Form submission - FIXED: Added proper FormData handling
+        applicantForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            alert('Applicant information saved successfully!');
-            modal.classList.remove('active');
-            document.body.style.overflow = '';
-            applicantForm.reset();
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Saving...';
+
+            const formData = new FormData(applicantForm);
+
+            try {
+                const response = await fetch('{{ route("hrm.staff.application.store") }}', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Accept': 'application/json'
+                    },
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success!',
+                        text: data.message,
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+
+                    modal.classList.remove('active');
+                    document.body.style.overflow = '';
+                    applicantForm.reset();
+                    
+                    // Clear file previews
+                    ['sss-preview', 'philhealth-preview', 'pagibig-preview'].forEach(id => {
+                        document.getElementById(id).innerHTML = '';
+                    });
+
+                    // Reload page after 1 second
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1000);
+                } else {
+                    clearFormErrors();
+                    // Display validation errors
+                    if (data.errors) {
+                        Object.keys(data.errors).forEach(field => {
+                            const errorElement = document.getElementById(`error-${field}`);
+                            if (errorElement) {
+                                errorElement.textContent = data.errors[field][0];
+                            }
+                        });
+                    }
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: 'Something went wrong. Please try again.'
+                });
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-save mr-2"></i> Save Applicant';
+            }
         });
-        
-        // Action functions
-        function scheduleInterview(id) {
-            if (confirm('Schedule interview for this applicant?')) {
-                alert(`Interview scheduled for applicant #${id}`);
-                // Update UI here
-            }
-        }
-        
-        function rejectApplication(id) {
-            if (confirm('Reject this application?')) {
-                alert(`Application #${id} rejected`);
-                // Update UI here
-            }
-        }
-        
-        function rescheduleInterview(id) {
-            alert(`Reschedule interview for applicant #${id}`);
-        }
-        
-        function markAsHired(id) {
-            if (confirm('Mark this applicant as hired?')) {
-                alert(`Applicant #${id} marked as hired`);
-                // Update UI here
-            }
-        }
-        
-        function reconsiderApplication(id) {
-            alert(`Application #${id} sent for reconsideration`);
-        }
-        
-        function viewOfferLetter(id) {
-            alert(`Viewing offer letter for applicant #${id}`);
+
+        function clearFormErrors() {
+            document.querySelectorAll('.error-message').forEach(el => {
+                el.textContent = '';
+            });
         }
 
-        document.querySelectorAll('.sidebar-item').forEach(l=>l.addEventListener('click',e=>{e.preventDefault();setTimeout(()=>window.location.href=l.getAttribute('href'),300)}));
+        // View Applicant Details
+        document.querySelectorAll('.view-applicant').forEach(btn => {
+            btn.addEventListener('click', async function(e) {
+                e.preventDefault();
+                const applicantId = this.getAttribute('data-id');
+                
+                try {
+                    const response = await fetch('{{ route("hrm.staff.application.show", ["id" => "__id__"]) }}'.replace('__id__', applicantId));
+                    const applicant = await response.json();
+                    
+                    // Format the date
+                    const formatDate = (dateString) => {
+                        if (!dateString) return 'N/A';
+                        const date = new Date(dateString);
+                        return date.toLocaleDateString('en-US', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric'
+                        });
+                    };
+                    
+                    // Populate modal
+                    document.getElementById('applicant-name').textContent = applicant.full_name;
+                    
+                    const detailsHtml = `
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="bg-gray-50 p-5 rounded-xl">
+                                <h4 class="font-bold text-gray-800 mb-3 text-lg border-b pb-2">Personal Information</h4>
+                                <div class="space-y-3">
+                                    <div>
+                                        <span class="text-gray-600 text-sm">Full Name:</span>
+                                        <p class="font-medium">${applicant.full_name}</p>
+                                    </div>
+                                    <div>
+                                        <span class="text-gray-600 text-sm">Birth Date:</span>
+                                        <p class="font-medium">${formatDate(applicant.birth_date)}</p>
+                                    </div>
+                                    <div>
+                                        <span class="text-gray-600 text-sm">Email:</span>
+                                        <p class="font-medium">${applicant.email}</p>
+                                    </div>
+                                    <div>
+                                        <span class="text-gray-600 text-sm">Phone:</span>
+                                        <p class="font-medium">${applicant.phone_number}</p>
+                                    </div>
+                                    <div>
+                                        <span class="text-gray-600 text-sm">LinkedIn:</span>
+                                        <p class="font-medium">${applicant.linkedin_profile || 'N/A'}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-gray-50 p-5 rounded-xl">
+                                <h4 class="font-bold text-gray-800 mb-3 text-lg border-b pb-2">Address</h4>
+                                <div class="space-y-3">
+                                    <div>
+                                        <span class="text-gray-600 text-sm">Street Address:</span>
+                                        <p class="font-medium">${applicant.street_address}</p>
+                                    </div>
+                                    ${applicant.street_address_line2 ? `
+                                    <div>
+                                        <span class="text-gray-600 text-sm">Address Line 2:</span>
+                                        <p class="font-medium">${applicant.street_address_line2}</p>
+                                    </div>
+                                    ` : ''}
+                                    <div>
+                                        <span class="text-gray-600 text-sm">City:</span>
+                                        <p class="font-medium">${applicant.city}</p>
+                                    </div>
+                                    <div>
+                                        <span class="text-gray-600 text-sm">State/Province:</span>
+                                        <p class="font-medium">${applicant.state_province}</p>
+                                    </div>
+                                    <div>
+                                        <span class="text-gray-600 text-sm">Postal Code:</span>
+                                        <p class="font-medium">${applicant.postal_zip_code}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-gray-50 p-5 rounded-xl">
+                                <h4 class="font-bold text-gray-800 mb-3 text-lg border-b pb-2">Application Details</h4>
+                                <div class="space-y-3">
+                                    <div>
+                                        <span class="text-gray-600 text-sm">Position Applied:</span>
+                                        <p class="font-medium">${applicant.position_applied.replace(/_/g, ' ').toUpperCase()}</p>
+                                    </div>
+                                    <div>
+                                        <span class="text-gray-600 text-sm">Referral Source:</span>
+                                        <p class="font-medium">${applicant.referral_source.replace(/_/g, ' ').toUpperCase()}</p>
+                                    </div>
+                                    <div>
+                                        <span class="text-gray-600 text-sm">Available Start Date:</span>
+                                        <p class="font-medium">${formatDate(applicant.available_start_date)}</p>
+                                    </div>
+                                    <div>
+                                        <span class="text-gray-600 text-sm">Expected Salary:</span>
+                                        <p class="font-medium">${applicant.expected_salary || 'Not specified'}</p>
+                                    </div>
+                                    <div>
+                                        <span class="text-gray-600 text-sm">Notice Period:</span>
+                                        <p class="font-medium">${applicant.notice_period ? applicant.notice_period.replace(/_/g, ' ') : 'Immediate'}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-gray-50 p-5 rounded-xl">
+                                <h4 class="font-bold text-gray-800 mb-3 text-lg border-b pb-2">Status & Documents</h4>
+                                <div class="space-y-3">
+                                    <div>
+                                        <span class="text-gray-600 text-sm">Application Status:</span>
+                                        <span class="badge badge-${applicant.status}">
+                                            ${applicant.status.replace(/_/g, ' ').toUpperCase()}
+                                        </span>
+                                    </div>
+                                    <div>
+                                        <span class="text-gray-600 text-sm">Textile Experience:</span>
+                                        <p class="font-medium">${applicant.textile_experience ? 'Yes' : 'No'}</p>
+                                    </div>
+                                    <div>
+                                        <span class="text-gray-600 text-sm">Date Applied:</span>
+                                        <p class="font-medium">${formatDate(applicant.created_at)}</p>
+                                    </div>
+                                    <div>
+                                        <span class="text-gray-600 text-sm">Government Documents:</span>
+                                        <p class="font-medium">${applicant.sss_file_path || applicant.philhealth_file_path || applicant.pagibig_file_path ? 'Uploaded' : 'Not uploaded'}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        ${applicant.notes ? `
+                        <div class="bg-yellow-50 p-5 rounded-xl mt-6">
+                            <h4 class="font-bold text-gray-800 mb-3 text-lg border-b pb-2">Notes</h4>
+                            <p class="text-gray-700">${applicant.notes}</p>
+                        </div>
+                        ` : ''}
+                    `;
+                    
+                    document.getElementById('applicant-details').innerHTML = detailsHtml;
+                    document.getElementById('view-applicant-modal').classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                    
+                } catch (error) {
+                    console.error('Error:', error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error!',
+                        text: 'Failed to load applicant details.'
+                    });
+                }
+            });
+        });
+
+        // Initialize Calendar for Schedule Modal
+        let interviewCalendar = null;
+        let selectedDate = null;
+
+        function initializeInterviewCalendar() {
+            const calendarEl = document.getElementById('interview-calendar');
+            if (!calendarEl) return;
+            
+            // Destroy existing calendar if exists
+            if (interviewCalendar) {
+                interviewCalendar.destroy();
+            }
+            
+            const today = new Date();
+            const nextWeek = new Date(today);
+            nextWeek.setDate(today.getDate() + 14);
+            
+            interviewCalendar = flatpickr(calendarEl, {
+                inline: true,
+                mode: "single",
+                minDate: "today",
+                maxDate: nextWeek,
+                dateFormat: "Y-m-d",
+                onChange: function(selectedDates, dateStr, instance) {
+                    if (selectedDates.length > 0) {
+                        selectedDate = selectedDates[0];
+                        const formattedDate = selectedDate.toLocaleDateString('en-US', {
+                            weekday: 'long',
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric'
+                        });
+                        document.getElementById('selected-date').value = formattedDate;
+                        updateInterviewDateTime();
+                    }
+                },
+                locale: {
+                    firstDayOfWeek: 1,
+                    weekdays: {
+                        shorthand: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+                        longhand: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+                    },
+                    months: {
+                        shorthand: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                        longhand: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+                    }
+                }
+            });
+            
+            // Set initial date to tomorrow
+            const tomorrow = new Date(today);
+            tomorrow.setDate(today.getDate() + 1);
+            interviewCalendar.setDate(tomorrow, false);
+            selectedDate = tomorrow;
+            
+            const formattedDate = tomorrow.toLocaleDateString('en-US', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+            document.getElementById('selected-date').value = formattedDate;
+            updateInterviewDateTime();
+        }
+
+        // Schedule Interview Modal
+        document.querySelectorAll('.schedule-interview-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                const applicantId = this.getAttribute('data-id');
+                const applicantName = this.getAttribute('data-name');
+                
+                document.getElementById('schedule-applicant-id').value = applicantId;
+                document.getElementById('interview-applicant-name').textContent = applicantName;
+                
+                // Initialize or reinitialize calendar
+                initializeInterviewCalendar();
+                
+                document.getElementById('schedule-interview-modal').classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+        });
+
+        // Update interview date and time when changed
+        function updateInterviewDateTime() {
+            if (!selectedDate) return;
+            
+            const timeSelect = document.getElementById('interview-time');
+            const selectedTime = timeSelect.value;
+            
+            if (!selectedTime) {
+                document.getElementById('interview-date-time').value = '';
+                return;
+            }
+            
+            const dateStr = selectedDate.toISOString().split('T')[0];
+            const dateTimeStr = `${dateStr} ${selectedTime}:00`;
+            document.getElementById('interview-date-time').value = dateTimeStr;
+        }
+
+        // Listen for time changes
+        document.getElementById('interview-time').addEventListener('change', updateInterviewDateTime);
+
+        // Schedule Interview Form Submission
+        document.getElementById('schedule-interview-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const applicantId = document.getElementById('schedule-applicant-id').value;
+            const interviewDateTime = document.getElementById('interview-date-time').value;
+            
+            if (!interviewDateTime) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: 'Please select a date and time for the interview.'
+                });
+                return;
+            }
+            
+            const formData = new FormData(this);
+            
+            try {
+                const response = await fetch('{{ route("hrm.staff.application.schedule-interview", ["id" => "__id__"]) }}'.replace('__id__', applicantId), {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(Object.fromEntries(formData))
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success!',
+                        text: data.message,
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+                    
+                    document.getElementById('schedule-interview-modal').classList.remove('active');
+                    document.body.style.overflow = '';
+                    
+                    // Reload page after 1 second
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1000);
+                } else {
+                    if (data.errors) {
+                        let errorMessage = '';
+                        Object.values(data.errors).forEach(errors => {
+                            errorMessage += errors[0] + '\n';
+                        });
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error!',
+                            text: errorMessage
+                        });
+                    }
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: 'Something went wrong. Please try again.'
+                });
+            }
+        });
+
+        // Close Modals
+        document.querySelectorAll('.close-view-modal').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.getElementById('view-applicant-modal').classList.remove('active');
+                document.body.style.overflow = '';
+            });
+        });
+
+        document.querySelectorAll('.close-schedule-modal').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.getElementById('schedule-interview-modal').classList.remove('active');
+                document.body.style.overflow = '';
+            });
+        });
+
+        // Close modals when clicking outside
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
+            });
+        });
+
+        // Search functionality
+        const searchInput = document.getElementById('search-applicants');
+        const filterStatus = document.getElementById('filter-status');
+        const filterPosition = document.getElementById('filter-position');
+
+        function filterTable() {
+            const searchTerm = searchInput.value.toLowerCase();
+            const statusFilter = filterStatus.value;
+            const positionFilter = filterPosition.value;
+
+            document.querySelectorAll('#applicants-table-body tr').forEach(row => {
+                const name = row.cells[0].textContent.toLowerCase();
+                const email = row.cells[0].querySelector('.text-sm').textContent.toLowerCase();
+                const position = row.cells[1].textContent.toLowerCase();
+                const statusBadge = row.cells[3].querySelector('.badge');
+                let status = '';
+                
+                if (statusBadge) {
+                    status = statusBadge.textContent.trim().toLowerCase().replace(' ', '_');
+                }
+
+                const matchesSearch = name.includes(searchTerm) || email.includes(searchTerm) || position.includes(searchTerm);
+                const matchesStatus = !statusFilter || status === statusFilter;
+                const matchesPosition = !positionFilter || position.includes(positionFilter);
+
+                row.style.display = matchesSearch && matchesStatus && matchesPosition ? '' : 'none';
+            });
+        }
+
+        searchInput.addEventListener('input', filterTable);
+        filterStatus.addEventListener('change', filterTable);
+        filterPosition.addEventListener('change', filterTable);
+
+        // Initialize status chart
+        function initStatusChart() {
+            const ctx = document.getElementById('statusChart');
+            if (!ctx) return;
+
+            const statusData = {
+                pending: {{ $pendingReview ?? 0 }},
+                under_review: {{ $applicants->where('status', 'under_review')->count() }},
+                interview_scheduled: {{ $scheduledInterviews ?? 0 }},
+                accepted: {{ $applicants->where('status', 'accepted')->count() }},
+                rejected: {{ $rejected ?? 0 }}
+            };
+
+            const chart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Pending', 'Under Review', 'Interview Scheduled', 'Accepted', 'Rejected'],
+                    datasets: [{
+                        data: [
+                            statusData.pending,
+                            statusData.under_review,
+                            statusData.interview_scheduled,
+                            statusData.accepted,
+                            statusData.rejected
+                        ],
+                        backgroundColor: [
+                            '#f59e0b',
+                            '#3b82f6',
+                            '#10b981',
+                            '#059669',
+                            '#ef4444'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+        }
+
+        // Navigation
+        document.querySelectorAll('.sidebar-item').forEach(link => {
+            link.addEventListener('click', function(e) {
+                if (this.getAttribute('href') && !this.getAttribute('href').startsWith('#')) {
+                    e.preventDefault();
+                    contentLoadingOverlay.style.display = 'flex';
+                    contentLoadingOverlay.classList.remove('hidden');
+                    mainContent.classList.add('hidden');
+                    setTimeout(() => {
+                        window.location.href = this.getAttribute('href');
+                    }, 300);
+                }
+            });
+        });
+
+        // Set today's date as default for available start date
+        const today = new Date().toISOString().split('T')[0];
+        const startDateInput = document.querySelector('input[name="available_start_date"]');
+        if (startDateInput) {
+            startDateInput.value = today;
+        }
+
+        // Initialize calendar when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            // Load flatpickr locale and styles for calendar
+            const link = document.createElement('link');
+            link.rel = 'stylesheet';
+            link.href = 'https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css';
+            document.head.appendChild(link);
+        });
+
     </script>
 </body>
 </html>

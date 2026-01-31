@@ -387,7 +387,7 @@
             background: linear-gradient(135deg, #1e3a8a 0%, #1d4ed8 100%);
         }
         
-        /* Payroll Run Specific Styles - Redesigned Table */
+        /* Payroll Table */
         .payroll-table-container {
             overflow-x: auto;
             border-radius: 0.75rem;
@@ -396,7 +396,6 @@
         }
         
         .payroll-table {
-            min-width: 1800px;
             width: 100%;
             border-collapse: separate;
             border-spacing: 0;
@@ -416,23 +415,8 @@
             letter-spacing: 0.05em;
             border-bottom: 2px solid #e5e7eb;
             position: relative;
-        }
-        
-        .payroll-table th.group-header {
-            background-color: #e0f2fe;
-            text-align: center;
-            font-size: 0.7rem;
-            padding: 8px 4px;
-            border-left: 1px solid #e5e7eb;
-            border-right: 1px solid #e5e7eb;
-        }
-        
-        .payroll-table th.sub-header {
-            background-color: #f1f5f9;
-            font-weight: 500;
-            font-size: 0.7rem;
-            padding: 6px 4px;
-            border-bottom: 1px solid #e5e7eb;
+            padding: 12px 8px;
+            white-space: nowrap;
         }
         
         .payroll-table td {
@@ -445,8 +429,36 @@
             background-color: #f8fafc;
         }
         
+        /* Role & Department Grouping */
+        .role-section {
+            background: linear-gradient(to right, rgba(37, 99, 235, 0.15), rgba(37, 99, 235, 0.05));
+            border-left: 6px solid #2563eb;
+        }
+        
+        .role-section td {
+            background-color: #eff6ff;
+            font-weight: 700;
+            color: #1e40af;
+            padding: 16px 8px;
+            border-bottom: 2px solid #2563eb;
+            font-size: 1rem;
+        }
+        
+        .department-section {
+            background: linear-gradient(to right, rgba(59, 130, 246, 0.1), rgba(59, 130, 246, 0.03));
+            border-left: 4px solid #3b82f6;
+        }
+        
+        .department-section td {
+            background-color: #f0f9ff;
+            font-weight: 600;
+            color: #1e40af;
+            padding: 14px 8px;
+            border-bottom: 2px solid #3b82f6;
+        }
+        
         .amount-input {
-            width: 90px;
+            width: 100%;
             text-align: right;
             font-family: 'SF Mono', Monaco, monospace;
             font-weight: 500;
@@ -492,63 +504,24 @@
             box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
         }
         
-        .department-section {
-            background: linear-gradient(to right, rgba(59, 130, 246, 0.05), rgba(59, 130, 246, 0.02));
-            border-left: 4px solid #3b82f6;
+        .net-pay {
+            font-weight: 700;
+            color: #059669;
+            font-size: 0.95rem;
         }
         
-        .department-section td {
-            background-color: #f0f9ff;
-            font-weight: 600;
-            color: #1e40af;
-            padding: 12px 16px;
-            border-bottom: 2px solid #3b82f6;
+        .deduction {
+            color: #dc2626;
         }
         
-        .department-section:nth-child(2) {
-            border-left-color: #10b981;
+        .addition {
+            color: #059669;
         }
         
-        .department-section:nth-child(2) td {
-            background-color: #f0fdf4;
-            color: #065f46;
-            border-bottom-color: #10b981;
-        }
-        
-        .department-section:nth-child(3) {
-            border-left-color: #f59e0b;
-        }
-        
-        .department-section:nth-child(3) td {
-            background-color: #fef3c7;
-            color: #92400e;
-            border-bottom-color: #f59e0b;
-        }
-        
-        .department-section:nth-child(4) {
-            border-left-color: #8b5cf6;
-        }
-        
-        .department-section:nth-child(4) td {
-            background-color: #f5f3ff;
-            color: #5b21b6;
-            border-bottom-color: #8b5cf6;
-        }
-        
-        .total-row {
-            background-color: #fef3c7;
-            font-weight: 600;
-            border-top: 2px solid #fbbf24;
-        }
-        
-        .total-row td {
-            padding: 14px 8px;
-            border-bottom: none;
-        }
-        
-        .dark .total-row {
-            background-color: #78350f;
-            border-top-color: #d97706;
+        .employee-checkbox {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
         }
         
         .approval-status {
@@ -576,48 +549,42 @@
             color: #991b1b;
         }
         
-        .net-pay {
-            font-weight: 700;
-            color: #059669;
-            font-size: 0.95rem;
-        }
-        
-        .deduction {
-            color: #dc2626;
-        }
-        
-        .addition {
-            color: #059669;
-        }
-        
-        .employee-checkbox {
-            width: 16px;
-            height: 16px;
-            cursor: pointer;
-        }
-        
-        .section-label {
+        /* Violation badges */
+        .violation-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 12px;
             font-size: 0.7rem;
-            color: #6b7280;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-bottom: 4px;
-            display: block;
+            margin: 1px;
         }
         
-        /* Column grouping styles */
-        .col-group {
-            position: relative;
+        .violation-late {
+            background-color: #fef3c7;
+            color: #92400e;
         }
         
-        .col-group::after {
-            content: '';
-            position: absolute;
-            right: -1px;
-            top: 0;
-            bottom: 0;
-            width: 1px;
-            background-color: #e5e7eb;
+        .violation-absent {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+        
+        .violation-undertime {
+            background-color: #fef9c3;
+            color: #854d0e;
+        }
+        
+        /* Fixed columns */
+        .fixed-column {
+            position: sticky;
+            left: 0;
+            background-color: white;
+            z-index: 5;
+            border-right: 1px solid #e5e7eb;
+        }
+        
+        .dark .fixed-column {
+            background-color: #1f2937;
+            border-right-color: #374151;
         }
         
         /* Dark mode table styles */
@@ -630,16 +597,6 @@
             background-color: #374151;
             border-color: #4b5563;
             color: #d1d5db;
-        }
-        
-        .dark .payroll-table th.group-header {
-            background-color: #1e3a8a;
-            border-color: #374151;
-        }
-        
-        .dark .payroll-table th.sub-header {
-            background-color: #2d3748;
-            border-color: #4b5563;
         }
         
         .dark .payroll-table td {
@@ -659,52 +616,200 @@
             color: #f9fafb;
         }
         
-        .dark .department-section td {
-            background-color: rgba(59, 130, 246, 0.1);
+        .dark .role-section td {
+            background-color: rgba(37, 99, 235, 0.2);
             color: #93c5fd;
         }
         
-        .dark .department-section:nth-child(2) td {
-            background-color: rgba(16, 185, 129, 0.1);
-            color: #6ee7b7;
+        .dark .department-section td {
+            background-color: rgba(59, 130, 246, 0.15);
+            color: #93c5fd;
         }
         
-        .dark .department-section:nth-child(3) td {
-            background-color: rgba(245, 158, 11, 0.1);
-            color: #fcd34d;
-        }
-        
-        .dark .department-section:nth-child(4) td {
-            background-color: rgba(139, 92, 246, 0.1);
-            color: #c4b5fd;
-        }
-        
-        /* Fixed columns for better readability */
-        .fixed-column {
-            position: sticky;
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
             left: 0;
-            background-color: white;
-            z-index: 5;
-            border-right: 1px solid #e5e7eb;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
         }
         
-        .dark .fixed-column {
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 1rem;
+            width: 90%;
+            max-width: 900px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        .dark .modal-content {
             background-color: #1f2937;
-            border-right-color: #374151;
+            color: #f9fafb;
         }
         
-        .fixed-column-employee {
-            position: sticky;
-            left: 40px; /* Width of checkbox column */
-            background-color: white;
-            z-index: 5;
-            border-right: 1px solid #e5e7eb;
-            min-width: 200px;
+        .modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
         
-        .dark .fixed-column-employee {
-            background-color: #1f2937;
-            border-right-color: #374151;
+        .dark .modal-header {
+            border-bottom-color: #374151;
+        }
+        
+        .modal-body {
+            padding: 1.5rem;
+        }
+        
+        .modal-footer {
+            padding: 1.5rem;
+            border-top: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.75rem;
+        }
+        
+        .dark .modal-footer {
+            border-top-color: #374151;
+        }
+        
+        .rate-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .rate-card {
+            border: 1px solid #e5e7eb;
+            border-radius: 0.75rem;
+            padding: 1rem;
+            background: #f9fafb;
+        }
+        
+        .dark .rate-card {
+            background-color: #2d3748;
+            border-color: #4b5563;
+        }
+        
+        /* Holiday Modal Specific */
+        .holiday-modal .modal-content {
+            max-width: 800px;
+        }
+        
+        .holiday-form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .holiday-list {
+            max-height: 400px;
+            overflow-y: auto;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            padding: 0.5rem;
+        }
+        
+        .dark .holiday-list {
+            border-color: #4b5563;
+        }
+        
+        .holiday-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem;
+            border-bottom: 1px solid #e5e7eb;
+            transition: background-color 0.2s;
+        }
+        
+        .holiday-item:hover {
+            background-color: #f9fafb;
+        }
+        
+        .dark .holiday-item {
+            border-bottom-color: #4b5563;
+        }
+        
+        .dark .holiday-item:hover {
+            background-color: #374151;
+        }
+        
+        .holiday-item:last-child {
+            border-bottom: none;
+        }
+        
+        .holiday-item-info {
+            flex: 1;
+        }
+        
+        .holiday-item-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .holiday-type-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            margin-top: 0.25rem;
+        }
+        
+        .holiday-regular {
+            background-color: #dbeafe;
+            color: #1e40af;
+        }
+        
+        .holiday-special {
+            background-color: #f3e8ff;
+            color: #7c3aed;
+        }
+        
+        .holiday-religious {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+        
+        .holiday-national {
+            background-color: #dcfce7;
+            color: #166534;
+        }
+        
+        /* Deduction Rules Table */
+        .deduction-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+        
+        .deduction-table th,
+        .deduction-table td {
+            padding: 0.75rem;
+            border: 1px solid #e5e7eb;
+            text-align: left;
+        }
+        
+        .dark .deduction-table th,
+        .dark .deduction-table td {
+            border-color: #4b5563;
         }
         
         /* Responsive Design */
@@ -735,27 +840,18 @@
                 width: 100%;
             }
             
-            .search-input {
-                width: 100%;
+            .payroll-table-container {
+                overflow-x: auto;
             }
             
             .payroll-table {
-                min-width: 2200px;
-            }
-            
-            .fixed-column,
-            .fixed-column-employee {
-                position: static;
+                min-width: 1200px;
             }
         }
         
         @media (max-width: 768px) {
             .stats-grid {
                 grid-template-columns: repeat(2, 1fr);
-            }
-            
-            .main-grid {
-                grid-template-columns: 1fr;
             }
             
             .header-content {
@@ -769,56 +865,17 @@
                 justify-content: space-between;
             }
             
-            .featured-banner {
-                text-align: center;
-                padding: 1.5rem !important;
+            .modal-content {
+                width: 95%;
+                margin: 1rem;
             }
             
-            .featured-banner-content {
-                padding-right: 0 !important;
-            }
-            
-            .featured-banner img {
-                display: none;
-            }
-            
-            .instructors-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
-            .payroll-summary-cards {
-                grid-template-columns: 1fr;
-            }
-        }
-        
-        @media (max-width: 640px) {
-            .stats-grid {
+            .rate-grid {
                 grid-template-columns: 1fr;
             }
             
-            .instructors-grid {
+            .holiday-form-grid {
                 grid-template-columns: 1fr;
-            }
-            
-            .header-title {
-                font-size: 1.5rem;
-            }
-            
-            .featured-banner {
-                text-align: center;
-            }
-            
-            .featured-banner-button {
-                width: 100%;
-            }
-            
-            .payroll-action-buttons {
-                flex-direction: column;
-                gap: 0.5rem;
-            }
-            
-            .payroll-action-buttons button {
-                width: 100%;
             }
         }
     </style>
@@ -854,6 +911,14 @@
                 
                 <div class="flex items-center space-x-4 header-actions">
                     <div class="flex items-center space-x-3">
+                        <button id="manage-holidays-btn" class="px-4 py-2.5 bg-orange-600 hover:bg-orange-700 text-white rounded-lg font-medium transition-colors">
+                            <i class="fas fa-calendar-day mr-2"></i> Manage Holidays
+                        </button>
+                        
+                        <button id="configure-payroll-btn" class="px-4 py-2.5 bg-purple-600 hover:bg-purple-700 text-white rounded-lg font-medium transition-colors">
+                            <i class="fas fa-cog mr-2"></i> Configure Payroll
+                        </button>
+                        
                         <button class="relative p-2.5 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-600 text-gray-600 dark:text-gray-300">
                             <i class="fas fa-bell"></i>
                             <span class="notification-badge">3</span>
@@ -877,19 +942,19 @@
             <div class="card p-6 mb-8 content-fade-in stagger-delay-1">
                 <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div>
-                        <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-2">November 2023 Payroll Run</h2>
+                        <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Payroll Run</h2>
                         <div class="flex items-center flex-wrap gap-4">
                             <div class="flex items-center">
                                 <i class="fas fa-calendar-alt text-blue-theme mr-2"></i>
-                                <span class="text-gray-600 dark:text-gray-400">Pay Period: Nov 1 - Nov 30, 2023</span>
+                                <span class="text-gray-600 dark:text-gray-400" id="pay-period">Select Pay Period</span>
                             </div>
                             <div class="flex items-center">
                                 <i class="fas fa-users text-blue-theme mr-2"></i>
-                                <span class="text-gray-600 dark:text-gray-400">Employees: 245</span>
+                                <span class="text-gray-600 dark:text-gray-400" id="employee-count">0 Employees</span>
                             </div>
                             <div class="flex items-center">
                                 <i class="fas fa-money-bill-wave text-blue-theme mr-2"></i>
-                                <span class="text-gray-600 dark:text-gray-400">Total Estimated: ₱850,250</span>
+                                <span class="text-gray-600 dark:text-gray-400" id="total-estimated">₱0.00</span>
                             </div>
                         </div>
                     </div>
@@ -904,18 +969,33 @@
                     </div>
                 </div>
                 
-                <!-- Progress Indicator -->
-                <div class="mt-6">
-                    <div class="flex justify-between text-sm mb-2">
-                        <span class="text-gray-600 dark:text-gray-400">Payroll Processing Progress</span>
-                        <span class="text-blue-theme font-medium">65% Complete</span>
+                <!-- Applied Rates & Holidays Summary -->
+                <div class="mt-6 p-4 bg-blue-50 dark:bg-blue-900 rounded-lg">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-sm font-medium text-blue-800 dark:text-blue-200">Active Payroll Configuration</span>
+                        <div class="flex gap-2">
+                            <button id="view-rates-summary" class="text-xs text-blue-600 dark:text-blue-300 hover:underline">View Rates</button>
+                            <span class="text-gray-400">|</span>
+                            <button id="view-holidays-summary" class="text-xs text-blue-600 dark:text-blue-300 hover:underline">View Holidays</button>
+                        </div>
                     </div>
-                    <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
-                        <div class="bg-green-600 h-2.5 rounded-full" style="width: 65%"></div>
-                    </div>
-                    <div class="flex justify-between text-xs text-gray-500 dark:text-gray-400 mt-2">
-                        <span>160 Employees Processed</span>
-                        <span>85 Employees Pending</span>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                        <div>
+                            <span class="text-gray-600 dark:text-gray-400">Managerial Basic:</span>
+                            <span class="font-medium ml-2" id="summary-managerial-basic">₱0/day</span>
+                        </div>
+                        <div>
+                            <span class="text-gray-600 dark:text-gray-400">Staff Basic:</span>
+                            <span class="font-medium ml-2" id="summary-staff-basic">₱0/day</span>
+                        </div>
+                        <div>
+                            <span class="text-gray-600 dark:text-gray-400">Active Holidays:</span>
+                            <span class="font-medium ml-2" id="summary-holidays-count">0 days</span>
+                        </div>
+                        <div>
+                            <span class="text-gray-600 dark:text-gray-400">Late Rate:</span>
+                            <span class="font-medium ml-2" id="summary-late-rate">₱0/min</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -925,11 +1005,12 @@
                 <div class="card p-6 content-fade-in stagger-delay-1">
                     <div class="flex items-center justify-between">
                         <div>
-                            <div class="text-gray-500 dark:text-gray-400 text-sm">Basic Salary Total</div>
-                            <div class="text-2xl font-bold text-gray-900 dark:text-white">₱720,500</div>
+                            <div class="text-gray-500 dark:text-gray-400 text-sm">Managerial Total</div>
+                            <div class="text-2xl font-bold text-gray-900 dark:text-white" id="managerial-total">₱0.00</div>
+                            <div class="text-sm text-gray-500 dark:text-gray-400" id="managerial-count">0 Employees</div>
                         </div>
-                        <div class="w-12 h-12 rounded-xl bg-blue-100 dark:bg-blue-900 flex items-center justify-center">
-                            <i class="fas fa-money-bill text-blue-600 dark:text-blue-300 text-xl"></i>
+                        <div class="w-12 h-12 rounded-xl bg-purple-100 dark:bg-purple-900 flex items-center justify-center">
+                            <i class="fas fa-user-tie text-purple-600 dark:text-purple-300 text-xl"></i>
                         </div>
                     </div>
                 </div>
@@ -937,11 +1018,12 @@
                 <div class="card p-6 content-fade-in stagger-delay-2">
                     <div class="flex items-center justify-between">
                         <div>
-                            <div class="text-gray-500 dark:text-gray-400 text-sm">Overtime Total</div>
-                            <div class="text-2xl font-bold text-gray-900 dark:text-white">₱45,750</div>
+                            <div class="text-gray-500 dark:text-gray-400 text-sm">Staff Total</div>
+                            <div class="text-2xl font-bold text-gray-900 dark:text-white" id="staff-total">₱0.00</div>
+                            <div class="text-sm text-gray-500 dark:text-gray-400" id="staff-count">0 Employees</div>
                         </div>
-                        <div class="w-12 h-12 rounded-xl bg-yellow-100 dark:bg-yellow-900 flex items-center justify-center">
-                            <i class="fas fa-clock text-yellow-600 dark:text-yellow-300 text-xl"></i>
+                        <div class="w-12 h-12 rounded-xl bg-blue-100 dark:bg-blue-900 flex items-center justify-center">
+                            <i class="fas fa-user text-blue-600 dark:text-blue-300 text-xl"></i>
                         </div>
                     </div>
                 </div>
@@ -949,11 +1031,12 @@
                 <div class="card p-6 content-fade-in stagger-delay-3">
                     <div class="flex items-center justify-between">
                         <div>
-                            <div class="text-gray-500 dark:text-gray-400 text-sm">Deductions Total</div>
-                            <div class="text-2xl font-bold text-gray-900 dark:text-white">₱127,538</div>
+                            <div class="text-gray-500 dark:text-gray-400 text-sm">Holiday Pay Total</div>
+                            <div class="text-2xl font-bold text-gray-900 dark:text-white" id="holiday-total">₱0.00</div>
+                            <div class="text-sm text-green-600 dark:text-green-400" id="holiday-count">For 0 holidays</div>
                         </div>
-                        <div class="w-12 h-12 rounded-xl bg-red-100 dark:bg-red-900 flex items-center justify-center">
-                            <i class="fas fa-minus-circle text-red-600 dark:text-red-300 text-xl"></i>
+                        <div class="w-12 h-12 rounded-xl bg-orange-100 dark:bg-orange-900 flex items-center justify-center">
+                            <i class="fas fa-calendar-day text-orange-600 dark:text-orange-300 text-xl"></i>
                         </div>
                     </div>
                 </div>
@@ -962,7 +1045,8 @@
                     <div class="flex items-center justify-between">
                         <div>
                             <div class="text-gray-500 dark:text-gray-400 text-sm">Net Pay Total</div>
-                            <div class="text-2xl font-bold text-gray-900 dark:text-white">₱638,712</div>
+                            <div class="text-2xl font-bold text-gray-900 dark:text-white" id="net-total">₱0.00</div>
+                            <div class="text-sm text-gray-500 dark:text-gray-400">After deductions</div>
                         </div>
                         <div class="w-12 h-12 rounded-xl bg-green-100 dark:bg-green-900 flex items-center justify-center">
                             <i class="fas fa-hand-holding-usd text-green-600 dark:text-green-300 text-xl"></i>
@@ -971,23 +1055,17 @@
                 </div>
             </div>
 
-            <!-- Department Tabs -->
+            <!-- Role Tabs -->
             <div class="mb-6 content-fade-in stagger-delay-1">
                 <div class="flex flex-wrap gap-2 mb-4">
-                    <button class="px-4 py-2 rounded-lg bg-blue-theme text-white font-medium department-tab active" data-department="all">
-                        All Departments
+                    <button class="px-4 py-2 rounded-lg bg-blue-theme text-white font-medium role-tab active" data-role="all">
+                        All Roles
                     </button>
-                    <button class="px-4 py-2 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 font-medium department-tab" data-department="production">
-                        Production
+                    <button class="px-4 py-2 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 font-medium role-tab" data-role="managerial">
+                        Managerial
                     </button>
-                    <button class="px-4 py-2 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 font-medium department-tab" data-department="quality">
-                        Quality Control
-                    </button>
-                    <button class="px-4 py-2 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 font-medium department-tab" data-department="maintenance">
-                        Maintenance
-                    </button>
-                    <button class="px-4 py-2 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 font-medium department-tab" data-department="warehouse">
-                        Warehouse
+                    <button class="px-4 py-2 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 font-medium role-tab" data-role="staff">
+                        Staff
                     </button>
                 </div>
                 
@@ -1016,7 +1094,7 @@
                         <button class="px-4 py-2 bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 rounded-lg text-sm font-medium hover:bg-yellow-200 dark:hover:bg-yellow-800">
                             <i class="fas fa-download mr-2"></i> Export
                         </button>
-                        <button class="px-4 py-2 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-lg text-sm font-medium hover:bg-green-200 dark:hover:bg-green-800">
+                        <button id="recalculate-all" class="px-4 py-2 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-lg text-sm font-medium hover:bg-green-200 dark:hover:bg-green-800">
                             <i class="fas fa-calculator mr-2"></i> Recalculate All
                         </button>
                     </div>
@@ -1027,502 +1105,564 @@
             <div class="payroll-table-container content-fade-in stagger-delay-2">
                 <table class="payroll-table">
                     <thead>
-                        <!-- Group Headers Row -->
                         <tr>
-                            <th class="py-3 px-4 text-left" rowspan="2">
+                            <th class="py-3 px-4 text-left fixed-column">
                                 <input type="checkbox" id="select-all-header" class="employee-checkbox">
                             </th>
-                            <th class="py-3 px-4 text-left fixed-column-employee" rowspan="2">Employee</th>
-                            <th class="py-3 px-4 text-left" rowspan="2">Department</th>
-                            <th class="py-3 px-4 text-left" rowspan="2">Basic Rate</th>
-                            
-                            <th class="py-3 px-4 text-center group-header col-group" colspan="3">Night Differential</th>
-                            <th class="py-3 px-4 text-center group-header col-group" colspan="3">Overtime</th>
-                            <th class="py-3 px-4 text-center group-header col-group" colspan="3">Sunday/Special Holiday</th>
-                            <th class="py-3 px-4 text-center group-header col-group" colspan="3">Regular Holiday</th>
-                            <th class="py-3 px-4 text-center group-header col-group" colspan="3">Late Deductions</th>
-                            
-                            <th class="py-3 px-4 text-left" rowspan="2">SSS</th>
-                            <th class="py-3 px-4 text-left" rowspan="2">PhilHealth</th>
-                            <th class="py-3 px-4 text-left" rowspan="2">Pag-IBIG</th>
-                            
-                            <th class="py-3 px-4 text-left" rowspan="2">Gross Pay</th>
-                            <th class="py-3 px-4 text-left" rowspan="2">Total Deductions</th>
-                            <th class="py-3 px-4 text-left" rowspan="2">Net Pay</th>
-                            <th class="py-3 px-4 text-left" rowspan="2">Status</th>
-                        </tr>
-                        
-                        <!-- Sub Headers Row -->
-                        <tr>
-                            <!-- Night Differential Subheaders -->
-                            <th class="sub-header text-center">Hours</th>
-                            <th class="sub-header text-center">Rate</th>
-                            <th class="sub-header text-center">Amount</th>
-                            
-                            <!-- Overtime Subheaders -->
-                            <th class="sub-header text-center">Hours</th>
-                            <th class="sub-header text-center">Rate</th>
-                            <th class="sub-header text-center">Amount</th>
-                            
-                            <!-- Sunday/Special Holiday Subheaders -->
-                            <th class="sub-header text-center">Hours</th>
-                            <th class="sub-header text-center">Rate</th>
-                            <th class="sub-header text-center">Amount</th>
-                            
-                            <!-- Regular Holiday Subheaders -->
-                            <th class="sub-header text-center">Hours</th>
-                            <th class="sub-header text-center">Rate</th>
-                            <th class="sub-header text-center">Amount</th>
-                            
-                            <!-- Late Deductions Subheaders -->
-                            <th class="sub-header text-center">Minutes</th>
-                            <th class="sub-header text-center">Rate/Min</th>
-                            <th class="sub-header text-center">Amount</th>
+                            <th class="py-3 px-4 text-left">Employee</th>
+                            <th class="py-3 px-4 text-left">Role</th>
+                            <th class="py-3 px-4 text-left">Department</th>
+                            <th class="py-3 px-4 text-left">Basic Rate</th>
+                            <th class="py-3 px-4 text-left">Days Worked</th>
+                            <th class="py-3 px-4 text-left">Basic Pay</th>
+                            <th class="py-3 px-4 text-left">Night Diff</th>
+                            <th class="py-3 px-4 text-left">Overtime</th>
+                            <th class="py-3 px-4 text-left">Holiday Pay</th>
+                            <th class="py-3 px-4 text-left">Violations</th>
+                            <th class="py-3 px-4 text-left">SSS</th>
+                            <th class="py-3 px-4 text-left">PhilHealth</th>
+                            <th class="py-3 px-4 text-left">Pag-IBIG</th>
+                            <th class="py-3 px-4 text-left">Gross Pay</th>
+                            <th class="py-3 px-4 text-left">Total Deductions</th>
+                            <th class="py-3 px-4 text-left">Net Pay</th>
+                            <th class="py-3 px-4 text-left">Status</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <!-- Production Department -->
-                        <tr class="department-section">
-                            <td colspan="25" class="py-3 px-4">
-                                <i class="fas fa-industry mr-2"></i> Production Department (85 Employees)
+                    <tbody id="payroll-data">
+                        <!-- Employee data will be loaded here from backend -->
+                        <tr id="no-data-row">
+                            <td colspan="18" class="py-8 text-center text-gray-500 dark:text-gray-400">
+                                <i class="fas fa-users text-3xl mb-2"></i>
+                                <p>No employee data available. Please configure payroll settings first.</p>
                             </td>
-                        </tr>
-                        
-                        <!-- Employee Rows -->
-                        <tr class="border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800">
-                            <td class="py-4 px-4 fixed-column">
-                                <input type="checkbox" class="employee-checkbox h-4 w-4 text-blue-600 rounded border-gray-300">
-                            </td>
-                            <td class="py-4 px-4 fixed-column-employee">
-                                <div class="flex items-center">
-                                    <div class="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center text-blue-600 dark:text-blue-300 font-medium text-sm mr-3">
-                                        JD
-                                    </div>
-                                    <div>
-                                        <div class="font-medium text-gray-900 dark:text-white">John Dela Cruz</div>
-                                        <div class="text-sm text-gray-500 dark:text-gray-400">EMP-2023-001</div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="py-4 px-4">
-                                <span class="px-2 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-300 text-xs rounded-full">Production</span>
-                            </td>
-                            
-                            <!-- Basic Rate -->
-                            <td class="py-4 px-4">
-                                <div class="relative">
-                                    <span class="absolute left-3 top-2 text-gray-400">₱</span>
-                                    <input type="text" value="18500" class="amount-input pl-8" data-type="basic">
-                                </div>
-                            </td>
-                            
-                            <!-- Night Differential -->
-                            <td class="py-4 px-2">
-                                <input type="text" value="8" class="hours-input" data-type="night-hours">
-                            </td>
-                            <td class="py-4 px-2">
-                                <div class="relative">
-                                    <span class="absolute left-3 top-2 text-xs text-gray-400">₱</span>
-                                    <input type="text" value="100" class="rate-input pl-6" data-type="night-rate">
-                                </div>
-                            </td>
-                            <td class="py-4 px-2">
-                                <div class="relative">
-                                    <span class="absolute left-3 top-2 text-gray-400">₱</span>
-                                    <input type="text" value="800" class="amount-input pl-8 addition" data-type="night-amount" readonly>
-                                </div>
-                            </td>
-                            
-                            <!-- Overtime -->
-                            <td class="py-4 px-2">
-                                <input type="text" value="4" class="hours-input" data-type="ot-hours">
-                            </td>
-                            <td class="py-4 px-2">
-                                <div class="relative">
-                                    <span class="absolute left-3 top-2 text-xs text-gray-400">₱</span>
-                                    <input type="text" value="150" class="rate-input pl-6" data-type="ot-rate">
-                                </div>
-                            </td>
-                            <td class="py-4 px-2">
-                                <div class="relative">
-                                    <span class="absolute left-3 top-2 text-gray-400">₱</span>
-                                    <input type="text" value="600" class="amount-input pl-8 addition" data-type="ot-amount" readonly>
-                                </div>
-                            </td>
-                            
-                            <!-- Sunday/Special Holiday -->
-                            <td class="py-4 px-2">
-                                <input type="text" value="0" class="hours-input" data-type="sunday-hours">
-                            </td>
-                            <td class="py-4 px-2">
-                                <div class="relative">
-                                    <span class="absolute left-3 top-2 text-xs text-gray-400">₱</span>
-                                    <input type="text" value="200" class="rate-input pl-6" data-type="sunday-rate">
-                                </div>
-                            </td>
-                            <td class="py-4 px-2">
-                                <div class="relative">
-                                    <span class="absolute left-3 top-2 text-gray-400">₱</span>
-                                    <input type="text" value="0" class="amount-input pl-8 addition" data-type="sunday-amount" readonly>
-                                </div>
-                            </td>
-                            
-                            <!-- Regular Holiday -->
-                            <td class="py-4 px-2">
-                                <input type="text" value="0" class="hours-input" data-type="holiday-hours">
-                            </td>
-                            <td class="py-4 px-2">
-                                <div class="relative">
-                                    <span class="absolute left-3 top-2 text-xs text-gray-400">₱</span>
-                                    <input type="text" value="250" class="rate-input pl-6" data-type="holiday-rate">
-                                </div>
-                            </td>
-                            <td class="py-4 px-2">
-                                <div class="relative">
-                                    <span class="absolute left-3 top-2 text-gray-400">₱</span>
-                                    <input type="text" value="0" class="amount-input pl-8 addition" data-type="holiday-amount" readonly>
-                                </div>
-                            </td>
-                            
-                            <!-- Late Deductions -->
-                            <td class="py-4 px-2">
-                                <input type="text" value="15" class="hours-input" data-type="late-minutes">
-                            </td>
-                            <td class="py-4 px-2">
-                                <div class="relative">
-                                    <span class="absolute left-3 top-2 text-xs text-gray-400">₱</span>
-                                    <input type="text" value="5" class="rate-input pl-6" data-type="late-rate">
-                                </div>
-                            </td>
-                            <td class="py-4 px-2">
-                                <div class="relative">
-                                    <span class="absolute left-3 top-2 text-gray-400">₱</span>
-                                    <input type="text" value="75" class="amount-input pl-8 deduction" data-type="late-amount" readonly>
-                                </div>
-                            </td>
-                            
-                            <!-- Statutory Deductions -->
-                            <td class="py-4 px-4">
-                                <div class="relative">
-                                    <span class="absolute left-3 top-2 text-gray-400">₱</span>
-                                    <input type="text" value="750" class="amount-input pl-8 deduction" data-type="sss">
-                                </div>
-                            </td>
-                            <td class="py-4 px-4">
-                                <div class="relative">
-                                    <span class="absolute left-3 top-2 text-gray-400">₱</span>
-                                    <input type="text" value="300" class="amount-input pl-8 deduction" data-type="philhealth">
-                                </div>
-                            </td>
-                            <td class="py-4 px-4">
-                                <div class="relative">
-                                    <span class="absolute left-3 top-2 text-gray-400">₱</span>
-                                    <input type="text" value="100" class="amount-input pl-8 deduction" data-type="pagibig">
-                                </div>
-                            </td>
-                            
-                            <!-- Totals -->
-                            <td class="py-4 px-4">
-                                <div class="font-medium text-gray-900 dark:text-white gross-pay">₱19,900</div>
-                            </td>
-                            <td class="py-4 px-4">
-                                <div class="font-medium text-red-600 dark:text-red-400 total-deductions">₱1,225</div>
-                            </td>
-                            <td class="py-4 px-4">
-                                <div class="net-pay font-bold">₱18,675</div>
-                            </td>
-                            <td class="py-4 px-4">
-                                <span class="approval-status status-pending">Pending</span>
-                            </td>
-                        </tr>
-                        
-                        <!-- Additional sample employee -->
-                        <tr class="border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800">
-                            <td class="py-4 px-4 fixed-column">
-                                <input type="checkbox" class="employee-checkbox h-4 w-4 text-blue-600 rounded border-gray-300">
-                            </td>
-                            <td class="py-4 px-4 fixed-column-employee">
-                                <div class="flex items-center">
-                                    <div class="w-8 h-8 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center text-green-600 dark:text-green-300 font-medium text-sm mr-3">
-                                        MS
-                                    </div>
-                                    <div>
-                                        <div class="font-medium text-gray-900 dark:text-white">Maria Santos</div>
-                                        <div class="text-sm text-gray-500 dark:text-gray-400">EMP-2023-045</div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="py-4 px-4">
-                                <span class="px-2 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-300 text-xs rounded-full">Production</span>
-                            </td>
-                            
-                            <!-- Basic Rate -->
-                            <td class="py-4 px-4">
-                                <div class="relative">
-                                    <span class="absolute left-3 top-2 text-gray-400">₱</span>
-                                    <input type="text" value="21300" class="amount-input pl-8" data-type="basic">
-                                </div>
-                            </td>
-                            
-                            <!-- Night Differential -->
-                            <td class="py-4 px-2">
-                                <input type="text" value="12" class="hours-input" data-type="night-hours">
-                            </td>
-                            <td class="py-4 px-2">
-                                <div class="relative">
-                                    <span class="absolute left-3 top-2 text-xs text-gray-400">₱</span>
-                                    <input type="text" value="100" class="rate-input pl-6" data-type="night-rate">
-                                </div>
-                            </td>
-                            <td class="py-4 px-2">
-                                <div class="relative">
-                                    <span class="absolute left-3 top-2 text-gray-400">₱</span>
-                                    <input type="text" value="1200" class="amount-input pl-8 addition" data-type="night-amount" readonly>
-                                </div>
-                            </td>
-                            
-                            <!-- Overtime -->
-                            <td class="py-4 px-2">
-                                <input type="text" value="8" class="hours-input" data-type="ot-hours">
-                            </td>
-                            <td class="py-4 px-2">
-                                <div class="relative">
-                                    <span class="absolute left-3 top-2 text-xs text-gray-400">₱</span>
-                                    <input type="text" value="150" class="rate-input pl-6" data-type="ot-rate">
-                                </div>
-                            </td>
-                            <td class="py-4 px-2">
-                                <div class="relative">
-                                    <span class="absolute left-3 top-2 text-gray-400">₱</span>
-                                    <input type="text" value="1200" class="amount-input pl-8 addition" data-type="ot-amount" readonly>
-                                </div>
-                            </td>
-                            
-                            <!-- Sunday/Special Holiday -->
-                            <td class="py-4 px-2">
-                                <input type="text" value="4" class="hours-input" data-type="sunday-hours">
-                            </td>
-                            <td class="py-4 px-2">
-                                <div class="relative">
-                                    <span class="absolute left-3 top-2 text-xs text-gray-400">₱</span>
-                                    <input type="text" value="200" class="rate-input pl-6" data-type="sunday-rate">
-                                </div>
-                            </td>
-                            <td class="py-4 px-2">
-                                <div class="relative">
-                                    <span class="absolute left-3 top-2 text-gray-400">₱</span>
-                                    <input type="text" value="800" class="amount-input pl-8 addition" data-type="sunday-amount" readonly>
-                                </div>
-                            </td>
-                            
-                            <!-- Regular Holiday -->
-                            <td class="py-4 px-2">
-                                <input type="text" value="0" class="hours-input" data-type="holiday-hours">
-                            </td>
-                            <td class="py-4 px-2">
-                                <div class="relative">
-                                    <span class="absolute left-3 top-2 text-xs text-gray-400">₱</span>
-                                    <input type="text" value="250" class="rate-input pl-6" data-type="holiday-rate">
-                                </div>
-                            </td>
-                            <td class="py-4 px-2">
-                                <div class="relative">
-                                    <span class="absolute left-3 top-2 text-gray-400">₱</span>
-                                    <input type="text" value="0" class="amount-input pl-8 addition" data-type="holiday-amount" readonly>
-                                </div>
-                            </td>
-                            
-                            <!-- Late Deductions -->
-                            <td class="py-4 px-2">
-                                <input type="text" value="0" class="hours-input" data-type="late-minutes">
-                            </td>
-                            <td class="py-4 px-2">
-                                <div class="relative">
-                                    <span class="absolute left-3 top-2 text-xs text-gray-400">₱</span>
-                                    <input type="text" value="5" class="rate-input pl-6" data-type="late-rate">
-                                </div>
-                            </td>
-                            <td class="py-4 px-2">
-                                <div class="relative">
-                                    <span class="absolute left-3 top-2 text-gray-400">₱</span>
-                                    <input type="text" value="0" class="amount-input pl-8 deduction" data-type="late-amount" readonly>
-                                </div>
-                            </td>
-                            
-                            <!-- Statutory Deductions -->
-                            <td class="py-4 px-4">
-                                <div class="relative">
-                                    <span class="absolute left-3 top-2 text-gray-400">₱</span>
-                                    <input type="text" value="800" class="amount-input pl-8 deduction" data-type="sss">
-                                </div>
-                            </td>
-                            <td class="py-4 px-4">
-                                <div class="relative">
-                                    <span class="absolute left-3 top-2 text-gray-400">₱</span>
-                                    <input type="text" value="350" class="amount-input pl-8 deduction" data-type="philhealth">
-                                </div>
-                            </td>
-                            <td class="py-4 px-4">
-                                <div class="relative">
-                                    <span class="absolute left-3 top-2 text-gray-400">₱</span>
-                                    <input type="text" value="100" class="amount-input pl-8 deduction" data-type="pagibig">
-                                </div>
-                            </td>
-                            
-                            <!-- Totals -->
-                            <td class="py-4 px-4">
-                                <div class="font-medium text-gray-900 dark:text-white gross-pay">₱24,500</div>
-                            </td>
-                            <td class="py-4 px-4">
-                                <div class="font-medium text-red-600 dark:text-red-400 total-deductions">₱1,250</div>
-                            </td>
-                            <td class="py-4 px-4">
-                                <div class="net-pay font-bold">₱23,250</div>
-                            </td>
-                            <td class="py-4 px-4">
-                                <span class="approval-status status-pending">Pending</span>
-                            </td>
-                        </tr>
-
-                        <!-- Totals Row -->
-                        <tr class="total-row">
-                            <td class="py-4 px-4 font-bold" colspan="4">TOTALS (245 Employees)</td>
-                            <td class="py-4 px-2 font-bold">1,240 hrs</td>
-                            <td class="py-4 px-2"></td>
-                            <td class="py-4 px-2 font-bold addition">₱124,000</td>
-                            
-                            <td class="py-4 px-2 font-bold">980 hrs</td>
-                            <td class="py-4 px-2"></td>
-                            <td class="py-4 px-2 font-bold addition">₱147,000</td>
-                            
-                            <td class="py-4 px-2 font-bold">320 hrs</td>
-                            <td class="py-4 px-2"></td>
-                            <td class="py-4 px-2 font-bold addition">₱64,000</td>
-                            
-                            <td class="py-4 px-2 font-bold">120 hrs</td>
-                            <td class="py-4 px-2"></td>
-                            <td class="py-4 px-2 font-bold addition">₱30,000</td>
-                            
-                            <td class="py-4 px-2 font-bold">2,450 min</td>
-                            <td class="py-4 px-2"></td>
-                            <td class="py-4 px-2 font-bold deduction">₱12,250</td>
-                            
-                            <td class="py-4 px-4 font-bold deduction">₱42,500</td>
-                            <td class="py-4 px-4 font-bold deduction">₱18,375</td>
-                            <td class="py-4 px-4 font-bold deduction">₱6,125</td>
-                            
-                            <td class="py-4 px-4 font-bold text-xl">₱1,085,500</td>
-                            <td class="py-4 px-4 font-bold text-xl deduction">₱127,250</td>
-                            <td class="py-4 px-4 font-bold text-xl text-green-600 dark:text-green-400">₱958,250</td>
-                            <td class="py-4 px-4"></td>
                         </tr>
                     </tbody>
                 </table>
             </div>
 
-            <!-- Submission Section -->
+            <!-- Submission Section with Manual Correction -->
             <div class="card p-6 mt-8 content-fade-in stagger-delay-3">
                 <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">Submit for HR Manager Approval</h3>
                 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                        <div class="mb-4">
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Select HR Manager</label>
-                            <select class="input-field w-full">
-                                <option value="">Choose HR Manager</option>
-                                <option value="1" selected>Anna Gomez - HR Director</option>
-                                <option value="2">Mark Reyes - HR Manager</option>
-                                <option value="3">Lisa Cruz - HR Supervisor</option>
-                            </select>
+                <!-- Correction Toggle -->
+                <div class="mb-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <div>
+                            <h4 class="font-medium text-gray-900 dark:text-white">Submission Type</h4>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">Choose between full payroll or correction submission</p>
                         </div>
-                        
-                        <div class="mb-4">
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Payment Date</label>
-                            <input type="date" class="input-field w-full" value="2023-11-30">
-                        </div>
-                        
-                        <div class="mb-4">
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Payment Method</label>
-                            <select class="input-field w-full">
-                                <option value="bank">Bank Transfer</option>
-                                <option value="cash">Cash</option>
-                                <option value="check">Check</option>
-                            </select>
-                        </div>
-                    </div>
-                    
-                    <div>
-                        <div class="mb-4">
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Notes for HR Manager</label>
-                            <textarea class="input-field w-full h-32" placeholder="Add any special notes or instructions for the HR manager..."></textarea>
-                        </div>
-                        
-                        <div class="flex items-center mb-4">
-                            <input type="checkbox" id="send-email" class="h-4 w-4 text-blue-600 rounded border-gray-300">
-                            <label for="send-email" class="ml-2 text-sm text-gray-700 dark:text-gray-300">Send email notification to HR Manager</label>
-                        </div>
-                        
-                        <div class="flex items-center mb-4">
-                            <input type="checkbox" id="generate-payslips" class="h-4 w-4 text-blue-600 rounded border-gray-300" checked>
-                            <label for="generate-payslips" class="ml-2 text-sm text-gray-700 dark:text-gray-300">Generate payslips automatically</label>
-                        </div>
-                        
-                        <div class="flex items-center">
-                            <input type="checkbox" id="lock-payroll" class="h-4 w-4 text-blue-600 rounded border-gray-300" checked>
-                            <label for="lock-payroll" class="ml-2 text-sm text-gray-700 dark:text-gray-300">Lock payroll after submission</label>
+                        <div class="flex items-center space-x-4">
+                            <label class="inline-flex items-center">
+                                <input type="radio" name="submission_type" value="full" class="h-4 w-4 text-blue-600" checked>
+                                <span class="ml-2 text-sm text-gray-700 dark:text-gray-300">Full Payroll</span>
+                            </label>
+                            <label class="inline-flex items-center">
+                                <input type="radio" name="submission_type" value="correction" class="h-4 w-4 text-blue-600">
+                                <span class="ml-2 text-sm text-gray-700 dark:text-gray-300">Manual Correction</span>
+                            </label>
                         </div>
                     </div>
                 </div>
                 
-                <div class="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700 flex justify-end">
-                    <button type="button" class="px-6 py-3 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg font-medium hover:bg-gray-300 dark:hover:bg-gray-600 mr-4">
-                        Save as Draft
-                    </button>
-                    <button id="final-submit" class="px-8 py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg font-medium transition-colors flex items-center">
-                        <i class="fas fa-paper-plane mr-2"></i> Submit for Approval
-                    </button>
+                <!-- Full Payroll Submission (Default) -->
+                <div id="full-payroll-form">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <div class="mb-4">
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Select HR Manager</label>
+                                <select class="input-field w-full" id="hr-manager-select">
+                                    <option value="">Choose HR Manager</option>
+                                    <!-- HR Managers will be loaded from backend -->
+                                </select>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Payment Date</label>
+                                <input type="date" class="input-field w-full" id="payment-date">
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Payment Method</label>
+                                <select class="input-field w-full" id="payment-method">
+                                    <option value="bank">Bank Transfer</option>
+                                    <option value="cash">Cash</option>
+                                    <option value="check">Check</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="mb-4">
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Notes for HR Manager</label>
+                                <textarea class="input-field w-full h-32" id="hr-notes" placeholder="Add any special notes or instructions for the HR manager..."></textarea>
+                            </div>
+                            
+                            <div class="flex items-center mb-4">
+                                <input type="checkbox" id="send-email" class="h-4 w-4 text-blue-600 rounded border-gray-300">
+                                <label for="send-email" class="ml-2 text-sm text-gray-700 dark:text-gray-300">Send email notification to HR Manager</label>
+                            </div>
+                            
+                            <div class="flex items-center mb-4">
+                                <input type="checkbox" id="generate-payslips" class="h-4 w-4 text-blue-600 rounded border-gray-300" checked>
+                                <label for="generate-payslips" class="ml-2 text-sm text-gray-700 dark:text-gray-300">Generate payslips automatically</label>
+                            </div>
+                            
+                            <div class="flex items-center">
+                                <input type="checkbox" id="lock-payroll" class="h-4 w-4 text-blue-600 rounded border-gray-300" checked>
+                                <label for="lock-payroll" class="ml-2 text-sm text-gray-700 dark:text-gray-300">Lock payroll after submission</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Manual Correction Form -->
+                <div id="correction-form" class="hidden">
+                    <!-- Employee Search -->
+                    <div class="bg-blue-50 dark:bg-blue-900 rounded-lg p-4 mb-6">
+                        <h4 class="font-medium text-blue-800 dark:text-blue-200 mb-3">Find Employee for Correction</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-blue-700 dark:text-blue-300 mb-1">Employee ID</label>
+                                <input type="text" class="input-field" id="correction-employee-id" placeholder="EMP-2023-001">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-blue-700 dark:text-blue-300 mb-1">Employee Name</label>
+                                <input type="text" class="input-field" id="correction-employee-name" placeholder="John Dela Cruz">
+                            </div>
+                            <div class="flex items-end">
+                                <button id="search-employee-btn" class="w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors">
+                                    <i class="fas fa-search mr-2"></i> Search Employee
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Employee Details -->
+                    <div id="employee-correction-details" class="mb-6 hidden">
+                        <div class="flex items-center justify-between mb-4">
+                            <h4 class="font-medium text-gray-900 dark:text-white">Employee Payroll Details</h4>
+                            <span class="text-sm px-3 py-1 bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-300 rounded-full">Editing Mode</span>
+                        </div>
+                        
+                        <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 mb-4">
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                                <div>
+                                    <span class="block text-sm text-gray-500 dark:text-gray-400">Employee Name</span>
+                                    <span class="font-medium text-gray-900 dark:text-white" id="correction-employee-fullname"></span>
+                                </div>
+                                <div>
+                                    <span class="block text-sm text-gray-500 dark:text-gray-400">Employee ID</span>
+                                    <span class="font-medium text-gray-900 dark:text-white" id="correction-employee-emp-id"></span>
+                                </div>
+                                <div>
+                                    <span class="block text-sm text-gray-500 dark:text-gray-400">Department</span>
+                                    <span class="font-medium text-gray-900 dark:text-white" id="correction-employee-dept"></span>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div>
+                                    <span class="block text-sm text-gray-500 dark:text-gray-400">Role</span>
+                                    <span id="correction-employee-role" class="px-2 py-1 text-xs rounded-full"></span>
+                                </div>
+                                <div>
+                                    <span class="block text-sm text-gray-500 dark:text-gray-400">Pay Period</span>
+                                    <span class="font-medium text-gray-900 dark:text-white" id="correction-pay-period"></span>
+                                </div>
+                                <div>
+                                    <span class="block text-sm text-gray-500 dark:text-gray-400">Current Status</span>
+                                    <span id="correction-employee-status" class="px-2 py-1 text-xs rounded-full"></span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Editable Payroll Fields -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6" id="correction-fields">
+                            <!-- Fields will be populated dynamically -->
+                        </div>
+                    </div>
+                    
+                    <!-- Correction Details -->
+                    <div class="mb-6">
+                        <h4 class="font-medium text-gray-900 dark:text-white mb-3">Correction Details</h4>
+                        
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Correction Reason</label>
+                            <select class="input-field w-full mb-2" id="correction-reason">
+                                <option value="">Select reason for correction</option>
+                                <option value="incorrect_hours">Incorrect hours/attendance</option>
+                                <option value="wrong_rate">Wrong pay rate applied</option>
+                                <option value="missing_allowance">Missing allowance/bonus</option>
+                                <option value="deduction_error">Deduction calculation error</option>
+                                <option value="overtime_error">Overtime calculation error</option>
+                                <option value="holiday_error">Holiday pay error</option>
+                                <option value="other">Other (specify below)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Detailed Explanation</label>
+                            <textarea class="input-field w-full h-24" id="correction-explanation" placeholder="Provide detailed explanation of what needs to be corrected and why..."></textarea>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Supporting Documents</label>
+                            <div class="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-4 text-center">
+                                <i class="fas fa-cloud-upload-alt text-gray-400 text-2xl mb-2"></i>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">Drop files here or click to upload</p>
+                                <p class="text-xs text-gray-500 dark:text-gray-500 mt-1">Supported: PDF, JPG, PNG (Max 5MB each)</p>
+                                <input type="file" class="hidden" id="supporting-docs" multiple>
+                                <label for="supporting-docs" class="mt-2 inline-block px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg text-sm cursor-pointer">
+                                    <i class="fas fa-paperclip mr-2"></i> Choose Files
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- HR Approval Details -->
+                    <div class="mb-6">
+                        <h4 class="font-medium text-gray-900 dark:text-white mb-3">HR Approval Details</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Select HR Manager</label>
+                                <select class="input-field w-full" id="correction-hr-manager">
+                                    <option value="">Choose HR Manager</option>
+                                    <!-- HR Managers will be loaded from backend -->
+                                </select>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Priority Level</label>
+                                <select class="input-field w-full" id="correction-priority">
+                                    <option value="normal">Normal Priority</option>
+                                    <option value="high">High Priority (Urgent)</option>
+                                    <option value="critical">Critical (Immediate attention)</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-4">
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Additional Notes for HR</label>
+                            <textarea class="input-field w-full h-20" id="correction-hr-notes" placeholder="Add any special notes or instructions for the HR manager..."></textarea>
+                        </div>
+                    </div>
+                    
+                    <!-- Summary of Changes -->
+                    <div class="bg-yellow-50 dark:bg-yellow-900 rounded-lg p-4 mb-6 hidden" id="correction-summary">
+                        <h4 class="font-medium text-yellow-800 dark:text-yellow-300 mb-3">Summary of Changes</h4>
+                        <div class="space-y-2" id="correction-summary-details">
+                            <!-- Summary will be populated dynamically -->
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Action Buttons -->
+                <div class="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700 flex justify-between">
+                    <div class="flex items-center text-sm text-gray-600 dark:text-gray-400">
+                        <i class="fas fa-info-circle mr-2 text-blue-500"></i>
+                        <span id="submission-info">Select payroll data first</span>
+                    </div>
+                    
+                    <div class="flex">
+                        <button type="button" id="save-draft-btn" class="px-6 py-3 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg font-medium hover:bg-gray-300 dark:hover:bg-gray-600 mr-4">
+                            Save as Draft
+                        </button>
+                        <button id="submit-approval-btn" class="px-8 py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg font-medium transition-colors flex items-center">
+                            <i class="fas fa-paper-plane mr-2"></i> Submit for Approval
+                        </button>
+                    </div>
                 </div>
             </div>
         </main>
     </div>
 
+    <!-- Configure Payroll Modal -->
+    <div id="configure-payroll-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white">Configure Payroll Rates & Deductions</h3>
+                <button class="close-modal text-gray-400 hover:text-gray-500">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Role-Based Rate Settings -->
+                <div class="mb-8">
+                    <h4 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Role-Based Rate Settings</h4>
+                    <div class="rate-grid">
+                        <div class="rate-card">
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="font-medium text-gray-900 dark:text-white">Managerial Rate</span>
+                                <span class="text-sm px-2 py-1 bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-300 rounded" id="managerial-employee-count">0 employees</span>
+                            </div>
+                            <div class="mb-3">
+                                <label class="block text-sm text-gray-600 dark:text-gray-400 mb-1">Basic Daily Rate</label>
+                                <div class="relative">
+                                    <span class="absolute left-3 top-2 text-gray-400">₱</span>
+                                    <input type="number" id="managerial-basic-rate" class="input-field pl-8" value="0" min="0" step="1">
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="block text-sm text-gray-600 dark:text-gray-400 mb-1">Night Differential (%)</label>
+                                <div class="relative">
+                                    <input type="number" id="managerial-night-rate" class="input-field" value="0" min="0" max="100" step="0.1">
+                                    <span class="absolute right-3 top-2 text-gray-400">%</span>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm text-gray-600 dark:text-gray-400 mb-1">Overtime Rate Multiplier</label>
+                                <select id="managerial-ot-multiplier" class="input-field">
+                                    <option value="1.25" selected>1.25x (Regular)</option>
+                                    <option value="1.3">1.3x (Special)</option>
+                                    <option value="2.0">2.0x (Holiday)</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="rate-card">
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="font-medium text-gray-900 dark:text-white">Staff Rate</span>
+                                <span class="text-sm px-2 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-300 rounded" id="staff-employee-count">0 employees</span>
+                            </div>
+                            <div class="mb-3">
+                                <label class="block text-sm text-gray-600 dark:text-gray-400 mb-1">Basic Daily Rate</label>
+                                <div class="relative">
+                                    <span class="absolute left-3 top-2 text-gray-400">₱</span>
+                                    <input type="number" id="staff-basic-rate" class="input-field pl-8" value="0" min="0" step="1">
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="block text-sm text-gray-600 dark:text-gray-400 mb-1">Night Differential (%)</label>
+                                <div class="relative">
+                                    <input type="number" id="staff-night-rate" class="input-field" value="0" min="0" max="100" step="0.1">
+                                    <span class="absolute right-3 top-2 text-gray-400">%</span>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm text-gray-600 dark:text-gray-400 mb-1">Overtime Rate Multiplier</label>
+                                <select id="staff-ot-multiplier" class="input-field">
+                                    <option value="1.25" selected>1.25x (Regular)</option>
+                                    <option value="1.3">1.3x (Special)</option>
+                                    <option value="2.0">2.0x (Holiday)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Automatic Deductions -->
+                <div class="mb-8">
+                    <h4 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Automatic Deduction Rules</h4>
+                    
+                    <!-- Violation Deductions -->
+                    <div class="mb-6">
+                        <h5 class="font-medium text-gray-900 dark:text-white mb-3">Attendance Violations</h5>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                            <div>
+                                <label class="block text-sm text-gray-600 dark:text-gray-400 mb-1">Late Per Minute</label>
+                                <div class="relative">
+                                    <span class="absolute left-3 top-2 text-gray-400">₱</span>
+                                    <input type="number" id="late-rate" class="input-field pl-8" value="0" min="0" step="0.1">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm text-gray-600 dark:text-gray-400 mb-1">Absent Per Day</label>
+                                <div class="relative">
+                                    <span class="absolute left-3 top-2 text-gray-400">₱</span>
+                                    <input type="number" id="absent-rate" class="input-field pl-8" value="0" min="0" step="1">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm text-gray-600 dark:text-gray-400 mb-1">Undertime Per Hour</label>
+                                <div class="relative">
+                                    <span class="absolute left-3 top-2 text-gray-400">₱</span>
+                                    <input type="number" id="undertime-rate" class="input-field pl-8" value="0" min="0" step="0.1">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Statutory Deductions -->
+                    <div>
+                        <h5 class="font-medium text-gray-900 dark:text-white mb-3">Statutory Deductions (Based on Salary Range)</h5>
+                        <div class="overflow-x-auto">
+                            <table class="deduction-table">
+                                <thead>
+                                    <tr>
+                                        <th>Salary Range</th>
+                                        <th>SSS</th>
+                                        <th>PhilHealth</th>
+                                        <th>Pag-IBIG</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="statutory-deductions-body">
+                                    <!-- Statutory deductions will be loaded from backend -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Loan Deductions -->
+                <div class="mb-8">
+                    <h4 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Loan Deductions</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm text-gray-600 dark:text-gray-400 mb-1">SSS Loan (Default)</label>
+                            <div class="relative">
+                                <span class="absolute left-3 top-2 text-gray-400">₱</span>
+                                <input type="number" id="sss-loan" class="input-field pl-8" value="0" min="0" step="1">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm text-gray-600 dark:text-gray-400 mb-1">Pag-IBIG Loan (Default)</label>
+                            <div class="relative">
+                                <span class="absolute left-3 top-2 text-gray-400">₱</span>
+                                <input type="number" id="pagibig-loan" class="input-field pl-8" value="0" min="0" step="1">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="px-6 py-2.5 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg font-medium hover:bg-gray-300 dark:hover:bg-gray-600 close-modal">
+                    Cancel
+                </button>
+                <button id="save-payroll-settings" class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors">
+                    Save Settings & Apply
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Manage Holidays Modal -->
+    <div id="manage-holidays-modal" class="modal holiday-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white">Manage Holidays</h3>
+                <button class="close-modal text-gray-400 hover:text-gray-500">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Add New Holiday Form -->
+                <div class="mb-8">
+                    <h4 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Add New Holiday</h4>
+                    <div class="holiday-form-grid">
+                        <div>
+                            <label class="block text-sm text-gray-600 dark:text-gray-400 mb-1">Holiday Name</label>
+                            <input type="text" id="holiday-name" class="input-field" placeholder="e.g., All Saints' Day">
+                        </div>
+                        <div>
+                            <label class="block text-sm text-gray-600 dark:text-gray-400 mb-1">Date</label>
+                            <input type="date" id="holiday-date" class="input-field">
+                        </div>
+                        <div>
+                            <label class="block text-sm text-gray-600 dark:text-gray-400 mb-1">Type</label>
+                            <select id="holiday-type" class="input-field">
+                                <option value="regular">Regular Holiday</option>
+                                <option value="special">Special Holiday</option>
+                                <option value="religious">Religious Holiday</option>
+                                <option value="national">National Holiday</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                        <div>
+                            <label class="block text-sm text-gray-600 dark:text-gray-400 mb-1">Rate Multiplier</label>
+                            <select id="holiday-multiplier" class="input-field">
+                                <option value="2.0" selected>2.0x (Double Pay)</option>
+                                <option value="1.3">1.3x (130%)</option>
+                                <option value="1.5">1.5x (150%)</option>
+                                <option value="2.6">2.6x (Double + 30%)</option>
+                                <option value="3.0">3.0x (Triple Pay)</option>
+                            </select>
+                        </div>
+                        <div class="flex items-center pt-6">
+                            <input type="checkbox" id="paid-if-not-working" class="h-4 w-4 text-blue-600 rounded border-gray-300" checked>
+                            <label for="paid-if-not-working" class="ml-2 text-sm text-gray-700 dark:text-gray-300">Paid even if not working</label>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4 flex justify-end">
+                        <button id="add-holiday-btn" class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors">
+                            <i class="fas fa-plus mr-2"></i> Add Holiday
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Active Holidays List -->
+                <div>
+                    <h4 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Active Holidays</h4>
+                    <div class="holiday-list" id="holiday-list-container">
+                        <!-- Holiday items will be dynamically added here -->
+                        <div class="text-center py-8 text-gray-500 dark:text-gray-400" id="no-holidays-message">
+                            <i class="fas fa-calendar-day text-3xl mb-2"></i>
+                            <p>No holidays added yet. Add a holiday using the form above.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Holiday Settings -->
+                <div class="mt-8">
+                    <h4 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Default Holiday Settings</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Regular Holiday Multiplier</label>
+                            <select id="default-regular-multiplier" class="input-field">
+                                <option value="2.0" selected>2.0x (Double Pay)</option>
+                                <option value="2.6">2.6x (Double + 30%)</option>
+                                <option value="3.0">3.0x (Triple Pay)</option>
+                            </select>
+                            <div class="mt-2 flex items-center">
+                                <input type="checkbox" id="default-regular-paid" class="h-4 w-4 text-blue-600 rounded border-gray-300" checked>
+                                <label for="default-regular-paid" class="ml-2 text-sm text-gray-700 dark:text-gray-300">Paid even if not working</label>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Special Holiday Multiplier</label>
+                            <select id="default-special-multiplier" class="input-field">
+                                <option value="1.3" selected>1.3x (130%)</option>
+                                <option value="1.5">1.5x (150%)</option>
+                                <option value="2.0">2.0x (Double Pay)</option>
+                            </select>
+                            <div class="mt-2 flex items-center">
+                                <input type="checkbox" id="default-special-paid" class="h-4 w-4 text-blue-600 rounded border-gray-300">
+                                <label for="default-special-paid" class="ml-2 text-sm text-gray-700 dark:text-gray-300">Paid even if not working</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="px-6 py-2.5 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg font-medium hover:bg-gray-300 dark:hover:bg-gray-600 close-modal">
+                    Cancel
+                </button>
+                <button id="save-holiday-settings" class="px-6 py-2.5 bg-orange-600 hover:bg-orange-700 text-white rounded-lg font-medium transition-colors">
+                    Save Holiday Settings
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- Approval Confirmation Modal -->
-    <div id="approval-modal" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center p-4 z-50 hidden">
-        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-md">
+    <div id="approval-modal" class="modal">
+        <div class="modal-content max-w-md">
             <div class="p-6">
                 <div class="flex items-center justify-center w-12 h-12 mx-auto bg-green-100 dark:bg-green-900 rounded-full mb-4">
                     <i class="fas fa-check text-green-600 dark:text-green-300 text-xl"></i>
                 </div>
                 <h3 class="text-xl font-bold text-gray-900 dark:text-white text-center mb-2">Submit for Approval?</h3>
-                <p class="text-gray-600 dark:text-gray-400 text-center mb-6">
-                    You are about to submit the November 2023 payroll for HR Manager approval. This action cannot be undone.
+                <p class="text-gray-600 dark:text-gray-400 text-center mb-6" id="approval-message">
+                    You are about to submit the payroll for HR Manager approval. This action cannot be undone.
                 </p>
                 
-                <div class="bg-blue-50 dark:bg-blue-900 rounded-lg p-4 mb-6">
-                    <div class="flex justify-between mb-2">
-                        <span class="text-blue-800 dark:text-blue-200">Total Employees:</span>
-                        <span class="font-medium">245</span>
-                    </div>
-                    <div class="flex justify-between mb-2">
-                        <span class="text-blue-800 dark:text-blue-200">Gross Pay Total:</span>
-                        <span class="font-medium">₱1,085,500</span>
-                    </div>
-                    <div class="flex justify-between mb-2">
-                        <span class="text-blue-800 dark:text-blue-200">Total Deductions:</span>
-                        <span class="font-medium">₱127,250</span>
-                    </div>
-                    <div class="flex justify-between">
-                        <span class="text-blue-800 dark:text-blue-200">Net Pay Total:</span>
-                        <span class="font-medium">₱958,250</span>
-                    </div>
-                    <div class="flex justify-between mt-2">
-                        <span class="text-blue-800 dark:text-blue-200">HR Manager:</span>
-                        <span class="font-medium">Anna Gomez</span>
-                    </div>
+                <div class="bg-blue-50 dark:bg-blue-900 rounded-lg p-4 mb-6" id="approval-summary">
+                    <!-- Summary will be populated dynamically -->
                 </div>
                 
                 <div class="flex justify-center space-x-4">
-                    <button id="cancel-approval" class="px-6 py-2.5 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg font-medium hover:bg-gray-300 dark:hover:bg-gray-600">
+                    <button class="px-6 py-2.5 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg font-medium hover:bg-gray-300 dark:hover:bg-gray-600 close-modal">
                         Cancel
                     </button>
                     <button id="confirm-approval" class="px-6 py-2.5 bg-green-600 hover:bg-green-700 text-white rounded-lg font-medium transition-colors">
@@ -1646,6 +1786,12 @@
             if (window.innerWidth < 1024) {
                 mainContent.style.marginLeft = '0';
             }
+            
+            // Initialize modals
+            initializeModals();
+            
+            // Initialize event listeners
+            initializeEventListeners();
         });
         
         // Hide overlay when window is fully loaded
@@ -1674,7 +1820,7 @@
                 }
             } else {
                 // Reset to desktop behavior
-                mobileOverlay.classList.remove('active');
+                if (mobileOverlay) mobileOverlay.classList.remove('active');
                 sidebar.classList.remove('active');
                 document.body.style.overflow = '';
                 
@@ -1684,205 +1830,298 @@
             }
         });
 
-        // Initialize progress animations when main content is shown
-        mainContent.addEventListener('animationend', () => {
-            const progressBars = document.querySelectorAll('.course-progress-fill');
-            progressBars.forEach(bar => {
-                const width = bar.style.width;
-                bar.style.width = '0';
-                setTimeout(() => {
-                    bar.style.width = width;
-                }, 300);
-            });
-        });
-
-        // Original paylist functionality
-        // Department Tab Functionality
-        const departmentTabs = document.querySelectorAll('.department-tab');
-        departmentTabs.forEach(tab => {
-            tab.addEventListener('click', () => {
-                departmentTabs.forEach(t => t.classList.remove('active', 'bg-blue-theme', 'text-white'));
-                departmentTabs.forEach(t => t.classList.add('bg-gray-200', 'dark:bg-gray-700', 'text-gray-700', 'dark:text-gray-300'));
-                
-                tab.classList.remove('bg-gray-200', 'dark:bg-gray-700', 'text-gray-700', 'dark:text-gray-300');
-                tab.classList.add('active', 'bg-blue-theme', 'text-white');
-                
-                const department = tab.dataset.department;
-                // Filter functionality would go here
-            });
-        });
-        
-        // Select All Checkbox
-        const selectAllCheckbox = document.getElementById('select-all');
-        const selectAllHeader = document.getElementById('select-all-header');
-        const employeeCheckboxes = document.querySelectorAll('.employee-checkbox');
-        
-        function updateSelectAll() {
-            const allChecked = Array.from(employeeCheckboxes).every(cb => cb.checked);
-            selectAllCheckbox.checked = allChecked;
-            selectAllHeader.checked = allChecked;
-        }
-        
-        selectAllCheckbox.addEventListener('change', () => {
-            employeeCheckboxes.forEach(checkbox => {
-                checkbox.checked = selectAllCheckbox.checked;
-            });
-            selectAllHeader.checked = selectAllCheckbox.checked;
-        });
-        
-        selectAllHeader.addEventListener('change', () => {
-            employeeCheckboxes.forEach(checkbox => {
-                checkbox.checked = selectAllHeader.checked;
-            });
-            selectAllCheckbox.checked = selectAllHeader.checked;
-        });
-        
-        employeeCheckboxes.forEach(checkbox => {
-            checkbox.addEventListener('change', updateSelectAll);
-        });
-        
-        // Bulk Action
-        const bulkActionSelect = document.getElementById('bulk-action');
-        const applyBulkActionBtn = document.getElementById('apply-bulk-action');
-        
-        applyBulkActionBtn.addEventListener('click', () => {
-            const action = bulkActionSelect.value;
-            if (!action) {
-                alert('Please select a bulk action first');
-                return;
+        // Initialize modals
+        function initializeModals() {
+            // Modal functionality
+            const configurePayrollBtn = document.getElementById('configure-payroll-btn');
+            const manageHolidaysBtn = document.getElementById('manage-holidays-btn');
+            const configureModal = document.getElementById('configure-payroll-modal');
+            const holidaysModal = document.getElementById('manage-holidays-modal');
+            const approvalModal = document.getElementById('approval-modal');
+            const closeModalBtns = document.querySelectorAll('.close-modal');
+            const saveSettingsBtn = document.getElementById('save-payroll-settings');
+            const saveHolidaySettingsBtn = document.getElementById('save-holiday-settings');
+            const addHolidayBtn = document.getElementById('add-holiday-btn');
+            
+            // Open configure modal
+            if (configurePayrollBtn) {
+                configurePayrollBtn.addEventListener('click', () => {
+                    if (configureModal) configureModal.classList.add('active');
+                });
             }
             
-            const selectedEmployees = Array.from(employeeCheckboxes).filter(cb => cb.checked);
-            if (selectedEmployees.length === 0) {
-                alert('Please select at least one employee');
-                return;
+            // Open holidays modal
+            if (manageHolidaysBtn) {
+                manageHolidaysBtn.addEventListener('click', () => {
+                    if (holidaysModal) holidaysModal.classList.add('active');
+                });
             }
             
-            // Apply bulk action logic
-            switch(action) {
-                case 'apply-bonus':
-                    alert(`Applying 13th month bonus to ${selectedEmployees.length} employees`);
-                    break;
-                case 'increase-5':
-                    alert(`Increasing salary by 5% for ${selectedEmployees.length} employees`);
-                    break;
-                case 'apply-overtime':
-                    alert(`Applying overtime to ${selectedEmployees.length} employees`);
-                    break;
-                case 'reset':
-                    alert(`Resetting ${selectedEmployees.length} employees to default rates`);
-                    break;
+            // Close modal function
+            function closeAllModals() {
+                if (configureModal) configureModal.classList.remove('active');
+                if (holidaysModal) holidaysModal.classList.remove('active');
+                if (approvalModal) approvalModal.classList.remove('active');
             }
             
-            bulkActionSelect.value = '';
-        });
-        
-        // Calculate amount when hours/rates change
-        function calculateAmounts(row) {
-            // Night Differential
-            const nightHours = parseFloat(row.querySelector('input[data-type="night-hours"]').value) || 0;
-            const nightRate = parseFloat(row.querySelector('input[data-type="night-rate"]').value) || 0;
-            const nightAmount = nightHours * nightRate;
-            row.querySelector('input[data-type="night-amount"]').value = nightAmount.toFixed(2);
+            // Close modals on close button click
+            closeModalBtns.forEach(btn => {
+                btn.addEventListener('click', closeAllModals);
+            });
             
-            // Overtime
-            const otHours = parseFloat(row.querySelector('input[data-type="ot-hours"]').value) || 0;
-            const otRate = parseFloat(row.querySelector('input[data-type="ot-rate"]').value) || 0;
-            const otAmount = otHours * otRate;
-            row.querySelector('input[data-type="ot-amount"]').value = otAmount.toFixed(2);
-            
-            // Sunday/Special Holiday
-            const sundayHours = parseFloat(row.querySelector('input[data-type="sunday-hours"]').value) || 0;
-            const sundayRate = parseFloat(row.querySelector('input[data-type="sunday-rate"]').value) || 0;
-            const sundayAmount = sundayHours * sundayRate;
-            row.querySelector('input[data-type="sunday-amount"]').value = sundayAmount.toFixed(2);
-            
-            // Regular Holiday
-            const holidayHours = parseFloat(row.querySelector('input[data-type="holiday-hours"]').value) || 0;
-            const holidayRate = parseFloat(row.querySelector('input[data-type="holiday-rate"]').value) || 0;
-            const holidayAmount = holidayHours * holidayRate;
-            row.querySelector('input[data-type="holiday-amount"]').value = holidayAmount.toFixed(2);
-            
-            // Late Deductions
-            const lateMinutes = parseFloat(row.querySelector('input[data-type="late-minutes"]').value) || 0;
-            const lateRate = parseFloat(row.querySelector('input[data-type="late-rate"]').value) || 0;
-            const lateAmount = lateMinutes * lateRate;
-            row.querySelector('input[data-type="late-amount"]').value = lateAmount.toFixed(2);
-            
-            // Calculate totals
-            calculateNetPay(row);
-        }
-        
-        // Auto-calculate net pay when inputs change
-        const allInputs = document.querySelectorAll('.hours-input, .rate-input, .amount-input');
-        allInputs.forEach(input => {
-            input.addEventListener('input', function() {
-                const row = this.closest('tr');
-                if (row && !row.classList.contains('total-row')) {
-                    calculateAmounts(row);
+            // Close modals on outside click
+            window.addEventListener('click', (e) => {
+                if (e.target === configureModal || e.target === holidaysModal || e.target === approvalModal) {
+                    closeAllModals();
                 }
             });
-        });
-        
-        function calculateNetPay(row) {
-            if (row.classList.contains('total-row')) return;
             
-            const basic = parseFloat(row.querySelector('input[data-type="basic"]').value) || 0;
-            const nightAmount = parseFloat(row.querySelector('input[data-type="night-amount"]').value) || 0;
-            const otAmount = parseFloat(row.querySelector('input[data-type="ot-amount"]').value) || 0;
-            const sundayAmount = parseFloat(row.querySelector('input[data-type="sunday-amount"]').value) || 0;
-            const holidayAmount = parseFloat(row.querySelector('input[data-type="holiday-amount"]').value) || 0;
-            const lateAmount = parseFloat(row.querySelector('input[data-type="late-amount"]').value) || 0;
-            const sss = parseFloat(row.querySelector('input[data-type="sss"]').value) || 0;
-            const philhealth = parseFloat(row.querySelector('input[data-type="philhealth"]').value) || 0;
-            const pagibig = parseFloat(row.querySelector('input[data-type="pagibig"]').value) || 0;
+            // Save payroll settings
+            if (saveSettingsBtn) {
+                saveSettingsBtn.addEventListener('click', () => {
+                    // Here you would typically send data to backend via AJAX
+                    alert('Payroll settings saved successfully!');
+                    closeAllModals();
+                });
+            }
             
-            const grossPay = basic + nightAmount + otAmount + sundayAmount + holidayAmount - lateAmount;
-            const totalDeductions = sss + philhealth + pagibig + lateAmount;
-            const netPay = grossPay - totalDeductions;
+            // Save holiday settings
+            if (saveHolidaySettingsBtn) {
+                saveHolidaySettingsBtn.addEventListener('click', () => {
+                    // Here you would typically send data to backend via AJAX
+                    alert('Holiday settings saved successfully!');
+                    closeAllModals();
+                });
+            }
             
-            row.querySelector('.gross-pay').textContent = `₱${grossPay.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
-            row.querySelector('.total-deductions').textContent = `₱${totalDeductions.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
-            row.querySelector('.net-pay').textContent = `₱${netPay.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+            // Add holiday button
+            if (addHolidayBtn) {
+                addHolidayBtn.addEventListener('click', addHoliday);
+            }
+            
+            // Submission type toggle
+            const submissionTypeRadios = document.querySelectorAll('input[name="submission_type"]');
+            const fullPayrollForm = document.getElementById('full-payroll-form');
+            const correctionForm = document.getElementById('correction-form');
+            const submissionInfo = document.getElementById('submission-info');
+            
+            if (submissionTypeRadios.length > 0) {
+                submissionTypeRadios.forEach(radio => {
+                    radio.addEventListener('change', function() {
+                        if (this.value === 'full') {
+                            fullPayrollForm.style.display = 'block';
+                            correctionForm.style.display = 'none';
+                            submissionInfo.textContent = 'Submitting full payroll';
+                        } else {
+                            fullPayrollForm.style.display = 'none';
+                            correctionForm.style.display = 'block';
+                            submissionInfo.textContent = 'Submitting manual correction';
+                        }
+                    });
+                });
+            }
+            
+            // Submit for approval button
+            const submitForApprovalBtn = document.getElementById('submit-for-approval');
+            const submitApprovalBtn = document.getElementById('submit-approval-btn');
+            
+            if (submitForApprovalBtn) {
+                submitForApprovalBtn.addEventListener('click', () => {
+                    if (approvalModal) approvalModal.classList.add('active');
+                });
+            }
+            
+            if (submitApprovalBtn) {
+                submitApprovalBtn.addEventListener('click', () => {
+                    if (approvalModal) approvalModal.classList.add('active');
+                });
+            }
+            
+            // Confirm approval
+            const confirmApprovalBtn = document.getElementById('confirm-approval');
+            if (confirmApprovalBtn) {
+                confirmApprovalBtn.addEventListener('click', () => {
+                    // Here you would typically submit the form via AJAX
+                    alert('Payroll submitted successfully for HR Manager approval!');
+                    closeAllModals();
+                    
+                    // Redirect to payroll page after submission
+                    setTimeout(() => {
+                        window.location.href = "{{ route('hrm.staff.payroll') }}";
+                    }, 1500);
+                });
+            }
+            
+            // View rates summary
+            const viewRatesSummary = document.getElementById('view-rates-summary');
+            if (viewRatesSummary) {
+                viewRatesSummary.addEventListener('click', () => {
+                    if (configureModal) configureModal.classList.add('active');
+                });
+            }
+            
+            // View holidays summary
+            const viewHolidaysSummary = document.getElementById('view-holidays-summary');
+            if (viewHolidaysSummary) {
+                viewHolidaysSummary.addEventListener('click', () => {
+                    if (holidaysModal) holidaysModal.classList.add('active');
+                });
+            }
         }
         
-        // Initialize calculations for all rows
-        document.addEventListener('DOMContentLoaded', () => {
-            const employeeRows = document.querySelectorAll('tbody tr:not(.department-section):not(.total-row)');
-            employeeRows.forEach(row => {
-                calculateAmounts(row);
+        // Add holiday function
+        function addHoliday() {
+            const name = document.getElementById('holiday-name').value.trim();
+            const date = document.getElementById('holiday-date').value;
+            const type = document.getElementById('holiday-type').value;
+            const multiplier = document.getElementById('holiday-multiplier').value;
+            const paidIfNotWorking = document.getElementById('paid-if-not-working').checked;
+            
+            if (!name) {
+                alert('Please enter a holiday name');
+                return;
+            }
+            
+            if (!date) {
+                alert('Please select a date');
+                return;
+            }
+            
+            // Here you would typically send data to backend via AJAX
+            // For now, just show a success message
+            alert(`Holiday "${name}" added successfully!`);
+            
+            // Clear form
+            document.getElementById('holiday-name').value = '';
+            document.getElementById('holiday-date').value = '';
+            document.getElementById('holiday-type').value = 'regular';
+            document.getElementById('holiday-multiplier').value = '2.0';
+            document.getElementById('paid-if-not-working').checked = true;
+        }
+        
+        // Initialize event listeners
+        function initializeEventListeners() {
+            // Recalculate all button
+            const recalculateAllBtn = document.getElementById('recalculate-all');
+            if (recalculateAllBtn) {
+                recalculateAllBtn.addEventListener('click', () => {
+                    alert('Recalculating all payroll data...');
+                    // Here you would typically call backend to recalculate
+                });
+            }
+            
+            // Role tab functionality
+            const roleTabs = document.querySelectorAll('.role-tab');
+            roleTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    roleTabs.forEach(t => {
+                        t.classList.remove('active', 'bg-blue-theme', 'text-white');
+                        t.classList.add('bg-gray-200', 'dark:bg-gray-700', 'text-gray-700', 'dark:text-gray-300');
+                    });
+                    
+                    tab.classList.remove('bg-gray-200', 'dark:bg-gray-700', 'text-gray-700', 'dark:text-gray-300');
+                    tab.classList.add('active', 'bg-blue-theme', 'text-white');
+                    
+                    const role = tab.dataset.role;
+                    // Here you would typically filter employees by role
+                    console.log(`Filtering by role: ${role}`);
+                });
             });
-        });
-        
-        // Approval Modal
-        const submitForApprovalBtn = document.getElementById('submit-for-approval');
-        const finalSubmitBtn = document.getElementById('final-submit');
-        const approvalModal = document.getElementById('approval-modal');
-        const cancelApprovalBtn = document.getElementById('cancel-approval');
-        const confirmApprovalBtn = document.getElementById('confirm-approval');
-        
-        function showApprovalModal() {
-            approvalModal.classList.remove('hidden');
-        }
-        
-        function hideApprovalModal() {
-            approvalModal.classList.add('hidden');
-        }
-        
-        submitForApprovalBtn.addEventListener('click', showApprovalModal);
-        finalSubmitBtn.addEventListener('click', showApprovalModal);
-        cancelApprovalBtn.addEventListener('click', hideApprovalModal);
-        
-        confirmApprovalBtn.addEventListener('click', () => {
-            // Submit form logic here
-            alert('Payroll submitted successfully for HR Manager approval!');
-            hideApprovalModal();
             
-            // Redirect to payroll page after submission
-            setTimeout(() => {
-                window.location.href = "{{ route('hrm.staff.payroll') }}";
-            }, 1500);
-        });
+            // Select All Checkbox
+            const selectAllCheckbox = document.getElementById('select-all');
+            const selectAllHeader = document.getElementById('select-all-header');
+            const employeeCheckboxes = document.querySelectorAll('.employee-checkbox');
+            
+            if (selectAllCheckbox && selectAllHeader) {
+                function updateSelectAll() {
+                    const allChecked = Array.from(employeeCheckboxes).every(cb => cb.checked);
+                    selectAllCheckbox.checked = allChecked;
+                    selectAllHeader.checked = allChecked;
+                }
+                
+                selectAllCheckbox.addEventListener('change', () => {
+                    employeeCheckboxes.forEach(checkbox => {
+                        checkbox.checked = selectAllCheckbox.checked;
+                    });
+                    selectAllHeader.checked = selectAllCheckbox.checked;
+                });
+                
+                selectAllHeader.addEventListener('change', () => {
+                    employeeCheckboxes.forEach(checkbox => {
+                        checkbox.checked = selectAllHeader.checked;
+                    });
+                    selectAllCheckbox.checked = selectAllHeader.checked;
+                });
+                
+                employeeCheckboxes.forEach(checkbox => {
+                    checkbox.addEventListener('change', updateSelectAll);
+                });
+            }
+            
+            // Bulk Action
+            const bulkActionSelect = document.getElementById('bulk-action');
+            const applyBulkActionBtn = document.getElementById('apply-bulk-action');
+            
+            if (bulkActionSelect && applyBulkActionBtn) {
+                applyBulkActionBtn.addEventListener('click', () => {
+                    const action = bulkActionSelect.value;
+                    if (!action) {
+                        alert('Please select a bulk action first');
+                        return;
+                    }
+                    
+                    const selectedEmployees = Array.from(employeeCheckboxes).filter(cb => cb.checked);
+                    if (selectedEmployees.length === 0) {
+                        alert('Please select at least one employee');
+                        return;
+                    }
+                    
+                    // Apply bulk action logic
+                    switch(action) {
+                        case 'apply-bonus':
+                            alert(`Applying 13th month bonus to ${selectedEmployees.length} employees`);
+                            break;
+                        case 'increase-5':
+                            alert(`Increasing salary by 5% for ${selectedEmployees.length} employees`);
+                            break;
+                        case 'apply-overtime':
+                            alert(`Applying overtime to ${selectedEmployees.length} employees`);
+                            break;
+                        case 'reset':
+                            alert(`Resetting ${selectedEmployees.length} employees to default rates`);
+                            break;
+                    }
+                    
+                    bulkActionSelect.value = '';
+                });
+            }
+            
+            // Save draft button
+            const saveDraftBtn = document.getElementById('save-draft-btn');
+            if (saveDraftBtn) {
+                saveDraftBtn.addEventListener('click', () => {
+                    alert('Payroll saved as draft successfully!');
+                });
+            }
+            
+            // Search employee button
+            const searchEmployeeBtn = document.getElementById('search-employee-btn');
+            if (searchEmployeeBtn) {
+                searchEmployeeBtn.addEventListener('click', () => {
+                    const employeeId = document.getElementById('correction-employee-id').value;
+                    const employeeName = document.getElementById('correction-employee-name').value;
+                    
+                    if (!employeeId && !employeeName) {
+                        alert('Please enter either Employee ID or Employee Name');
+                        return;
+                    }
+                    
+                    // Here you would typically search for employee via AJAX
+                    alert(`Searching for employee: ${employeeId || employeeName}`);
+                });
+            }
+        }
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
 </body>

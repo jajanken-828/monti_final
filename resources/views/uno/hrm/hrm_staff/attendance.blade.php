@@ -599,7 +599,7 @@
                     <div class="flex items-center space-x-3">
                         <button class="relative p-2.5 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-600 text-gray-600 dark:text-gray-300">
                             <i class="fas fa-bell"></i>
-                            <span class="notification-badge">5</span>
+                            <span class="notification-badge">0</span>
                         </button>
                         
                         <button class="md:hidden p-2.5 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-600 text-gray-600 dark:text-gray-300" id="mobile-menu-toggle">
@@ -624,7 +624,7 @@
                     </div>
                     <div>
                         <div class="text-gray-500 dark:text-gray-400 text-sm">Present Today</div>
-                        <div class="text-2xl font-bold text-gray-900 dark:text-white">218</div>
+                        <div class="text-2xl font-bold text-gray-900 dark:text-white">0</div>
                     </div>
                 </div>
                 
@@ -634,7 +634,7 @@
                     </div>
                     <div>
                         <div class="text-gray-500 dark:text-gray-400 text-sm">Absent Today</div>
-                        <div class="text-2xl font-bold text-gray-900 dark:text-white">12</div>
+                        <div class="text-2xl font-bold text-gray-900 dark:text-white">0</div>
                     </div>
                 </div>
                 
@@ -644,7 +644,7 @@
                     </div>
                     <div>
                         <div class="text-gray-500 dark:text-gray-400 text-sm">Late Arrivals</div>
-                        <div class="text-2xl font-bold text-gray-900 dark:text-white">8</div>
+                        <div class="text-2xl font-bold text-gray-900 dark:text-white">0</div>
                     </div>
                 </div>
                 
@@ -654,7 +654,7 @@
                     </div>
                     <div>
                         <div class="text-gray-500 dark:text-gray-400 text-sm">Attendance Rate</div>
-                        <div class="text-2xl font-bold text-gray-900 dark:text-white">94.8%</div>
+                        <div class="text-2xl font-bold text-gray-900 dark:text-white">0%</div>
                     </div>
                 </div>
             </div>
@@ -692,7 +692,7 @@
                         </div>
                         
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                            <!-- Time In & Time Out Tracking Button - UPDATED -->
+                            <!-- Time In & Time Out Tracking Button -->
                             <a href="{{ route('hrm.staff.time') }}" 
                             class="attendance-btn bg-gray-50 dark:bg-gray-700 rounded-xl p-4 relative block">
                                 <div class="btn-indicator"></div>
@@ -716,10 +716,10 @@
                                 <div class="mb-3">
                                     <div class="flex justify-between text-sm mb-1">
                                         <span class="text-gray-600 dark:text-gray-300">Today's Records</span>
-                                        <span class="text-blue-theme font-medium">230/250</span>
+                                        <span class="text-blue-theme font-medium">0/0</span>
                                     </div>
                                     <div class="course-progress">
-                                        <div class="course-progress-fill" style="width: 92%"></div>
+                                        <div class="course-progress-fill" style="width: 0%"></div>
                                     </div>
                                 </div>
 
@@ -733,7 +733,7 @@
                                 </div>
                             </a>
                             
-                            <!-- Shift Management Button - UPDATED -->
+                            <!-- Shift Management Button -->
                             <a href="{{ route('hrm.staff.shift') }}" 
                             class="attendance-btn bg-gray-50 dark:bg-gray-700 rounded-xl p-4 relative block">
                                 <div class="btn-indicator"></div>
@@ -752,10 +752,10 @@
                                 <div class="mb-3">
                                     <div class="flex justify-between text-sm mb-1">
                                         <span class="text-gray-600 dark:text-gray-300">Schedule Compliance</span>
-                                        <span class="text-blue-theme font-medium">96%</span>
+                                        <span class="text-blue-theme font-medium">0%</span>
                                     </div>
                                     <div class="course-progress">
-                                        <div class="course-progress-fill" style="width: 96%"></div>
+                                        <div class="course-progress-fill" style="width: 0%"></div>
                                     </div>
                                 </div>
                                 
@@ -793,11 +793,11 @@
                             </p>
                             
                             <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5 mt-5">
-                                <div class="bg-blue-theme h-2.5 rounded-full" style="width: 92%"></div>
+                                <div class="bg-blue-theme h-2.5 rounded-full" style="width: 0%"></div>
                             </div>
                             <div class="w-full flex justify-between text-sm text-gray-500 dark:text-gray-400 mt-2">
                                 <span>Data Accuracy</span>
-                                <span class="text-gray-900 dark:text-white font-medium">92%</span>
+                                <span class="text-gray-900 dark:text-white font-medium">0%</span>
                             </div>
                             
                             <a href="#" class="w-full mt-5">
@@ -816,44 +816,7 @@
                         </div>
                         
                         <div class="space-y-4">
-                            <div class="flex items-center justify-between p-3 rounded-xl bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600">
-                                <div class="flex items-center">
-                                    <div class="w-10 h-10 rounded-lg bg-green-100 dark:bg-green-900 flex items-center justify-center mr-3">
-                                        <i class="fas fa-exchange-alt text-green-600 dark:text-green-300"></i>
-                                    </div>
-                                    <div>
-                                        <h4 class="font-medium text-gray-900 dark:text-white">SHIFT ROTATION</h4>
-                                        <p class="text-gray-500 dark:text-gray-400 text-xs">Morning to Afternoon</p>
-                                    </div>
-                                </div>
-                                <span class="text-gray-500 dark:text-gray-400 text-sm font-medium">Today</span>
-                            </div>
-                            
-                            <div class="flex items-center justify-between p-3 rounded-xl bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600">
-                                <div class="flex items-center">
-                                    <div class="w-10 h-10 rounded-lg bg-yellow-100 dark:bg-yellow-900 flex items-center justify-center mr-3">
-                                        <i class="fas fa-calendar-plus text-yellow-600 dark:text-yellow-300"></i>
-                                    </div>
-                                    <div>
-                                        <h4 class="font-medium text-gray-900 dark:text-white">OVERTIME SCHEDULE</h4>
-                                        <p class="text-gray-500 dark:text-gray-400 text-xs">Weekend Production</p>
-                                    </div>
-                                </div>
-                                <span class="text-gray-500 dark:text-gray-400 text-sm font-medium">Nov 25</span>
-                            </div>
-                            
-                            <div class="flex items-center justify-between p-3 rounded-xl bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600">
-                                <div class="flex items-center">
-                                    <div class="w-10 h-10 rounded-lg bg-blue-100 dark:bg-blue-900 flex items-center justify-center mr-3">
-                                        <i class="fas fa-user-clock text-blue-600 dark:text-blue-300"></i>
-                                    </div>
-                                    <div>
-                                        <h4 class="font-medium text-gray-900 dark:text-white">HOLIDAY SCHEDULE</h4>
-                                        <p class="text-gray-500 dark:text-gray-400 text-xs">Christmas Season</p>
-                                    </div>
-                                </div>
-                                <span class="text-gray-500 dark:text-gray-400 text-sm font-medium">Dec 24-26</span>
-                            </div>
+                            <!-- Shift changes will be populated from backend -->
                         </div>
                     </div>
                 </div>
@@ -885,94 +848,7 @@
                                 </tr>
                             </thead>
                             <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-                                <tr>
-                                    <td class="px-4 py-4 whitespace-nowrap">
-                                        <div class="flex items-center">
-                                            <div class="flex-shrink-0 h-10 w-10 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center text-blue-600 dark:text-blue-300 font-medium">
-                                                JD
-                                            </div>
-                                            <div class="ml-4">
-                                                <div class="text-sm font-medium text-gray-900 dark:text-white">John Dela Cruz</div>
-                                                <div class="text-sm text-gray-500 dark:text-gray-400">EMP-2023-001</div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">Morning (7AM-3PM)</td>
-                                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">06:58 AM</td>
-                                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">03:05 PM</td>
-                                    <td class="px-4 py-4 whitespace-nowrap">
-                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300">
-                                            Present
-                                        </span>
-                                    </td>
-                                    <td class="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">8.1 hrs</td>
-                                </tr>
-                                <tr>
-                                    <td class="px-4 py-4 whitespace-nowrap">
-                                        <div class="flex items-center">
-                                            <div class="flex-shrink-0 h-10 w-10 rounded-full bg-purple-100 dark:bg-purple-900 flex items-center justify-center text-purple-600 dark:text-purple-300 font-medium">
-                                                MS
-                                            </div>
-                                            <div class="ml-4">
-                                                <div class="text-sm font-medium text-gray-900 dark:text-white">Maria Santos</div>
-                                                <div class="text-sm text-gray-500 dark:text-gray-400">EMP-2023-045</div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">Afternoon (3PM-11PM)</td>
-                                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">02:55 PM</td>
-                                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">--:--</td>
-                                    <td class="px-4 py-4 whitespace-nowrap">
-                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300">
-                                            On Duty
-                                        </span>
-                                    </td>
-                                    <td class="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">--</td>
-                                </tr>
-                                <tr>
-                                    <td class="px-4 py-4 whitespace-nowrap">
-                                        <div class="flex items-center">
-                                            <div class="flex-shrink-0 h-10 w-10 rounded-full bg-red-100 dark:bg-red-900 flex items-center justify-center text-red-600 dark:text-red-300 font-medium">
-                                                RG
-                                            </div>
-                                            <div class="ml-4">
-                                                <div class="text-sm font-medium text-gray-900 dark:text-white">Robert Garcia</div>
-                                                <div class="text-sm text-gray-500 dark:text-gray-400">EMP-2023-089</div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">Morning (7AM-3PM)</td>
-                                    <td class="px-4 py-4 whitespace-nowrap text-sm text-red-600 dark:text-red-400">08:25 AM</td>
-                                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">03:10 PM</td>
-                                    <td class="px-4 py-4 whitespace-nowrap">
-                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300">
-                                            Late
-                                        </span>
-                                    </td>
-                                    <td class="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">6.8 hrs</td>
-                                </tr>
-                                <tr>
-                                    <td class="px-4 py-4 whitespace-nowrap">
-                                        <div class="flex items-center">
-                                            <div class="flex-shrink-0 h-10 w-10 rounded-full bg-gray-100 dark:bg-gray-900 flex items-center justify-center text-gray-600 dark:text-gray-300 font-medium">
-                                                AP
-                                            </div>
-                                            <div class="ml-4">
-                                                <div class="text-sm font-medium text-gray-900 dark:text-white">Ana Perez</div>
-                                                <div class="text-sm text-gray-500 dark:text-gray-400">EMP-2023-112</div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">Morning (7AM-3PM)</td>
-                                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">--:--</td>
-                                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">--:--</td>
-                                    <td class="px-4 py-4 whitespace-nowrap">
-                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300">
-                                            Absent
-                                        </span>
-                                    </td>
-                                    <td class="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">0 hrs</td>
-                                </tr>
+                                <!-- Attendance data will be populated from backend -->
                             </tbody>
                         </table>
                     </div>
@@ -986,42 +862,17 @@
                         <h3 class="font-bold text-xl text-gray-900 dark:text-white mb-6">Weekly Attendance Trend</h3>
                         <div class="flex items-center justify-between mb-4">
                             <div>
-                                <div class="text-2xl font-bold text-gray-900 dark:text-white">94.2%</div>
+                                <div class="text-2xl font-bold text-gray-900 dark:text-white">0%</div>
                                 <div class="text-gray-500 dark:text-gray-400 text-sm">Average Attendance</div>
                             </div>
-                            <div class="text-green-600 dark:text-green-400 flex items-center">
-                                <i class="fas fa-arrow-up mr-1"></i>
-                                <span>2.1% from last week</span>
+                            <div class="text-gray-500 dark:text-gray-400 flex items-center">
+                                <span>No data available</span>
                             </div>
                         </div>
-                        <div class="h-48 flex items-end space-x-2">
-                            <div class="flex-1 flex flex-col items-center">
-                                <div class="w-full bg-green-200 dark:bg-green-900 rounded-t-lg" style="height: 80%"></div>
-                                <div class="text-xs text-gray-500 dark:text-gray-400 mt-2">Mon</div>
-                            </div>
-                            <div class="flex-1 flex flex-col items-center">
-                                <div class="w-full bg-green-300 dark:bg-green-800 rounded-t-lg" style="height: 85%"></div>
-                                <div class="text-xs text-gray-500 dark:text-gray-400 mt-2">Tue</div>
-                            </div>
-                            <div class="flex-1 flex flex-col items-center">
-                                <div class="w-full bg-green-400 dark:bg-green-700 rounded-t-lg" style="height: 92%"></div>
-                                <div class="text-xs text-gray-500 dark:text-gray-400 mt-2">Wed</div>
-                            </div>
-                            <div class="flex-1 flex flex-col items-center">
-                                <div class="w-full bg-green-500 dark:bg-green-600 rounded-t-lg" style="height: 88%"></div>
-                                <div class="text-xs text-gray-500 dark:text-gray-400 mt-2">Thu</div>
-                            </div>
-                            <div class="flex-1 flex flex-col items-center">
-                                <div class="w-full bg-green-600 dark:bg-green-500 rounded-t-lg" style="height: 95%"></div>
-                                <div class="text-xs text-gray-500 dark:text-gray-400 mt-2">Fri</div>
-                            </div>
-                            <div class="flex-1 flex flex-col items-center">
-                                <div class="w-full bg-green-400 dark:bg-green-700 rounded-t-lg" style="height: 72%"></div>
-                                <div class="text-xs text-gray-500 dark:text-gray-400 mt-2">Sat</div>
-                            </div>
-                            <div class="flex-1 flex flex-col items-center">
-                                <div class="w-full bg-green-300 dark:bg-green-800 rounded-t-lg" style="height: 65%"></div>
-                                <div class="text-xs text-gray-500 dark:text-gray-400 mt-2">Sun</div>
+                        <div class="h-48 flex items-center justify-center">
+                            <div class="text-center text-gray-500 dark:text-gray-400">
+                                <i class="fas fa-chart-bar text-4xl mb-2"></i>
+                                <p>No attendance data available</p>
                             </div>
                         </div>
                     </div>
@@ -1029,41 +880,9 @@
                     <div class="card p-6 content-fade-in stagger-delay-2">
                         <h3 class="font-bold text-xl text-gray-900 dark:text-white mb-6">Department Attendance Rate</h3>
                         <div class="space-y-4">
-                            <div>
-                                <div class="flex justify-between mb-1">
-                                    <span class="text-sm font-medium text-gray-900 dark:text-white">Production</span>
-                                    <span class="text-sm font-medium text-gray-900 dark:text-white">96.5%</span>
-                                </div>
-                                <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                                    <div class="bg-green-500 h-2 rounded-full" style="width: 96.5%"></div>
-                                </div>
-                            </div>
-                            <div>
-                                <div class="flex justify-between mb-1">
-                                    <span class="text-sm font-medium text-gray-900 dark:text-white">Quality Control</span>
-                                    <span class="text-sm font-medium text-gray-900 dark:text-white">94.2%</span>
-                                </div>
-                                <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                                    <div class="bg-blue-500 h-2 rounded-full" style="width: 94.2%"></div>
-                                </div>
-                            </div>
-                            <div>
-                                <div class="flex justify-between mb-1">
-                                    <span class="text-sm font-medium text-gray-900 dark:text-white">Maintenance</span>
-                                    <span class="text-sm font-medium text-gray-900 dark:text-white">92.8%</span>
-                                </div>
-                                <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                                    <div class="bg-yellow-500 h-2 rounded-full" style="width: 92.8%"></div>
-                                </div>
-                            </div>
-                            <div>
-                                <div class="flex justify-between mb-1">
-                                    <span class="text-sm font-medium text-gray-900 dark:text-white">Administration</span>
-                                    <span class="text-sm font-medium text-gray-900 dark:text-white">98.1%</span>
-                                </div>
-                                <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                                    <div class="bg-purple-500 h-2 rounded-full" style="width: 98.1%"></div>
-                                </div>
+                            <div class="text-center py-8 text-gray-500 dark:text-gray-400">
+                                <i class="fas fa-building text-3xl mb-3"></i>
+                                <p>No department data available</p>
                             </div>
                         </div>
                     </div>

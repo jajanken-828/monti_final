@@ -17,13 +17,13 @@
          @include('uno.hrm.hrm_staff.style')
     @endif
 
-    <!-- Custom Styles (from dashboard) -->
+    <!-- Custom Styles -->
     <style>
         /* Content Loading Overlay */
         .content-loading-overlay {
             position: fixed;
             top: 0;
-            left: 260px; /* Sidebar width */
+            left: 260px;
             right: 0;
             bottom: 0;
             background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
@@ -35,7 +35,6 @@
             transition: opacity 0.5s ease, visibility 0.5s ease;
         }
         
-        /* Adjust for collapsed sidebar */
         .sidebar.collapsed ~ .content-loading-overlay {
             left: 80px;
         }
@@ -220,20 +219,6 @@
             transform: translateY(-2px);
         }
         
-        .course-progress {
-            height: 8px;
-            border-radius: 4px;
-            overflow: hidden;
-            background-color: #e5e7eb;
-        }
-        
-        .course-progress-fill {
-            height: 100%;
-            border-radius: 4px;
-            background: linear-gradient(to right, #3b82f6, #60a5fa);
-            transition: width 1s ease;
-        }
-        
         .notification-badge {
             position: absolute;
             top: -6px;
@@ -248,11 +233,6 @@
             align-items: center;
             justify-content: center;
             box-shadow: 0 2px 8px rgba(239, 68, 68, 0.4);
-        }
-        
-        .profile-image {
-            border: 4px solid #fff;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
         
         .nav-tab {
@@ -282,33 +262,9 @@
             border-radius: 3px 3px 0 0;
         }
         
-        .status-indicator {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            display: inline-block;
-        }
-        
-        .status-online {
-            background-color: #10b981;
-            box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.3);
-        }
-        
-        .status-offline {
-            background-color: #94a3b8;
-            box-shadow: 0 0 0 2px rgba(148, 163, 184, 0.3);
-        }
-        
         .search-input:focus {
             box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
             border-color: #3b82f6;
-        }
-        
-        .featured-banner {
-            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
-            border-radius: 1rem;
-            overflow: hidden;
-            position: relative;
         }
         
         .animate-float {
@@ -318,15 +274,6 @@
         @keyframes float {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-10px); }
-        }
-        
-        .animate-pulse-slow {
-            animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-        }
-        
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.8; }
         }
         
         /* Custom scrollbar */
@@ -381,10 +328,6 @@
         
         .dark .sidebar-item.active {
             background-color: rgba(59, 130, 246, 0.2);
-        }
-        
-        .dark .featured-banner {
-            background: linear-gradient(135deg, #1e3a8a 0%, #1d4ed8 100%);
         }
         
         /* Table Styles */
@@ -521,15 +464,6 @@
             background-color: #dc2626;
         }
         
-        .btn-warning {
-            background-color: #f59e0b;
-            color: white;
-        }
-        
-        .btn-warning:hover {
-            background-color: #d97706;
-        }
-        
         .btn-outline {
             background-color: transparent;
             border-color: #d1d5db;
@@ -547,48 +481,6 @@
         
         .dark .btn-outline:hover {
             background-color: #374151;
-        }
-        
-        /* Form Styles */
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-        
-        .form-label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-            color: #374151;
-        }
-        
-        .dark .form-label {
-            color: #f9fafb;
-        }
-        
-        .form-control {
-            width: 100%;
-            padding: 0.75rem;
-            border: 1px solid #d1d5db;
-            border-radius: 0.5rem;
-            background-color: white;
-            transition: border-color 0.15s ease-in-out;
-        }
-        
-        .dark .form-control {
-            background-color: #374151;
-            border-color: #4b5563;
-            color: #f9fafb;
-        }
-        
-        .form-control:focus {
-            outline: none;
-            border-color: #2563eb;
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-        }
-        
-        .dark .form-control:focus {
-            border-color: #60a5fa;
-            box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.1);
         }
         
         /* Department Tag Styles */
@@ -680,21 +572,10 @@
                 justify-content: space-between;
             }
             
-            .featured-banner {
-                text-align: center;
-                padding: 1.5rem !important;
-            }
-            
-            .featured-banner-content {
-                padding-right: 0 !important;
-            }
-            
-            .featured-banner img {
-                display: none;
-            }
-            
-            .instructors-grid {
-                grid-template-columns: repeat(2, 1fr);
+            .data-table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
             }
         }
         
@@ -703,26 +584,8 @@
                 grid-template-columns: 1fr;
             }
             
-            .instructors-grid {
-                grid-template-columns: 1fr;
-            }
-            
             .header-title {
                 font-size: 1.5rem;
-            }
-            
-            .featured-banner {
-                text-align: center;
-            }
-            
-            .featured-banner-button {
-                width: 100%;
-            }
-            
-            .data-table {
-                display: block;
-                overflow-x: auto;
-                white-space: nowrap;
             }
         }
     </style>
@@ -764,7 +627,7 @@
                         
                         <button class="relative p-2.5 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-600 text-gray-600 dark:text-gray-300">
                             <i class="fas fa-bell"></i>
-                            <span class="notification-badge">3</span>
+                            <span class="notification-badge">0</span>
                         </button>
                         
                         <button class="md:hidden p-2.5 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-600 text-gray-600 dark:text-gray-300" id="mobile-menu-toggle">
@@ -825,7 +688,7 @@
             <div class="card overflow-hidden content-fade-in stagger-delay-3">
                 <div class="p-6 border-b border-gray-200 dark:border-gray-700">
                     <h2 class="text-lg font-bold text-gray-900 dark:text-white">Employee Directory</h2>
-                    <p class="text-gray-500 dark:text-gray-400 text-sm">Total: 245 employees</p>
+                    <p class="text-gray-500 dark:text-gray-400 text-sm">Total: <span id="employee-count">0</span> employees</p>
                 </div>
                 
                 <div class="overflow-x-auto">
@@ -841,233 +704,8 @@
                                 <th>Actions</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <!-- Production Department -->
-                            <tr>
-                                <td>
-                                    <div class="flex items-center">
-                                        <div class="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center text-blue-600 dark:text-blue-300 font-bold mr-3">
-                                            JD
-                                        </div>
-                                        <div>
-                                            <div class="font-medium text-gray-900 dark:text-white">Juan Dela Cruz</div>
-                                            <div class="text-gray-500 dark:text-gray-400 text-sm">juan.delacruz@montitextile.com</div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="font-medium">EMP-00123</td>
-                                <td>
-                                    <span class="department-tag department-production">
-                                        <i class="fas fa-industry mr-1"></i> Production
-                                    </span>
-                                </td>
-                                <td>Production Supervisor</td>
-                                <td>
-                                    <span class="badge badge-success">
-                                        <i class="fas fa-circle text-xs mr-1"></i> Active
-                                    </span>
-                                </td>
-                                <td>2022-03-15</td>
-                                <td>
-                                    <div class="flex space-x-2">
-                                        <button class="btn btn-outline btn-sm">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                        <button class="btn btn-outline btn-sm">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            
-                            <tr>
-                                <td>
-                                    <div class="flex items-center">
-                                        <div class="w-10 h-10 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center text-green-600 dark:text-green-300 font-bold mr-3">
-                                            MP
-                                        </div>
-                                        <div>
-                                            <div class="font-medium text-gray-900 dark:text-white">Maria Santos</div>
-                                            <div class="text-gray-500 dark:text-gray-400 text-sm">maria.santos@montitextile.com</div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="font-medium">EMP-00124</td>
-                                <td>
-                                    <span class="department-tag department-production">
-                                        <i class="fas fa-industry mr-1"></i> Production
-                                    </span>
-                                </td>
-                                <td>Textile Operator</td>
-                                <td>
-                                    <span class="badge badge-success">
-                                        <i class="fas fa-circle text-xs mr-1"></i> Active
-                                    </span>
-                                </td>
-                                <td>2022-05-20</td>
-                                <td>
-                                    <div class="flex space-x-2">
-                                        <button class="btn btn-outline btn-sm">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                        <button class="btn btn-outline btn-sm">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            
-                            <!-- Quality Control Department -->
-                            <tr>
-                                <td>
-                                    <div class="flex items-center">
-                                        <div class="w-10 h-10 rounded-full bg-purple-100 dark:bg-purple-900 flex items-center justify-center text-purple-600 dark:text-purple-300 font-bold mr-3">
-                                            RS
-                                        </div>
-                                        <div>
-                                            <div class="font-medium text-gray-900 dark:text-white">Roberto Garcia</div>
-                                            <div class="text-gray-500 dark:text-gray-400 text-sm">roberto.garcia@montitextile.com</div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="font-medium">EMP-00145</td>
-                                <td>
-                                    <span class="department-tag department-quality">
-                                        <i class="fas fa-check-circle mr-1"></i> Quality Control
-                                    </span>
-                                </td>
-                                <td>Quality Inspector</td>
-                                <td>
-                                    <span class="badge badge-success">
-                                        <i class="fas fa-circle text-xs mr-1"></i> Active
-                                    </span>
-                                </td>
-                                <td>2021-11-10</td>
-                                <td>
-                                    <div class="flex space-x-2">
-                                        <button class="btn btn-outline btn-sm">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                        <button class="btn btn-outline btn-sm">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            
-                            <!-- Maintenance Department -->
-                            <tr>
-                                <td>
-                                    <div class="flex items-center">
-                                        <div class="w-10 h-10 rounded-full bg-yellow-100 dark:bg-yellow-900 flex items-center justify-center text-yellow-600 dark:text-yellow-300 font-bold mr-3">
-                                            AL
-                                        </div>
-                                        <div>
-                                            <div class="font-medium text-gray-900 dark:text-white">Antonio Lopez</div>
-                                            <div class="text-gray-500 dark:text-gray-400 text-sm">antonio.lopez@montitextile.com</div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="font-medium">EMP-00167</td>
-                                <td>
-                                    <span class="department-tag department-maintenance">
-                                        <i class="fas fa-tools mr-1"></i> Maintenance
-                                    </span>
-                                </td>
-                                <td>Maintenance Technician</td>
-                                <td>
-                                    <span class="badge badge-warning">
-                                        <i class="fas fa-circle text-xs mr-1"></i> On Leave
-                                    </span>
-                                </td>
-                                <td>2020-08-15</td>
-                                <td>
-                                    <div class="flex space-x-2">
-                                        <button class="btn btn-outline btn-sm">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                        <button class="btn btn-outline btn-sm">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            
-                            <!-- Administration Department -->
-                            <tr>
-                                <td>
-                                    <div class="flex items-center">
-                                        <div class="w-10 h-10 rounded-full bg-pink-100 dark:bg-pink-900 flex items-center justify-center text-pink-600 dark:text-pink-300 font-bold mr-3">
-                                            SG
-                                        </div>
-                                        <div>
-                                            <div class="font-medium text-gray-900 dark:text-white">Sofia Gomez</div>
-                                            <div class="text-gray-500 dark:text-gray-400 text-sm">sofia.gomez@montitextile.com</div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="font-medium">EMP-00189</td>
-                                <td>
-                                    <span class="department-tag department-admin">
-                                        <i class="fas fa-briefcase mr-1"></i> Administration
-                                    </span>
-                                </td>
-                                <td>HR Manager</td>
-                                <td>
-                                    <span class="badge badge-success">
-                                        <i class="fas fa-circle text-xs mr-1"></i> Active
-                                    </span>
-                                </td>
-                                <td>2019-06-01</td>
-                                <td>
-                                    <div class="flex space-x-2">
-                                        <button class="btn btn-outline btn-sm">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                        <button class="btn btn-outline btn-sm">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            
-                            <!-- Logistics Department -->
-                            <tr>
-                                <td>
-                                    <div class="flex items-center">
-                                        <div class="w-10 h-10 rounded-full bg-red-100 dark:bg-red-900 flex items-center justify-center text-red-600 dark:text-red-300 font-bold mr-3">
-                                            CR
-                                        </div>
-                                        <div>
-                                            <div class="font-medium text-gray-900 dark:text-white">Carlos Reyes</div>
-                                            <div class="text-gray-500 dark:text-gray-400 text-sm">carlos.reyes@montitextile.com</div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="font-medium">EMP-00201</td>
-                                <td>
-                                    <span class="department-tag department-logistics">
-                                        <i class="fas fa-truck mr-1"></i> Logistics
-                                    </span>
-                                </td>
-                                <td>Warehouse Supervisor</td>
-                                <td>
-                                    <span class="badge badge-danger">
-                                        <i class="fas fa-circle text-xs mr-1"></i> Inactive
-                                    </span>
-                                </td>
-                                <td>2021-02-28</td>
-                                <td>
-                                    <div class="flex space-x-2">
-                                        <button class="btn btn-outline btn-sm">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                        <button class="btn btn-outline btn-sm">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
+                        <tbody id="employees-table-body">
+                            <!-- Employee data will be populated here -->
                         </tbody>
                     </table>
                 </div>
@@ -1075,20 +713,20 @@
                 <!-- Pagination -->
                 <div class="p-6 border-t border-gray-200 dark:border-gray-700 flex items-center justify-between">
                     <div class="text-gray-500 dark:text-gray-400 text-sm">
-                        Showing 1 to 6 of 245 entries
+                        Showing <span id="showing-from">0</span> to <span id="showing-to">0</span> of <span id="total-entries">0</span> entries
                     </div>
                     <div class="flex space-x-2">
-                        <button class="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
+                        <button class="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700" id="prev-page">
                             Previous
                         </button>
-                        <button class="px-3 py-1 bg-blue-600 text-white rounded-lg">1</button>
-                        <button class="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
+                        <button class="px-3 py-1 bg-blue-600 text-white rounded-lg" id="page-1">1</button>
+                        <button class="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700" id="page-2">
                             2
                         </button>
-                        <button class="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
+                        <button class="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700" id="page-3">
                             3
                         </button>
-                        <button class="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
+                        <button class="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700" id="next-page">
                             Next
                         </button>
                     </div>
@@ -1103,7 +741,7 @@
                     </div>
                     <div>
                         <div class="text-gray-500 dark:text-gray-400 text-sm">Production</div>
-                        <div class="text-2xl font-bold text-gray-900 dark:text-white">142</div>
+                        <div class="text-2xl font-bold text-gray-900 dark:text-white" id="production-count">0</div>
                     </div>
                 </div>
                 
@@ -1113,7 +751,7 @@
                     </div>
                     <div>
                         <div class="text-gray-500 dark:text-gray-400 text-sm">Quality Control</div>
-                        <div class="text-2xl font-bold text-gray-900 dark:text-white">38</div>
+                        <div class="text-2xl font-bold text-gray-900 dark:text-white" id="quality-count">0</div>
                     </div>
                 </div>
                 
@@ -1123,7 +761,7 @@
                     </div>
                     <div>
                         <div class="text-gray-500 dark:text-gray-400 text-sm">Maintenance</div>
-                        <div class="text-2xl font-bold text-gray-900 dark:text-white">24</div>
+                        <div class="text-2xl font-bold text-gray-900 dark:text-white" id="maintenance-count">0</div>
                     </div>
                 </div>
                 
@@ -1133,7 +771,7 @@
                     </div>
                     <div>
                         <div class="text-gray-500 dark:text-gray-400 text-sm">Administration</div>
-                        <div class="text-2xl font-bold text-gray-900 dark:text-white">28</div>
+                        <div class="text-2xl font-bold text-gray-900 dark:text-white" id="admin-count">0</div>
                     </div>
                 </div>
                 
@@ -1143,7 +781,7 @@
                     </div>
                     <div>
                         <div class="text-gray-500 dark:text-gray-400 text-sm">Logistics</div>
-                        <div class="text-2xl font-bold text-gray-900 dark:text-white">13</div>
+                        <div class="text-2xl font-bold text-gray-900 dark:text-white" id="logistics-count">0</div>
                     </div>
                 </div>
             </div>
@@ -1301,19 +939,77 @@
             }
         });
 
-        // Initialize progress animations when main content is shown
-        mainContent.addEventListener('animationend', () => {
-            const progressBars = document.querySelectorAll('.course-progress-fill');
-            progressBars.forEach(bar => {
-                const width = bar.style.width;
-                bar.style.width = '0';
-                setTimeout(() => {
-                    bar.style.width = width;
-                }, 300);
-            });
+        // Placeholder for employee data loading
+        document.addEventListener('DOMContentLoaded', () => {
+            // This is where you would load employee data from your backend
+            // For now, we'll leave the table empty
+            
+            // Example structure for how to populate the table:
+            /*
+            const employees = [
+                {
+                    id: 'EMP-00123',
+                    name: 'Juan Dela Cruz',
+                    email: 'juan.delacruz@montitextile.com',
+                    department: 'production',
+                    position: 'Production Supervisor',
+                    status: 'active',
+                    dateHired: '2022-03-15',
+                    initials: 'JD'
+                }
+            ];
+            
+            // Populate table function
+            function populateEmployeeTable(employees) {
+                const tbody = document.getElementById('employees-table-body');
+                tbody.innerHTML = '';
+                
+                employees.forEach(emp => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>
+                            <div class="flex items-center">
+                                <div class="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center text-blue-600 dark:text-blue-300 font-bold mr-3">
+                                    ${emp.initials}
+                                </div>
+                                <div>
+                                    <div class="font-medium text-gray-900 dark:text-white">${emp.name}</div>
+                                    <div class="text-gray-500 dark:text-gray-400 text-sm">${emp.email}</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="font-medium">${emp.id}</td>
+                        <td>
+                            <span class="department-tag department-${emp.department}">
+                                <i class="fas fa-industry mr-1"></i> ${emp.department.charAt(0).toUpperCase() + emp.department.slice(1)}
+                            </span>
+                        </td>
+                        <td>${emp.position}</td>
+                        <td>
+                            <span class="badge badge-success">
+                                <i class="fas fa-circle text-xs mr-1"></i> ${emp.status}
+                            </span>
+                        </td>
+                        <td>${emp.dateHired}</td>
+                        <td>
+                            <div class="flex space-x-2">
+                                <button class="btn btn-outline btn-sm">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="btn btn-outline btn-sm">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                            </div>
+                        </td>
+                    `;
+                    tbody.appendChild(row);
+                });
+            }
+            
+            // Call this function with your employee data
+            populateEmployeeTable(employees);
+            */
         });
-
-        document.querySelectorAll('.sidebar-item').forEach(l=>l.addEventListener('click',e=>{e.preventDefault();setTimeout(()=>window.location.href=l.getAttribute('href'),300)}));
     </script>
 </body>
 </html>

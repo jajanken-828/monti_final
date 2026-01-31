@@ -41,6 +41,12 @@
             <span>Training Records</span>
         </a>
 
+        <a href="{{ route('hrm.staff.interview') }}"
+           class="flex items-center space-x-3 py-3 px-4 rounded-xl text-gray-600 dark:text-gray-300 hover:text-blue-theme">
+            <i class="fa-solid fa-headphones w-6 text-center"></i>
+            <span>Interview Management</span>
+        </a>
+
         <div class="py-4 px-4">
             <div class="border-t border-gray-200 dark:border-gray-700"></div>
         </div>

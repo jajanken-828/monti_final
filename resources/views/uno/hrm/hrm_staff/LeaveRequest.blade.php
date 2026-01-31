@@ -8,6 +8,7 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <!-- Styles / Scripts -->
     @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
@@ -22,7 +23,7 @@
         .content-loading-overlay {
             position: fixed;
             top: 0;
-            left: 260px; /* Sidebar width */
+            left: 260px;
             right: 0;
             bottom: 0;
             background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
@@ -34,7 +35,6 @@
             transition: opacity 0.5s ease, visibility 0.5s ease;
         }
         
-        /* Adjust for collapsed sidebar */
         .sidebar.collapsed ~ .content-loading-overlay {
             left: 80px;
         }
@@ -287,23 +287,6 @@
             border-radius: 3px 3px 0 0;
         }
         
-        .status-indicator {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            display: inline-block;
-        }
-        
-        .status-online {
-            background-color: #10b981;
-            box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.3);
-        }
-        
-        .status-offline {
-            background-color: #94a3b8;
-            box-shadow: 0 0 0 2px rgba(148, 163, 184, 0.3);
-        }
-        
         .search-input:focus {
             box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
             border-color: #3b82f6;
@@ -336,24 +319,6 @@
         .leave-status-rejected {
             background-color: #fee2e2;
             color: #991b1b;
-        }
-        
-        .animate-float {
-            animation: float 3s ease-in-out infinite;
-        }
-        
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-        
-        .animate-pulse-slow {
-            animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-        }
-        
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.8; }
         }
         
         /* Custom scrollbar */
@@ -538,23 +503,6 @@
                 width: 100%;
                 justify-content: space-between;
             }
-            
-            .featured-banner {
-                text-align: center;
-                padding: 1.5rem !important;
-            }
-            
-            .featured-banner-content {
-                padding-right: 0 !important;
-            }
-            
-            .featured-banner img {
-                display: none;
-            }
-            
-            .instructors-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
         }
         
         @media (max-width: 640px) {
@@ -562,20 +510,8 @@
                 grid-template-columns: 1fr;
             }
             
-            .instructors-grid {
-                grid-template-columns: 1fr;
-            }
-            
             .header-title {
                 font-size: 1.5rem;
-            }
-            
-            .featured-banner {
-                text-align: center;
-            }
-            
-            .featured-banner-button {
-                width: 100%;
             }
         }
     </style>
@@ -705,7 +641,7 @@
                         
                         <button class="relative p-2.5 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-600 text-gray-600 dark:text-gray-300">
                             <i class="fas fa-bell"></i>
-                            <span class="notification-badge">48</span>
+                            <span class="notification-badge">0</span>
                         </button>
                         
                         <button class="md:hidden p-2.5 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-600 text-gray-600 dark:text-gray-300" id="mobile-menu-toggle">
@@ -769,7 +705,7 @@
                     </div>
                     <div>
                         <div class="text-gray-500 dark:text-gray-400 text-sm">Total Pending</div>
-                        <div class="text-2xl font-bold text-gray-900 dark:text-white">18</div>
+                        <div class="text-2xl font-bold text-gray-900 dark:text-white" id="total-pending">0</div>
                     </div>
                 </div>
                 
@@ -779,7 +715,7 @@
                     </div>
                     <div>
                         <div class="text-gray-500 dark:text-gray-400 text-sm">Total Approved</div>
-                        <div class="text-2xl font-bold text-gray-900 dark:text-white">156</div>
+                        <div class="text-2xl font-bold text-gray-900 dark:text-white" id="total-approved">0</div>
                     </div>
                 </div>
                 
@@ -789,7 +725,7 @@
                     </div>
                     <div>
                         <div class="text-gray-500 dark:text-gray-400 text-sm">Total Rejected</div>
-                        <div class="text-2xl font-bold text-gray-900 dark:text-white">24</div>
+                        <div class="text-2xl font-bold text-gray-900 dark:text-white" id="total-rejected">0</div>
                     </div>
                 </div>
                 
@@ -799,7 +735,7 @@
                     </div>
                     <div>
                         <div class="text-gray-500 dark:text-gray-400 text-sm">Total This Month</div>
-                        <div class="text-2xl font-bold text-gray-900 dark:text-white">48</div>
+                        <div class="text-2xl font-bold text-gray-900 dark:text-white" id="total-month">0</div>
                     </div>
                 </div>
             </div>
@@ -832,268 +768,8 @@
                                 <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Actions</th>
                             </tr>
                         </thead>
-                        <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-                            <!-- Production Department -->
-                            <tr class="department-production">
-                                <td class="px-4 py-4 whitespace-nowrap">
-                                    <div class="flex items-center">
-                                        <div class="flex-shrink-0 h-10 w-10 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center text-blue-600 dark:text-blue-300 font-medium">
-                                            JD
-                                        </div>
-                                        <div class="ml-4">
-                                            <div class="text-sm font-medium text-gray-900 dark:text-white">John Dela Cruz</div>
-                                            <div class="text-sm text-gray-500 dark:text-gray-400">EMP-00123</div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
-                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300">
-                                        Production
-                                    </span>
-                                </td>
-                                <td class="px-4 py-4 whitespace-nowrap">
-                                    <div class="flex items-center">
-                                        <div class="w-8 h-8 rounded-full bg-orange-100 dark:bg-orange-900 flex items-center justify-center mr-2">
-                                            <i class="fas fa-umbrella-beach text-orange-600 dark:text-orange-300 text-xs"></i>
-                                        </div>
-                                        <span class="text-sm text-gray-900 dark:text-white">Vacation</span>
-                                    </div>
-                                </td>
-                                <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
-                                    Nov 20 - 25, 2023<br>
-                                    <span class="text-gray-500 dark:text-gray-400 text-xs">Applied: Nov 10</span>
-                                </td>
-                                <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white font-medium">
-                                    6 days
-                                </td>
-                                <td class="px-4 py-4 text-sm text-gray-900 dark:text-white max-w-xs">
-                                    <div class="truncate" title="Family vacation to visit relatives in the province. Need to attend family reunion.">
-                                        Family vacation to visit relatives in the province...
-                                    </div>
-                                </td>
-                                <td class="px-4 py-4 whitespace-nowrap">
-                                    <span class="leave-status-badge leave-status-pending">
-                                        Pending
-                                    </span>
-                                </td>
-                                <td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
-                                    <button class="text-green-600 hover:text-green-900 dark:text-green-400 dark:hover:text-green-300 mr-3 approve-btn">
-                                        <i class="fas fa-check"></i>
-                                    </button>
-                                    <button class="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300 reject-btn">
-                                        <i class="fas fa-times"></i>
-                                    </button>
-                                    <button class="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300 ml-3 view-btn">
-                                        <i class="fas fa-eye"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            
-                            <!-- Quality Control Department -->
-                            <tr class="department-quality-control">
-                                <td class="px-4 py-4 whitespace-nowrap">
-                                    <div class="flex items-center">
-                                        <div class="flex-shrink-0 h-10 w-10 rounded-full bg-purple-100 dark:bg-purple-900 flex items-center justify-center text-purple-600 dark:text-purple-300 font-medium">
-                                            MS
-                                        </div>
-                                        <div class="ml-4">
-                                            <div class="text-sm font-medium text-gray-900 dark:text-white">Maria Santos</div>
-                                            <div class="text-sm text-gray-500 dark:text-gray-400">EMP-00145</div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
-                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300">
-                                        Quality Control
-                                    </span>
-                                </td>
-                                <td class="px-4 py-4 whitespace-nowrap">
-                                    <div class="flex items-center">
-                                        <div class="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center mr-2">
-                                            <i class="fas fa-stethoscope text-blue-600 dark:text-blue-300 text-xs"></i>
-                                        </div>
-                                        <span class="text-sm text-gray-900 dark:text-white">Sick Leave</span>
-                                    </div>
-                                </td>
-                                <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
-                                    Nov 22 - 24, 2023<br>
-                                    <span class="text-gray-500 dark:text-gray-400 text-xs">Applied: Nov 12</span>
-                                </td>
-                                <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white font-medium">
-                                    3 days
-                                </td>
-                                <td class="px-4 py-4 text-sm text-gray-900 dark:text-white max-w-xs">
-                                    <div class="truncate" title="Doctor advised complete rest due to severe flu and fever. Medical certificate attached.">
-                                        Doctor advised complete rest due to severe flu...
-                                    </div>
-                                </td>
-                                <td class="px-4 py-4 whitespace-nowrap">
-                                    <span class="leave-status-badge leave-status-approved">
-                                        Approved
-                                    </span>
-                                </td>
-                                <td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
-                                    <button class="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300 view-btn">
-                                        <i class="fas fa-eye"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            
-                            <!-- Maintenance Department -->
-                            <tr class="department-maintenance">
-                                <td class="px-4 py-4 whitespace-nowrap">
-                                    <div class="flex items-center">
-                                        <div class="flex-shrink-0 h-10 w-10 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center text-green-600 dark:text-green-300 font-medium">
-                                            RG
-                                        </div>
-                                        <div class="ml-4">
-                                            <div class="text-sm font-medium text-gray-900 dark:text-white">Robert Garcia</div>
-                                            <div class="text-sm text-gray-500 dark:text-gray-400">EMP-00167</div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
-                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300">
-                                        Maintenance
-                                    </span>
-                                </td>
-                                <td class="px-4 py-4 whitespace-nowrap">
-                                    <div class="flex items-center">
-                                        <div class="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-900 flex items-center justify-center mr-2">
-                                            <i class="fas fa-gavel text-gray-600 dark:text-gray-300 text-xs"></i>
-                                        </div>
-                                        <span class="text-sm text-gray-900 dark:text-white">Emergency</span>
-                                    </div>
-                                </td>
-                                <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
-                                    Nov 18, 2023<br>
-                                    <span class="text-gray-500 dark:text-gray-400 text-xs">Applied: Nov 15</span>
-                                </td>
-                                <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white font-medium">
-                                    1 day
-                                </td>
-                                <td class="px-4 py-4 text-sm text-gray-900 dark:text-white max-w-xs">
-                                    <div class="truncate" title="Emergency house repair due to water pipe burst. Need to be present for plumber.">
-                                        Emergency house repair due to water pipe burst...
-                                    </div>
-                                </td>
-                                <td class="px-4 py-4 whitespace-nowrap">
-                                    <span class="leave-status-badge leave-status-rejected">
-                                        Rejected
-                                    </span>
-                                </td>
-                                <td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
-                                    <button class="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300 view-btn">
-                                        <i class="fas fa-eye"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            
-                            <!-- HR Department -->
-                            <tr class="department-hr">
-                                <td class="px-4 py-4 whitespace-nowrap">
-                                    <div class="flex items-center">
-                                        <div class="flex-shrink-0 h-10 w-10 rounded-full bg-pink-100 dark:bg-pink-900 flex items-center justify-center text-pink-600 dark:text-pink-300 font-medium">
-                                            AG
-                                        </div>
-                                        <div class="ml-4">
-                                            <div class="text-sm font-medium text-gray-900 dark:text-white">Anna Gomez</div>
-                                            <div class="text-sm text-gray-500 dark:text-gray-400">EMP-00189</div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
-                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-pink-100 text-pink-800 dark:bg-pink-900 dark:text-pink-300">
-                                        Human Resources
-                                    </span>
-                                </td>
-                                <td class="px-4 py-4 whitespace-nowrap">
-                                    <div class="flex items-center">
-                                        <div class="w-8 h-8 rounded-full bg-red-100 dark:bg-red-900 flex items-center justify-center mr-2">
-                                            <i class="fas fa-heart text-red-600 dark:text-red-300 text-xs"></i>
-                                        </div>
-                                        <span class="text-sm text-gray-900 dark:text-white">Maternity</span>
-                                    </div>
-                                </td>
-                                <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
-                                    Dec 1 - Jan 31, 2024<br>
-                                    <span class="text-gray-500 dark:text-gray-400 text-xs">Applied: Nov 5</span>
-                                </td>
-                                <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white font-medium">
-                                    62 days
-                                </td>
-                                <td class="px-4 py-4 text-sm text-gray-900 dark:text-white max-w-xs">
-                                    <div class="truncate" title="Maternity leave as per doctor's advice. Expected delivery date: Dec 5, 2023.">
-                                        Maternity leave as per doctor's advice. Expected...
-                                    </div>
-                                </td>
-                                <td class="px-4 py-4 whitespace-nowrap">
-                                    <span class="leave-status-badge leave-status-approved">
-                                        Approved
-                                    </span>
-                                </td>
-                                <td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
-                                    <button class="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300 view-btn">
-                                        <i class="fas fa-eye"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            
-                            <!-- Finance Department -->
-                            <tr class="department-finance">
-                                <td class="px-4 py-4 whitespace-nowrap">
-                                    <div class="flex items-center">
-                                        <div class="flex-shrink-0 h-10 w-10 rounded-full bg-yellow-100 dark:bg-yellow-900 flex items-center justify-center text-yellow-600 dark:text-yellow-300 font-medium">
-                                            MT
-                                        </div>
-                                        <div class="ml-4">
-                                            <div class="text-sm font-medium text-gray-900 dark:text-white">Michael Tan</div>
-                                            <div class="text-sm text-gray-500 dark:text-gray-400">EMP-00201</div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
-                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300">
-                                        Finance
-                                    </span>
-                                </td>
-                                <td class="px-4 py-4 whitespace-nowrap">
-                                    <div class="flex items-center">
-                                        <div class="w-8 h-8 rounded-full bg-orange-100 dark:bg-orange-900 flex items-center justify-center mr-2">
-                                            <i class="fas fa-umbrella-beach text-orange-600 dark:text-orange-300 text-xs"></i>
-                                        </div>
-                                        <span class="text-sm text-gray-900 dark:text-white">Vacation</span>
-                                    </div>
-                                </td>
-                                <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
-                                    Nov 28 - Dec 5, 2023<br>
-                                    <span class="text-gray-500 dark:text-gray-400 text-xs">Applied: Nov 18</span>
-                                </td>
-                                <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white font-medium">
-                                    8 days
-                                </td>
-                                <td class="px-4 py-4 text-sm text-gray-900 dark:text-white max-w-xs">
-                                    <div class="truncate" title="Annual family vacation to Boracay. Planned and booked 6 months in advance.">
-                                        Annual family vacation to Boracay. Planned and...
-                                    </div>
-                                </td>
-                                <td class="px-4 py-4 whitespace-nowrap">
-                                    <span class="leave-status-badge leave-status-pending">
-                                        Pending
-                                    </span>
-                                </td>
-                                <td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
-                                    <button class="text-green-600 hover:text-green-900 dark:text-green-400 dark:hover:text-green-300 mr-3 approve-btn">
-                                        <i class="fas fa-check"></i>
-                                    </button>
-                                    <button class="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300 reject-btn">
-                                        <i class="fas fa-times"></i>
-                                    </button>
-                                    <button class="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300 ml-3 view-btn">
-                                        <i class="fas fa-eye"></i>
-                                    </button>
-                                </td>
-                            </tr>
+                        <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700" id="leave-requests-tbody">
+                            <!-- Leave requests will be populated here -->
                         </tbody>
                     </table>
                 </div>
@@ -1101,127 +777,49 @@
                 <!-- Pagination -->
                 <div class="flex items-center justify-between border-t border-gray-200 dark:border-gray-700 px-4 py-3 mt-6">
                     <div class="flex-1 flex justify-between sm:hidden">
-                        <a href="#" class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                        <button class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50" id="prev-page-mobile">
                             Previous
-                        </a>
-                        <a href="#" class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                        </button>
+                        <button class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50" id="next-page-mobile">
                             Next
-                        </a>
+                        </button>
                     </div>
                     <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
                         <div>
                             <p class="text-sm text-gray-700 dark:text-gray-300">
-                                Showing <span class="font-medium">1</span> to <span class="font-medium">5</span> of <span class="font-medium">48</span> results
+                                Showing <span class="font-medium" id="showing-from">0</span> to <span class="font-medium" id="showing-to">0</span> of <span class="font-medium" id="total-results">0</span> results
                             </p>
                         </div>
                         <div>
                             <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
-                                <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                                <button class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50" id="prev-page">
                                     <span class="sr-only">Previous</span>
                                     <i class="fas fa-chevron-left"></i>
-                                </a>
-                                <a href="#" class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
+                                </button>
+                                <button class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 page-btn" data-page="1">
                                     1
-                                </a>
-                                <a href="#" class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
+                                </button>
+                                <button class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 page-btn" data-page="2">
                                     2
-                                </a>
-                                <a href="#" class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
+                                </button>
+                                <button class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 page-btn" data-page="3">
                                     3
-                                </a>
+                                </button>
                                 <span class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700">
                                     ...
                                 </span>
-                                <a href="#" class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
+                                <button class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 page-btn" data-page="10">
                                     10
-                                </a>
-                                <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                                </button>
+                                <button class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50" id="next-page">
                                     <span class="sr-only">Next</span>
                                     <i class="fas fa-chevron-right"></i>
-                                </a>
+                                </button>
                             </nav>
                         </div>
                     </div>
                 </div>
             </div>
-
-            <!-- Department Summary -->
-            {{-- <div class="mt-8">
-                <h3 class="font-bold text-xl text-gray-900 dark:text-white mb-6">Leave Requests by Department</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <div class="card p-6">
-                        <div class="flex items-center justify-between mb-4">
-                            <h4 class="font-semibold text-gray-900 dark:text-white">Production Department</h4>
-                            <span class="text-sm text-gray-500 dark:text-gray-400">25 employees</span>
-                        </div>
-                        <div class="space-y-3">
-                            <div class="flex justify-between text-sm">
-                                <span class="text-gray-600 dark:text-gray-300">Pending Requests</span>
-                                <span class="font-medium text-gray-900 dark:text-white">8</span>
-                            </div>
-                            <div class="flex justify-between text-sm">
-                                <span class="text-gray-600 dark:text-gray-300">Approved This Month</span>
-                                <span class="font-medium text-gray-900 dark:text-white">12</span>
-                            </div>
-                            <div class="flex justify-between text-sm">
-                                <span class="text-gray-600 dark:text-gray-300">Average Leave Days</span>
-                                <span class="font-medium text-gray-900 dark:text-white">4.2 days</span>
-                            </div>
-                        </div>
-                        <button class="w-full mt-4 py-2 border border-blue-theme text-blue-theme rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900 transition-colors">
-                            View All Production Requests
-                        </button>
-                    </div>
-                    
-                    <div class="card p-6">
-                        <div class="flex items-center justify-between mb-4">
-                            <h4 class="font-semibold text-gray-900 dark:text-white">Quality Control</h4>
-                            <span class="text-sm text-gray-500 dark:text-gray-400">15 employees</span>
-                        </div>
-                        <div class="space-y-3">
-                            <div class="flex justify-between text-sm">
-                                <span class="text-gray-600 dark:text-gray-300">Pending Requests</span>
-                                <span class="font-medium text-gray-900 dark:text-white">3</span>
-                            </div>
-                            <div class="flex justify-between text-sm">
-                                <span class="text-gray-600 dark:text-gray-300">Approved This Month</span>
-                                <span class="font-medium text-gray-900 dark:text-white">8</span>
-                            </div>
-                            <div class="flex justify-between text-sm">
-                                <span class="text-gray-600 dark:text-gray-300">Average Leave Days</span>
-                                <span class="font-medium text-gray-900 dark:text-white">3.5 days</span>
-                            </div>
-                        </div>
-                        <button class="w-full mt-4 py-2 border border-purple-600 text-purple-600 dark:text-purple-400 rounded-lg hover:bg-purple-50 dark:hover:bg-purple-900 transition-colors">
-                            View All QC Requests
-                        </button>
-                    </div>
-                    
-                    <div class="card p-6">
-                        <div class="flex items-center justify-between mb-4">
-                            <h4 class="font-semibold text-gray-900 dark:text-white">Human Resources</h4>
-                            <span class="text-sm text-gray-500 dark:text-gray-400">8 employees</span>
-                        </div>
-                        <div class="space-y-3">
-                            <div class="flex justify-between text-sm">
-                                <span class="text-gray-600 dark:text-gray-300">Pending Requests</span>
-                                <span class="font-medium text-gray-900 dark:text-white">2</span>
-                            </div>
-                            <div class="flex justify-between text-sm">
-                                <span class="text-gray-600 dark:text-gray-300">Approved This Month</span>
-                                <span class="font-medium text-gray-900 dark:text-white">5</span>
-                            </div>
-                            <div class="flex justify-between text-sm">
-                                <span class="text-gray-600 dark:text-gray-300">Average Leave Days</span>
-                                <span class="font-medium text-gray-900 dark:text-white">6.8 days</span>
-                            </div>
-                        </div>
-                        <button class="w-full mt-4 py-2 border border-pink-600 text-pink-600 dark:text-pink-400 rounded-lg hover:bg-pink-50 dark:hover:bg-pink-900 transition-colors">
-                            View All HR Requests
-                        </button>
-                    </div>
-                </div>
-            </div> --}}
         </main>
     </div>
 
@@ -1443,18 +1041,13 @@
                 return;
             }
             
-            // Here you would normally send the data to the server
+            // Here you would send the data to your backend
             // For now, just show a success message
             showToast(`Leave request created for ${employeeName}`, 'success');
             
             // Reset form and close modal
             leaveRequestForm.reset();
             closeModal();
-            
-            // Simulate adding to table (in a real app, this would come from server)
-            setTimeout(() => {
-                showToast('Request has been submitted to HR Manager for approval', 'info');
-            }, 1000);
         });
         
         // Department filter tabs
@@ -1468,7 +1061,7 @@
                 this.classList.add('active');
                 
                 // Filter table rows
-                const tableRows = document.querySelectorAll('tbody tr');
+                const tableRows = document.querySelectorAll('#leave-requests-tbody tr');
                 
                 if (department === 'all') {
                     tableRows.forEach(row => row.style.display = '');
@@ -1484,70 +1077,102 @@
             });
         });
         
-        // Approve/Reject buttons
+        // Placeholder for leave requests data loading
         document.addEventListener('DOMContentLoaded', () => {
-            // Approve button functionality
-            document.querySelectorAll('.approve-btn').forEach(button => {
-                button.addEventListener('click', function() {
-                    const row = this.closest('tr');
-                    const employeeName = row.querySelector('.text-sm.font-medium').textContent;
-                    const statusCell = row.querySelector('.leave-status-badge');
-                    
-                    statusCell.textContent = 'Approved';
-                    statusCell.className = 'leave-status-badge leave-status-approved';
-                    
-                    // Change action buttons
-                    const actionCell = row.querySelector('td:last-child');
-                    actionCell.innerHTML = `
-                        <button class="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300 view-btn">
-                            <i class="fas fa-eye"></i>
-                        </button>
-                    `;
-                    
-                    showToast(`Leave request for ${employeeName} approved successfully!`, 'success');
-                });
-            });
+            // This is where you would load leave requests data from your backend
+            // For now, we'll leave the table empty
             
-            // Reject button functionality
-            document.querySelectorAll('.reject-btn').forEach(button => {
-                button.addEventListener('click', function() {
-                    const row = this.closest('tr');
-                    const employeeName = row.querySelector('.text-sm.font-medium').textContent;
-                    const statusCell = row.querySelector('.leave-status-badge');
-                    
-                    statusCell.textContent = 'Rejected';
-                    statusCell.className = 'leave-status-badge leave-status-rejected';
-                    
-                    // Change action buttons
-                    const actionCell = row.querySelector('td:last-child');
-                    actionCell.innerHTML = `
-                        <button class="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300 view-btn">
-                            <i class="fas fa-eye"></i>
-                        </button>
-                    `;
-                    
-                    showToast(`Leave request for ${employeeName} rejected.`, 'info');
-                });
-            });
+            // Example structure for how to populate the table:
+            /*
+            const leaveRequests = [
+                {
+                    employeeName: 'John Dela Cruz',
+                    employeeId: 'EMP-00123',
+                    department: 'production',
+                    leaveType: 'vacation',
+                    dateRange: 'Nov 20 - 25, 2023',
+                    days: 6,
+                    explanation: 'Family vacation to visit relatives...',
+                    status: 'pending',
+                    appliedDate: 'Nov 10, 2023',
+                    initials: 'JD'
+                }
+            ];
             
-            // View button functionality
-            document.querySelectorAll('.view-btn').forEach(button => {
-                button.addEventListener('click', function() {
-                    const row = this.closest('tr');
-                    const employeeName = row.querySelector('.text-sm.font-medium').textContent;
-                    const department = row.querySelector('td:nth-child(2) span').textContent;
-                    const leaveType = row.querySelector('td:nth-child(3) span').textContent;
-                    const dateRange = row.querySelector('td:nth-child(4)').textContent.split('\n')[0];
-                    
-                    // In a real app, this would open a modal with detailed view
-                    showToast(`Viewing details for ${employeeName}'s ${leaveType.toLowerCase()} request`, 'info');
-                    
-                    // Simulate opening a detailed view modal
-                    setTimeout(() => {
-                        alert(`Employee: ${employeeName}\nDepartment: ${department}\nLeave Type: ${leaveType}\nDate Range: ${dateRange}\n\nDetailed view would show more information here.`);
-                    }, 500);
+            // Populate table function
+            function populateLeaveRequests(requests) {
+                const tbody = document.getElementById('leave-requests-tbody');
+                tbody.innerHTML = '';
+                
+                requests.forEach(req => {
+                    const row = document.createElement('tr');
+                    row.classList.add(`department-${req.department}`);
+                    row.innerHTML = `
+                        <td class="px-4 py-4 whitespace-nowrap">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0 h-10 w-10 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center text-blue-600 dark:text-blue-300 font-medium">
+                                    ${req.initials}
+                                </div>
+                                <div class="ml-4">
+                                    <div class="text-sm font-medium text-gray-900 dark:text-white">${req.employeeName}</div>
+                                    <div class="text-sm text-gray-500 dark:text-gray-400">${req.employeeId}</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300">
+                                ${req.department.charAt(0).toUpperCase() + req.department.slice(1)}
+                            </span>
+                        </td>
+                        <td class="px-4 py-4 whitespace-nowrap">
+                            <div class="flex items-center">
+                                <div class="w-8 h-8 rounded-full bg-orange-100 dark:bg-orange-900 flex items-center justify-center mr-2">
+                                    <i class="fas fa-umbrella-beach text-orange-600 dark:text-orange-300 text-xs"></i>
+                                </div>
+                                <span class="text-sm text-gray-900 dark:text-white">${req.leaveType.charAt(0).toUpperCase() + req.leaveType.slice(1)}</span>
+                            </div>
+                        </td>
+                        <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                            ${req.dateRange}<br>
+                            <span class="text-gray-500 dark:text-gray-400 text-xs">Applied: ${req.appliedDate}</span>
+                        </td>
+                        <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white font-medium">
+                            ${req.days} days
+                        </td>
+                        <td class="px-4 py-4 text-sm text-gray-900 dark:text-white max-w-xs">
+                            <div class="truncate" title="${req.explanation}">
+                                ${req.explanation}
+                            </div>
+                        </td>
+                        <td class="px-4 py-4 whitespace-nowrap">
+                            <span class="leave-status-badge leave-status-${req.status}">
+                                ${req.status.charAt(0).toUpperCase() + req.status.slice(1)}
+                            </span>
+                        </td>
+                        <td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
+                            ${req.status === 'pending' ? 
+                                `<button class="text-green-600 hover:text-green-900 dark:text-green-400 dark:hover:text-green-300 mr-3 approve-btn">
+                                    <i class="fas fa-check"></i>
+                                </button>
+                                <button class="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300 reject-btn">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                                <button class="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300 ml-3 view-btn">
+                                    <i class="fas fa-eye"></i>
+                                </button>` : 
+                                `<button class="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300 view-btn">
+                                    <i class="fas fa-eye"></i>
+                                </button>`
+                            }
+                        </td>
+                    `;
+                    tbody.appendChild(row);
                 });
-            });
+            }
+            
+            // Call this function with your leave requests data
+            populateLeaveRequests(leaveRequests);
+            */
         });
         
         function showToast(message, type) {
@@ -1560,46 +1185,17 @@
             }`;
             toast.textContent = message;
             
-            // Add icon based on type
-            const icon = document.createElement('i');
-            icon.className = type === 'success' ? 'fas fa-check-circle mr-2' : 
-                            type === 'error' ? 'fas fa-exclamation-circle mr-2' : 
-                            'fas fa-info-circle mr-2';
-            toast.prepend(icon);
-            
             // Add to DOM
             document.body.appendChild(toast);
             
-            // Animate in
-            setTimeout(() => {
-                toast.style.transform = 'translateY(0)';
-            }, 10);
-            
             // Remove after 4 seconds
             setTimeout(() => {
-                toast.style.transform = 'translateY(-100%)';
-                setTimeout(() => {
-                    toast.remove();
-                }, 300);
+                toast.remove();
             }, 4000);
         }
         
-        // Initialize progress animations
+        // Initialize date inputs
         document.addEventListener('DOMContentLoaded', () => {
-            const progressBars = document.querySelectorAll('.course-progress-fill');
-            progressBars.forEach(bar => {
-                const width = bar.style.width;
-                bar.style.width = '0';
-                setTimeout(() => {
-                    bar.style.width = width;
-                }, 300);
-            });
-            
-            // Handle responsive behavior on load
-            if (window.innerWidth < 1024) {
-                mainContent.style.marginLeft = '0';
-            }
-            
             // Set minimum date for date inputs to today
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('start-date').min = today;
@@ -1609,15 +1205,6 @@
         // Update end date min when start date changes
         document.getElementById('start-date').addEventListener('change', function() {
             document.getElementById('end-date').min = this.value;
-        });
-        
-        // Add Font Awesome JS
-        document.addEventListener('DOMContentLoaded', function() {
-            if (!document.querySelector('script[src*="font-awesome"]')) {
-                const script = document.createElement('script');
-                script.src = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js';
-                document.head.appendChild(script);
-            }
         });
     </script>
 </body>
