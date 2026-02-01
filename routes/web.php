@@ -108,12 +108,21 @@ Route::prefix('hrm')
                     // Main interview page (GET /hrm/staff/interview)
                     Route::get('/interview', 'interviews')->name('interview');
 
-                    // API routes for interview operations
-                    Route::get('/interviews/{id}', 'getInterview')->name('interviews.show'); // GET /hrm/staff/interviews/{id}
-                    Route::post('/interviews/{id}/start-now', 'startInterviewNow')->name('interviews.start-now'); // POST /hrm/staff/interviews/{id}/start-now
-                    Route::post('/interviews/{id}/complete', 'completeInterview')->name('interviews.complete'); // POST /hrm/staff/interviews/{id}/complete
-                    Route::post('/interviews/{id}/reschedule', 'rescheduleInterview')->name('interviews.reschedule'); // POST /hrm/staff/interviews/{id}/reschedule
-                    Route::post('/interviews/{id}/cancel', 'cancelInterview')->name('interviews.cancel'); // POST /hrm/staff/interviews/{id}/cancel
+                    // API routes for interview operations - FIXED ROUTE ORDER AND NAMES
+                    // Get single interview details
+                    Route::get('/interviews/{id}', 'getInterview')->name('interviews.show');
+
+                    // Start interview now
+                    Route::post('/interviews/{id}/start-now', 'startInterviewNow')->name('interviews.start-now');
+
+                    // Complete interview
+                    Route::post('/interviews/{id}/complete', 'completeInterview')->name('interviews.complete');
+
+                    // Reschedule interview
+                    Route::post('/interviews/{id}/reschedule', 'rescheduleInterview')->name('interviews.reschedule');
+
+                    // Cancel interview
+                    Route::post('/interviews/{id}/cancel', 'cancelInterview')->name('interviews.cancel');
                 });
 
             });

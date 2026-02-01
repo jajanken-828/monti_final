@@ -7,6 +7,7 @@ use App\Models\Applicant;
 use App\Models\InterviewSchedule;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class InterviewController extends Controller
@@ -70,9 +71,19 @@ class InterviewController extends Controller
      */
     public function getInterview($id)
     {
-        $interview = InterviewSchedule::with('applicant')->findOrFail($id);
+        try {
+            $interview = InterviewSchedule::with('applicant')->findOrFail($id);
 
-        return response()->json($interview);
+            return response()->json([
+                'success' => true,
+                'interview' => $interview,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Interview not found.',
+            ], 404);
+        }
     }
 
     /**
@@ -89,36 +100,63 @@ class InterviewController extends Controller
         if ($validator->fails()) {
             return response()->json([
                 'success' => false,
+                'message' => 'Validation failed',
                 'errors' => $validator->errors(),
             ], 422);
         }
 
-        $interview = InterviewSchedule::findOrFail($id);
+        try {
+            DB::beginTransaction();
 
-        $interview->update([
-            'status' => 'completed',
-            'feedback' => $request->feedback,
-            'rating' => $request->rating,
-            'notes' => ($interview->notes ? $interview->notes."\n\n" : '').
-                      'Interview completed on '.now()->format('Y-m-d H:i').
-                      '. Result: '.($request->rating == 'pass' ? 'Passed' : 'Failed').
-                      ($request->notes ? "\nAdditional Notes: ".$request->notes : ''),
-        ]);
+            $interview = InterviewSchedule::findOrFail($id);
 
-        // Update applicant status based on interview result
-        $applicant = Applicant::find($interview->applicant_id);
-        if ($applicant) {
-            if ($request->rating == 'pass') {
-                $applicant->update(['status' => 'interview_passed']);
-            } else {
-                $applicant->update(['status' => 'interview_failed']);
+            // Check if interview is already completed
+            if ($interview->status === 'completed') {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'This interview has already been completed.',
+                ], 400);
             }
-        }
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Interview marked as completed successfully!',
-        ]);
+            // Update interview with feedback and rating
+            $interview->update([
+                'status' => 'completed',
+                'feedback' => $request->feedback,
+                'rating' => $request->rating,
+                'notes' => ($interview->notes ? $interview->notes."\n\n" : '').
+                          'Interview completed on '.now()->format('Y-m-d H:i').
+                          '. Result: '.($request->rating == 'pass' ? 'Passed' : 'Failed').
+                          ($request->notes ? "\nAdditional Notes: ".$request->notes : ''),
+                'completed_at' => now(),
+            ]);
+
+            // Update applicant status based on interview result
+            $applicant = Applicant::find($interview->applicant_id);
+            if ($applicant) {
+                if ($request->rating == 'pass') {
+                    $applicant->update(['status' => 'interview_passed']);
+                } else {
+                    $applicant->update(['status' => 'interview_failed']);
+                }
+            }
+
+            DB::commit();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Interview completed successfully! Applicant status updated.',
+                'interview_id' => $interview->id,
+                'applicant_status' => $applicant->status ?? null,
+            ]);
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to complete interview: '.$e->getMessage(),
+            ], 500);
+        }
     }
 
     /**
@@ -126,20 +164,42 @@ class InterviewController extends Controller
      */
     public function startInterviewNow($id)
     {
-        $interview = InterviewSchedule::findOrFail($id);
+        try {
+            DB::beginTransaction();
 
-        // Update interview time to now
-        $interview->update([
-            'scheduled_date' => now(),
-            'notes' => ($interview->notes ? $interview->notes."\n\n" : '').
-                      'Interview started immediately on '.now()->format('Y-m-d H:i').' (override scheduled time)',
-        ]);
+            $interview = InterviewSchedule::findOrFail($id);
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Interview started successfully!',
-            'interview' => $interview,
-        ]);
+            // Check if interview is already completed
+            if ($interview->status === 'completed') {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'This interview has already been completed.',
+                ], 400);
+            }
+
+            // Update interview time to now - REMOVED started_at since it doesn't exist in DB
+            $interview->update([
+                'scheduled_date' => now(),
+                'notes' => ($interview->notes ? $interview->notes."\n\n" : '').
+                          'Interview started immediately on '.now()->format('Y-m-d H:i').' (override scheduled time)',
+            ]);
+
+            DB::commit();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Interview started successfully!',
+                'interview' => $interview,
+            ]);
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to start interview: '.$e->getMessage(),
+            ], 500);
+        }
     }
 
     /**
@@ -158,31 +218,62 @@ class InterviewController extends Controller
         if ($validator->fails()) {
             return response()->json([
                 'success' => false,
+                'message' => 'Validation failed',
                 'errors' => $validator->errors(),
             ], 422);
         }
 
-        $interview = InterviewSchedule::findOrFail($id);
+        try {
+            DB::beginTransaction();
 
-        // Fix date issue: Ensure the date is saved correctly
-        $scheduledDate = Carbon::parse($request->scheduled_date);
+            $interview = InterviewSchedule::findOrFail($id);
 
-        $interview->update([
-            'scheduled_date' => $scheduledDate,
-            'interview_type' => $request->interview_type,
-            'duration' => $request->duration,
-            'location' => $request->location,
-            'status' => 'rescheduled',
-            'notes' => ($interview->notes ? $interview->notes."\n\n" : '').
-                      'Rescheduled on '.now()->format('Y-m-d H:i').
-                      '. Reason: '.$request->reschedule_reason.
-                      '. New time: '.$scheduledDate->format('Y-m-d H:i'),
-        ]);
+            // Parse the scheduled date - handle both ISO string and other formats
+            try {
+                $scheduledDate = Carbon::parse($request->scheduled_date);
+            } catch (\Exception $e) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Invalid date format. Please use YYYY-MM-DD HH:MM:SS format.',
+                ], 422);
+            }
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Interview rescheduled successfully!',
-        ]);
+            // Validate the date is in the future
+            if ($scheduledDate->isPast()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Scheduled date must be in the future.',
+                ], 422);
+            }
+
+            $interview->update([
+                'scheduled_date' => $scheduledDate,
+                'interview_type' => $request->interview_type,
+                'duration' => $request->duration,
+                'location' => $request->location,
+                'status' => 'rescheduled',
+                'notes' => ($interview->notes ? $interview->notes."\n\n" : '').
+                          'Rescheduled on '.now()->format('Y-m-d H:i').
+                          '. Reason: '.$request->reschedule_reason.
+                          '. New time: '.$scheduledDate->format('Y-m-d H:i'),
+            ]);
+
+            DB::commit();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Interview rescheduled successfully!',
+                'new_date' => $scheduledDate->format('Y-m-d H:i'),
+            ]);
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to reschedule interview: '.$e->getMessage(),
+            ], 500);
+        }
     }
 
     /**
@@ -190,23 +281,49 @@ class InterviewController extends Controller
      */
     public function cancelInterview($id)
     {
-        $interview = InterviewSchedule::findOrFail($id);
+        try {
+            DB::beginTransaction();
 
-        $interview->update([
-            'status' => 'cancelled',
-            'notes' => ($interview->notes ? $interview->notes."\n\n" : '').
-                      'Cancelled on '.now()->format('Y-m-d H:i'),
-        ]);
+            $interview = InterviewSchedule::findOrFail($id);
 
-        // Update applicant status
-        $applicant = Applicant::find($interview->applicant_id);
-        if ($applicant) {
-            $applicant->update(['status' => 'under_review']);
+            // Check if interview is already completed
+            if ($interview->status === 'completed') {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Cannot cancel a completed interview.',
+                ], 400);
+            }
+
+            $interview->update([
+                'status' => 'cancelled',
+                'notes' => ($interview->notes ? $interview->notes."\n\n" : '').
+                          'Cancelled on '.now()->format('Y-m-d H:i'),
+                'cancelled_at' => now(),
+            ]);
+
+            // Update applicant status back to under review
+            $applicant = Applicant::find($interview->applicant_id);
+            if ($applicant) {
+                // Check if applicant was previously in interview_scheduled status
+                if (in_array($applicant->status, ['interview_scheduled', 'interview_rescheduled'])) {
+                    $applicant->update(['status' => 'under_review']);
+                }
+            }
+
+            DB::commit();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Interview cancelled successfully! Applicant status reset to Under Review.',
+            ]);
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to cancel interview: '.$e->getMessage(),
+            ], 500);
         }
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Interview cancelled successfully!',
-        ]);
     }
 }

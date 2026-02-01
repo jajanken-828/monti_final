@@ -16,22 +16,29 @@ class ApplicantController extends Controller
      */
     public function index()
     {
-        // Get applicants without scheduled interviews
+        // Get applicants without scheduled interviews AND without final interview statuses
         $applicants = Applicant::whereDoesntHave('interviewSchedules', function ($query) {
             $query->where('status', 'scheduled');
-        })->orderBy('created_at', 'desc')->paginate(10);
+        })
+            ->whereNotIn('status', ['interview_passed', 'interview_failed'])
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
 
         $totalApplications = Applicant::count();
         $pendingReview = Applicant::where('status', 'pending')->count();
         $scheduledInterviews = Applicant::where('status', 'interview_scheduled')->count();
         $rejected = Applicant::where('status', 'rejected')->count();
+        $interviewPassed = Applicant::where('status', 'interview_passed')->count();
+        $interviewFailed = Applicant::where('status', 'interview_failed')->count();
 
         return view('uno.hrm.hrm_staff.application', compact(
             'applicants',
             'totalApplications',
             'pendingReview',
             'scheduledInterviews',
-            'rejected'
+            'rejected',
+            'interviewPassed',
+            'interviewFailed'
         ));
     }
 
@@ -149,7 +156,7 @@ class ApplicantController extends Controller
         $applicant = Applicant::findOrFail($id);
 
         $validator = Validator::make($request->all(), [
-            'status' => 'required|in:pending,under_review,interview_scheduled,accepted,rejected',
+            'status' => 'required|in:pending,under_review,interview_scheduled,interview_passed,interview_failed,accepted,rejected',
             'interview_date' => 'nullable|date|required_if:status,interview_scheduled',
             'notes' => 'nullable|string',
         ]);
@@ -211,6 +218,8 @@ class ApplicantController extends Controller
             'rejected' => Applicant::where('status', 'rejected')->count(),
             'accepted' => Applicant::where('status', 'accepted')->count(),
             'under_review' => Applicant::where('status', 'under_review')->count(),
+            'interview_passed' => Applicant::where('status', 'interview_passed')->count(),
+            'interview_failed' => Applicant::where('status', 'interview_failed')->count(),
         ];
 
         return response()->json($stats);
@@ -268,7 +277,7 @@ class ApplicantController extends Controller
     public function updateStatus(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
-            'status' => 'required|in:pending,under_review,interview_scheduled,accepted,rejected',
+            'status' => 'required|in:pending,under_review,interview_scheduled,interview_passed,interview_failed,accepted,rejected',
         ]);
 
         if ($validator->fails()) {

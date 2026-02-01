@@ -25,6 +25,8 @@ class InterviewSchedule extends Model
         'status',
         'feedback',
         'rating',
+        'completed_at',
+        'cancelled_at',
     ];
 
     /**
@@ -34,6 +36,8 @@ class InterviewSchedule extends Model
      */
     protected $casts = [
         'scheduled_date' => 'datetime',
+        'completed_at' => 'datetime',
+        'cancelled_at' => 'datetime',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
@@ -168,6 +172,16 @@ class InterviewSchedule extends Model
     }
 
     /**
+     * Check if interview is completed.
+     *
+     * @return bool
+     */
+    public function isCompleted()
+    {
+        return $this->status === 'completed';
+    }
+
+    /**
      * Scope a query to only include active interviews (scheduled or rescheduled).
      */
     public function scopeActive($query)
@@ -207,5 +221,22 @@ class InterviewSchedule extends Model
     {
         return $query->whereDate('scheduled_date', today())
             ->whereIn('status', ['scheduled', 'rescheduled']);
+    }
+
+    /**
+     * Scope a query to exclude completed interviews.
+     */
+    public function scopeExcludeCompleted($query)
+    {
+        return $query->where('status', '!=', 'completed');
+    }
+
+    /**
+     * Scope a query to only include interviews that need feedback.
+     */
+    public function scopeNeedsFeedback($query)
+    {
+        return $query->where('status', 'completed')
+            ->whereNull('feedback');
     }
 }

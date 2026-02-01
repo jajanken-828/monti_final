@@ -12,6 +12,9 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 
+    <!-- CSRF Token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <!-- Styles / Scripts -->
     @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
         @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -1867,6 +1870,13 @@
         const mainContent = document.getElementById('main-content');
         const sidebar = document.getElementById('sidebar');
         
+        // Get base URL and route prefix
+        const baseUrl = window.location.origin;
+        // Always use the correct route prefix for HRM staff interviews
+        const routePrefix = baseUrl + '/hrm/staff';
+        
+        console.log('Route prefix set to:', routePrefix);
+        
         // Adjust loading overlay position when sidebar collapses/expands
         function adjustLoadingOverlay() {
             if (window.innerWidth >= 1024) {
@@ -2006,6 +2016,60 @@
             }
         });
 
+        // Get CSRF token from meta tag
+        const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '{{ csrf_token() }}';
+
+        // Helper function for API calls
+        async function makeApiCall(url, method = 'GET', data = null) {
+            const headers = {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': csrfToken,
+                'Accept': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
+            };
+
+            const options = {
+                method: method,
+                headers: headers,
+                credentials: 'same-origin'
+            };
+
+            if (data && (method === 'POST' || method === 'PUT' || method === 'PATCH')) {
+                options.body = JSON.stringify(data);
+            }
+
+            try {
+                console.log(`Making ${method} request to: ${url}`);
+                console.log('Request data:', data);
+                const response = await fetch(url, options);
+                
+                // Check if response is JSON
+                const contentType = response.headers.get('content-type');
+                if (contentType && contentType.includes('application/json')) {
+                    const result = await response.json();
+                    
+                    if (!response.ok) {
+                        console.error('API Error Response:', result);
+                        throw new Error(result.message || `HTTP ${response.status}: ${response.statusText}`);
+                    }
+                    
+                    console.log('API Success Response:', result);
+                    return result;
+                } else {
+                    // Handle non-JSON response
+                    const text = await response.text();
+                    console.log('Non-JSON response:', text);
+                    if (!response.ok) {
+                        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                    }
+                    return { success: true, data: text };
+                }
+            } catch (error) {
+                console.error('API call failed:', error);
+                throw error;
+            }
+        }
+
         // Tab Navigation
         document.querySelectorAll('.nav-tab').forEach(tab => {
             tab.addEventListener('click', function() {
@@ -2093,125 +2157,137 @@
                 const interviewId = this.getAttribute('data-id');
                 
                 try {
-                    const response = await fetch(`/hrm/staff/interviews/${interviewId}`);
-                    const interview = await response.json();
+                    const url = `${routePrefix}/interviews/${interviewId}`;
+                    console.log('Fetching interview details from:', url);
                     
-                    // Format the date
-                    const formatDate = (dateString) => {
-                        if (!dateString) return 'N/A';
-                        const date = new Date(dateString);
-                        return date.toLocaleDateString('en-US', {
-                            weekday: 'long',
-                            year: 'numeric',
-                            month: 'long',
-                            day: 'numeric',
-                            hour: '2-digit',
-                            minute: '2-digit'
+                    const result = await makeApiCall(url);
+                    
+                    if (result.success) {
+                        const interview = result.interview;
+                        
+                        // Format the date
+                        const formatDate = (dateString) => {
+                            if (!dateString) return 'N/A';
+                            const date = new Date(dateString);
+                            return date.toLocaleDateString('en-US', {
+                                weekday: 'long',
+                                year: 'numeric',
+                                month: 'long',
+                                day: 'numeric',
+                                hour: '2-digit',
+                                minute: '2-digit'
+                            });
+                        };
+                        
+                        // Populate modal
+                        document.getElementById('interview-applicant-name').textContent = interview.applicant?.full_name || 'N/A';
+                        
+                        const detailsHtml = `
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div class="bg-gray-50 p-5 rounded-xl">
+                                    <h4 class="font-bold text-gray-800 mb-3 text-lg border-b pb-2">Interview Information</h4>
+                                    <div class="space-y-3">
+                                        <div>
+                                            <span class="text-gray-600 text-sm">Scheduled Date & Time:</span>
+                                            <p class="font-medium">${formatDate(interview.scheduled_date)}</p>
+                                        </div>
+                                        <div>
+                                            <span class="text-gray-600 text-sm">Interview Type:</span>
+                                            <p class="font-medium">${interview.interview_type === 'in_person' ? 'In-Person' : (interview.interview_type === 'video' ? 'Video Call' : 'Phone Call')}</p>
+                                        </div>
+                                        <div>
+                                            <span class="text-gray-600 text-sm">Duration:</span>
+                                            <p class="font-medium">${interview.duration || 60} minutes</p>
+                                        </div>
+                                        <div>
+                                            <span class="text-gray-600 text-sm">Location/Platform:</span>
+                                            <p class="font-medium">${interview.location || 'Not specified'}</p>
+                                        </div>
+                                        <div>
+                                            <span class="text-gray-600 text-sm">Status:</span>
+                                            <span class="badge ${interview.status === 'scheduled' ? 'badge-scheduled' : interview.status === 'completed' ? 'badge-completed' : interview.status === 'rescheduled' ? 'badge-rescheduled' : 'badge-cancelled'}">
+                                                ${interview.status.charAt(0).toUpperCase() + interview.status.slice(1)}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="bg-gray-50 p-5 rounded-xl">
+                                    <h4 class="font-bold text-gray-800 mb-3 text-lg border-b pb-2">Applicant Information</h4>
+                                    <div class="space-y-3">
+                                        <div>
+                                            <span class="text-gray-600 text-sm">Applicant Name:</span>
+                                            <p class="font-medium">${interview.applicant?.full_name || 'N/A'}</p>
+                                        </div>
+                                        <div>
+                                            <span class="text-gray-600 text-sm">Position Applied:</span>
+                                            <p class="font-medium">${interview.applicant?.position_applied ? interview.applicant.position_applied.replace(/_/g, ' ') : 'N/A'}</p>
+                                        </div>
+                                        <div>
+                                            <span class="text-gray-600 text-sm">Email:</span>
+                                            <p class="font-medium">${interview.applicant?.email || 'N/A'}</p>
+                                        </div>
+                                        <div>
+                                            <span class="text-gray-600 text-sm">Phone:</span>
+                                            <p class="font-medium">${interview.applicant?.phone_number || 'N/A'}</p>
+                                        </div>
+                                        <div>
+                                            <span class="text-gray-600 text-sm">Application Status:</span>
+                                            <span class="badge ${interview.applicant?.status === 'pending' ? 'badge-pending' : interview.applicant?.status === 'under_review' ? 'badge-under-review' : interview.applicant?.status === 'interview_scheduled' ? 'badge-interview' : interview.applicant?.status === 'accepted' ? 'badge-accepted' : interview.applicant?.status === 'rejected' ? 'badge-rejected' : interview.applicant?.status === 'interview_passed' ? 'badge-completed' : interview.applicant?.status === 'interview_failed' ? 'badge-cancelled' : 'badge-pending'}">
+                                                ${interview.applicant?.status ? interview.applicant.status.replace(/_/g, ' ') : 'N/A'}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                ${interview.notes ? `
+                                <div class="bg-yellow-50 p-5 rounded-xl md:col-span-2">
+                                    <h4 class="font-bold text-gray-800 mb-3 text-lg border-b pb-2">Interview Notes</h4>
+                                    <p class="text-gray-700">${interview.notes}</p>
+                                </div>
+                                ` : ''}
+                                
+                                ${interview.feedback || interview.rating ? `
+                                <div class="bg-green-50 p-5 rounded-xl md:col-span-2">
+                                    <h4 class="font-bold text-gray-800 mb-3 text-lg border-b pb-2">Interview Feedback</h4>
+                                    ${interview.feedback ? `
+                                    <div class="mb-3">
+                                        <span class="text-gray-600 text-sm">Feedback:</span>
+                                        <p class="text-gray-700">${interview.feedback}</p>
+                                    </div>
+                                    ` : ''}
+                                    ${interview.rating ? `
+                                    <div>
+                                        <span class="text-gray-600 text-sm">Result:</span>
+                                        <div class="flex items-center mt-1">
+                                            <span class="badge ${interview.rating === 'pass' ? 'badge-completed' : 'badge-cancelled'}">
+                                                ${interview.rating === 'pass' ? 'Passed' : 'Failed'}
+                                            </span>
+                                        </div>
+                                    </div>
+                                    ` : ''}
+                                </div>
+                                ` : ''}
+                            </div>
+                        `;
+                        
+                        document.getElementById('interview-details').innerHTML = detailsHtml;
+                        document.getElementById('view-interview-modal').classList.add('active');
+                        document.body.style.overflow = 'hidden';
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error!',
+                            text: result.message || 'Failed to load interview details.'
                         });
-                    };
-                    
-                    // Populate modal
-                    document.getElementById('interview-applicant-name').textContent = interview.applicant?.full_name || 'N/A';
-                    
-                    const detailsHtml = `
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div class="bg-gray-50 p-5 rounded-xl">
-                                <h4 class="font-bold text-gray-800 mb-3 text-lg border-b pb-2">Interview Information</h4>
-                                <div class="space-y-3">
-                                    <div>
-                                        <span class="text-gray-600 text-sm">Scheduled Date & Time:</span>
-                                        <p class="font-medium">${formatDate(interview.scheduled_date)}</p>
-                                    </div>
-                                    <div>
-                                        <span class="text-gray-600 text-sm">Interview Type:</span>
-                                        <p class="font-medium">${interview.interview_type === 'in_person' ? 'In-Person' : (interview.interview_type === 'video' ? 'Video Call' : 'Phone Call')}</p>
-                                    </div>
-                                    <div>
-                                        <span class="text-gray-600 text-sm">Duration:</span>
-                                        <p class="font-medium">${interview.duration || 60} minutes</p>
-                                    </div>
-                                    <div>
-                                        <span class="text-gray-600 text-sm">Location/Platform:</span>
-                                        <p class="font-medium">${interview.location || 'Not specified'}</p>
-                                    </div>
-                                    <div>
-                                        <span class="text-gray-600 text-sm">Status:</span>
-                                        <span class="badge ${interview.status === 'scheduled' ? 'badge-scheduled' : interview.status === 'completed' ? 'badge-completed' : interview.status === 'rescheduled' ? 'badge-rescheduled' : 'badge-cancelled'}">
-                                            ${interview.status.charAt(0).toUpperCase() + interview.status.slice(1)}
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="bg-gray-50 p-5 rounded-xl">
-                                <h4 class="font-bold text-gray-800 mb-3 text-lg border-b pb-2">Applicant Information</h4>
-                                <div class="space-y-3">
-                                    <div>
-                                        <span class="text-gray-600 text-sm">Applicant Name:</span>
-                                        <p class="font-medium">${interview.applicant?.full_name || 'N/A'}</p>
-                                    </div>
-                                    <div>
-                                        <span class="text-gray-600 text-sm">Position Applied:</span>
-                                        <p class="font-medium">${interview.applicant?.position_applied ? interview.applicant.position_applied.replace(/_/g, ' ') : 'N/A'}</p>
-                                    </div>
-                                    <div>
-                                        <span class="text-gray-600 text-sm">Email:</span>
-                                        <p class="font-medium">${interview.applicant?.email || 'N/A'}</p>
-                                    </div>
-                                    <div>
-                                        <span class="text-gray-600 text-sm">Phone:</span>
-                                        <p class="font-medium">${interview.applicant?.phone_number || 'N/A'}</p>
-                                    </div>
-                                    <div>
-                                        <span class="text-gray-600 text-sm">Application Status:</span>
-                                        <span class="badge ${interview.applicant?.status === 'pending' ? 'badge-pending' : interview.applicant?.status === 'under_review' ? 'badge-under-review' : interview.applicant?.status === 'interview_scheduled' ? 'badge-interview' : interview.applicant?.status === 'accepted' ? 'badge-accepted' : interview.applicant?.status === 'rejected' ? 'badge-rejected' : interview.applicant?.status === 'interview_passed' ? 'badge-completed' : interview.applicant?.status === 'interview_failed' ? 'badge-cancelled' : 'badge-pending'}">
-                                            ${interview.applicant?.status ? interview.applicant.status.replace(/_/g, ' ') : 'N/A'}
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            ${interview.notes ? `
-                            <div class="bg-yellow-50 p-5 rounded-xl md:col-span-2">
-                                <h4 class="font-bold text-gray-800 mb-3 text-lg border-b pb-2">Interview Notes</h4>
-                                <p class="text-gray-700">${interview.notes}</p>
-                            </div>
-                            ` : ''}
-                            
-                            ${interview.feedback || interview.rating ? `
-                            <div class="bg-green-50 p-5 rounded-xl md:col-span-2">
-                                <h4 class="font-bold text-gray-800 mb-3 text-lg border-b pb-2">Interview Feedback</h4>
-                                ${interview.feedback ? `
-                                <div class="mb-3">
-                                    <span class="text-gray-600 text-sm">Feedback:</span>
-                                    <p class="text-gray-700">${interview.feedback}</p>
-                                </div>
-                                ` : ''}
-                                ${interview.rating ? `
-                                <div>
-                                    <span class="text-gray-600 text-sm">Result:</span>
-                                    <div class="flex items-center mt-1">
-                                        <span class="badge ${interview.rating === 'pass' ? 'badge-completed' : 'badge-cancelled'}">
-                                            ${interview.rating === 'pass' ? 'Passed' : 'Failed'}
-                                        </span>
-                                    </div>
-                                </div>
-                                ` : ''}
-                            </div>
-                            ` : ''}
-                        </div>
-                    `;
-                    
-                    document.getElementById('interview-details').innerHTML = detailsHtml;
-                    document.getElementById('view-interview-modal').classList.add('active');
-                    document.body.style.overflow = 'hidden';
+                    }
                     
                 } catch (error) {
                     console.error('Error:', error);
                     Swal.fire({
                         icon: 'error',
                         title: 'Error!',
-                        text: 'Failed to load interview details.'
+                        text: 'Failed to load interview details. Please try again.'
                     });
                 }
             });
@@ -2222,6 +2298,8 @@
             btn.addEventListener('click', function(e) {
                 e.preventDefault();
                 const interviewId = this.getAttribute('data-id');
+                const url = `${routePrefix}/interviews/${interviewId}/start-now`;
+                console.log('Starting interview now at URL:', url);
                 
                 Swal.fire({
                     title: 'Start Interview Now?',
@@ -2231,21 +2309,31 @@
                     confirmButtonColor: '#2563eb',
                     cancelButtonColor: '#6b7280',
                     confirmButtonText: 'Yes, start interview',
-                    cancelButtonText: 'Cancel'
-                }).then(async (result) => {
-                    if (result.isConfirmed) {
+                    cancelButtonText: 'Cancel',
+                    showLoaderOnConfirm: true,
+                    preConfirm: async () => {
                         try {
-                            const response = await fetch(`/hrm/staff/interviews/${interviewId}/start-now`, {
-                                method: 'POST',
-                                headers: {
-                                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                                    'Accept': 'application/json'
-                                }
-                            });
-                            
-                            const data = await response.json();
-                            
-                            if (data.success) {
+                            return await makeApiCall(url, 'POST');
+                        } catch (error) {
+                            Swal.showValidationMessage(`Request failed: ${error.message}`);
+                            return null;
+                        }
+                    }
+                }).then(async (result) => {
+                    if (result.isConfirmed && result.value) {
+                        const data = result.value;
+                        
+                        if (data.success) {
+                            // Show success message
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Interview Started!',
+                                text: 'Interview has been started. Please complete the interview details.',
+                                showConfirmButton: true,
+                                confirmButtonText: 'Continue to Feedback',
+                                timer: 3000,
+                                timerProgressBar: true,
+                            }).then(() => {
                                 // Show complete interview modal after starting
                                 document.getElementById('complete-interview-id').value = interviewId;
                                 document.getElementById('complete-applicant-id').value = data.interview.applicant_id;
@@ -2262,27 +2350,12 @@
                                 
                                 document.getElementById('complete-interview-modal').classList.add('active');
                                 document.body.style.overflow = 'hidden';
-                                
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: 'Interview Started!',
-                                    text: 'Interview has been started. Please complete the interview details.',
-                                    timer: 2000,
-                                    showConfirmButton: false
-                                });
-                            } else {
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'Error!',
-                                    text: 'Failed to start interview.'
-                                });
-                            }
-                        } catch (error) {
-                            console.error('Error:', error);
+                            });
+                        } else {
                             Swal.fire({
                                 icon: 'error',
                                 title: 'Error!',
-                                text: 'Something went wrong. Please try again.'
+                                text: data.message || 'Failed to start interview.'
                             });
                         }
                     }
@@ -2313,6 +2386,8 @@
             
             const interviewId = document.getElementById('complete-interview-id').value;
             const rating = document.getElementById('rating-value').value;
+            const url = `${routePrefix}/interviews/${interviewId}/complete`;
+            console.log('Completing interview at URL:', url);
             
             if (!rating) {
                 Swal.fire({
@@ -2323,56 +2398,78 @@
                 return;
             }
             
-            const formData = new FormData(this);
+            const formData = {
+                feedback: document.getElementById('feedback').value,
+                rating: rating,
+                notes: document.getElementById('notes').value
+            };
+            
+            // Show loading state
+            const submitBtn = this.querySelector('button[type="submit"]');
+            const originalBtnText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Processing...';
+            submitBtn.disabled = true;
             
             try {
-                const response = await fetch(`/hrm/staff/interviews/${interviewId}/complete`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                        'Accept': 'application/json'
-                    },
-                    body: JSON.stringify(Object.fromEntries(formData))
-                });
+                console.log('Submitting complete interview form for ID:', interviewId);
+                console.log('Form data:', formData);
                 
-                const data = await response.json();
+                const result = await makeApiCall(url, 'POST', formData);
                 
-                if (data.success) {
+                console.log('Complete interview response:', result);
+                
+                if (result.success) {
                     Swal.fire({
                         icon: 'success',
                         title: 'Success!',
-                        text: data.message,
-                        timer: 2000,
-                        showConfirmButton: false
+                        text: result.message || 'Interview completed successfully!',
+                        showConfirmButton: true,
+                        confirmButtonColor: '#10b981',
+                        timer: 3000,
+                        timerProgressBar: true,
+                        willClose: () => {
+                            // Close modal and refresh page
+                            document.getElementById('complete-interview-modal').classList.remove('active');
+                            document.body.style.overflow = '';
+                            
+                            // Refresh the page to update the interview list
+                            window.location.reload();
+                        }
                     });
-                    
-                    document.getElementById('complete-interview-modal').classList.remove('active');
-                    document.body.style.overflow = '';
-                    
-                    // Reload page after 1 second
-                    setTimeout(() => {
-                        window.location.reload();
-                    }, 1000);
                 } else {
-                    if (data.errors) {
+                    // Reset button state
+                    submitBtn.innerHTML = originalBtnText;
+                    submitBtn.disabled = false;
+                    
+                    if (result.errors) {
                         let errorMessage = '';
-                        Object.values(data.errors).forEach(errors => {
+                        Object.values(result.errors).forEach(errors => {
                             errorMessage += errors[0] + '\n';
                         });
                         Swal.fire({
                             icon: 'error',
-                            title: 'Error!',
+                            title: 'Validation Error!',
                             text: errorMessage
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error!',
+                            text: result.message || 'Something went wrong. Please try again.'
                         });
                     }
                 }
             } catch (error) {
-                console.error('Error:', error);
+                console.error('Error completing interview:', error);
+                
+                // Reset button state
+                submitBtn.innerHTML = originalBtnText;
+                submitBtn.disabled = false;
+                
                 Swal.fire({
                     icon: 'error',
-                    title: 'Error!',
-                    text: 'Something went wrong. Please try again.'
+                    title: 'Network Error!',
+                    text: 'Failed to connect to server. Please check if the server is running and try again. Error: ' + error.message
                 });
             }
         });
@@ -2474,11 +2571,15 @@
                 return;
             }
             
-            // Fix date issue: Create date string in YYYY-MM-DD HH:MM:SS format
-            const year = rescheduleSelectedDate.getFullYear();
-            const month = String(rescheduleSelectedDate.getMonth() + 1).padStart(2, '0');
-            const day = String(rescheduleSelectedDate.getDate()).padStart(2, '0');
-            const dateTimeStr = `${year}-${month}-${day} ${selectedTime}:00`;
+            // Create a new date object with the selected time
+            const dateTime = new Date(rescheduleSelectedDate);
+            const [hours, minutes] = selectedTime.split(':');
+            dateTime.setHours(parseInt(hours, 10));
+            dateTime.setMinutes(parseInt(minutes, 10));
+            dateTime.setSeconds(0);
+            
+            // Format as ISO string (Carbon can parse this)
+            const dateTimeStr = dateTime.toISOString().slice(0, 19).replace('T', ' ');
             
             document.getElementById('reschedule-date-time').value = dateTimeStr;
         }
@@ -2492,6 +2593,8 @@
             
             const interviewId = document.getElementById('reschedule-interview-id').value;
             const dateTime = document.getElementById('reschedule-date-time').value;
+            const url = `${routePrefix}/interviews/${interviewId}/reschedule`;
+            console.log('Rescheduling interview at URL:', url);
             
             if (!dateTime) {
                 Swal.fire({
@@ -2502,56 +2605,75 @@
                 return;
             }
             
-            const formData = new FormData(this);
+            const formData = {
+                scheduled_date: dateTime,
+                interview_type: this.querySelector('[name="interview_type"]').value,
+                duration: this.querySelector('[name="duration"]').value,
+                location: this.querySelector('[name="location"]').value,
+                reschedule_reason: this.querySelector('[name="reschedule_reason"]').value
+            };
+            
+            // Show loading state
+            const submitBtn = this.querySelector('button[type="submit"]');
+            const originalBtnText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Rescheduling...';
+            submitBtn.disabled = true;
             
             try {
-                const response = await fetch(`/hrm/staff/interviews/${interviewId}/reschedule`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                        'Accept': 'application/json'
-                    },
-                    body: JSON.stringify(Object.fromEntries(formData))
-                });
+                const result = await makeApiCall(url, 'POST', formData);
                 
-                const data = await response.json();
-                
-                if (data.success) {
+                if (result.success) {
                     Swal.fire({
                         icon: 'success',
                         title: 'Success!',
-                        text: data.message,
-                        timer: 2000,
-                        showConfirmButton: false
+                        text: result.message || 'Interview rescheduled successfully!',
+                        showConfirmButton: true,
+                        confirmButtonColor: '#10b981',
+                        timer: 3000,
+                        timerProgressBar: true,
+                        willClose: () => {
+                            // Close modal and refresh page
+                            document.getElementById('reschedule-modal').classList.remove('active');
+                            document.body.style.overflow = '';
+                            
+                            // Refresh the page to update the interview list
+                            window.location.reload();
+                        }
                     });
-                    
-                    document.getElementById('reschedule-modal').classList.remove('active');
-                    document.body.style.overflow = '';
-                    
-                    // Reload page after 1 second
-                    setTimeout(() => {
-                        window.location.reload();
-                    }, 1000);
                 } else {
-                    if (data.errors) {
+                    // Reset button state
+                    submitBtn.innerHTML = originalBtnText;
+                    submitBtn.disabled = false;
+                    
+                    if (result.errors) {
                         let errorMessage = '';
-                        Object.values(data.errors).forEach(errors => {
+                        Object.values(result.errors).forEach(errors => {
                             errorMessage += errors[0] + '\n';
                         });
                         Swal.fire({
                             icon: 'error',
-                            title: 'Error!',
+                            title: 'Validation Error!',
                             text: errorMessage
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error!',
+                            text: result.message || 'Failed to reschedule interview.'
                         });
                     }
                 }
             } catch (error) {
                 console.error('Error:', error);
+                
+                // Reset button state
+                submitBtn.innerHTML = originalBtnText;
+                submitBtn.disabled = false;
+                
                 Swal.fire({
                     icon: 'error',
-                    title: 'Error!',
-                    text: 'Something went wrong. Please try again.'
+                    title: 'Network Error!',
+                    text: 'Failed to connect to server. Please check your internet connection.'
                 });
             }
         });
@@ -2561,55 +2683,50 @@
             btn.addEventListener('click', function(e) {
                 e.preventDefault();
                 const interviewId = this.getAttribute('data-id');
+                const url = `${routePrefix}/interviews/${interviewId}/cancel`;
+                console.log('Cancelling interview at URL:', url);
                 
                 Swal.fire({
                     title: 'Cancel Interview',
-                    text: "Are you sure you want to cancel this interview?",
+                    text: "Are you sure you want to cancel this interview? The applicant will be moved back to 'Under Review' status.",
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#ef4444',
                     cancelButtonColor: '#6b7280',
                     confirmButtonText: 'Yes, cancel it!',
-                    cancelButtonText: 'No, keep it'
-                }).then(async (result) => {
-                    if (result.isConfirmed) {
+                    cancelButtonText: 'No, keep it',
+                    showLoaderOnConfirm: true,
+                    preConfirm: async () => {
                         try {
-                            const response = await fetch(`/hrm/staff/interviews/${interviewId}/cancel`, {
-                                method: 'POST',
-                                headers: {
-                                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                                    'Accept': 'application/json'
+                            return await makeApiCall(url, 'POST');
+                        } catch (error) {
+                            Swal.showValidationMessage(`Request failed: ${error.message}`);
+                            return null;
+                        }
+                    }
+                }).then(async (result) => {
+                    if (result.isConfirmed && result.value) {
+                        const data = result.value;
+                        
+                        if (data.success) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Cancelled!',
+                                text: data.message || 'Interview cancelled successfully!',
+                                showConfirmButton: true,
+                                confirmButtonColor: '#10b981',
+                                timer: 3000,
+                                timerProgressBar: true,
+                                willClose: () => {
+                                    // Refresh the page to update the interview list
+                                    window.location.reload();
                                 }
                             });
-                            
-                            const data = await response.json();
-                            
-                            if (data.success) {
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: 'Cancelled!',
-                                    text: data.message,
-                                    timer: 2000,
-                                    showConfirmButton: false
-                                });
-                                
-                                // Reload page after 1 second
-                                setTimeout(() => {
-                                    window.location.reload();
-                                }, 1000);
-                            } else {
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'Error!',
-                                    text: 'Failed to cancel interview.'
-                                });
-                            }
-                        } catch (error) {
-                            console.error('Error:', error);
+                        } else {
                             Swal.fire({
                                 icon: 'error',
                                 title: 'Error!',
-                                text: 'Something went wrong. Please try again.'
+                                text: data.message || 'Failed to cancel interview.'
                             });
                         }
                     }

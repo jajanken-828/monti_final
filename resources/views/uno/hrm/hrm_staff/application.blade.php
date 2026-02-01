@@ -453,6 +453,16 @@
             color: #065f46;
         }
         
+        .badge-interview-passed {
+            background-color: #10b981;
+            color: white;
+        }
+        
+        .badge-interview-failed {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+        
         .badge-accepted {
             background-color: #10b981;
             color: white;
@@ -476,6 +486,16 @@
         .dark .badge-interview {
             background-color: #064e3b;
             color: #a7f3d0;
+        }
+        
+        .dark .badge-interview-passed {
+            background-color: #047857;
+            color: white;
+        }
+        
+        .dark .badge-interview-failed {
+            background-color: #7f1d1d;
+            color: #fca5a5;
         }
         
         .dark .badge-accepted {
@@ -781,6 +801,8 @@
         .status-dot-pending { background-color: #f59e0b; }
         .status-dot-under-review { background-color: #3b82f6; }
         .status-dot-interview { background-color: #10b981; }
+        .status-dot-interview-passed { background-color: #059669; }
+        .status-dot-interview-failed { background-color: #ef4444; }
         .status-dot-accepted { background-color: #059669; }
         .status-dot-rejected { background-color: #ef4444; }
         
@@ -1043,6 +1065,29 @@
                 </div>
             </div>
 
+            <!-- Additional Interview Status Summary -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                <div class="card p-6 flex items-center content-fade-in stagger-delay-1">
+                    <div class="w-12 h-12 rounded-xl bg-green-100 dark:bg-green-900 flex items-center justify-center mr-4">
+                        <i class="fas fa-check-circle text-green-600 dark:text-green-300 text-xl"></i>
+                    </div>
+                    <div>
+                        <div class="text-gray-500 dark:text-gray-400 text-sm">Interview Passed</div>
+                        <div class="text-2xl font-bold text-gray-900 dark:text-white">{{ $interviewPassed ?? 0 }}</div>
+                    </div>
+                </div>
+                
+                <div class="card p-6 flex items-center content-fade-in stagger-delay-2">
+                    <div class="w-12 h-12 rounded-xl bg-red-100 dark:bg-red-900 flex items-center justify-center mr-4">
+                        <i class="fas fa-times-circle text-red-600 dark:text-red-300 text-xl"></i>
+                    </div>
+                    <div>
+                        <div class="text-gray-500 dark:text-gray-400 text-sm">Interview Failed</div>
+                        <div class="text-2xl font-bold text-gray-900 dark:text-white">{{ $interviewFailed ?? 0 }}</div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Search and Filters -->
             <div class="card p-6 mb-8 content-fade-in stagger-delay-1">
                 <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
@@ -1058,6 +1103,8 @@
                             <option value="pending">Pending</option>
                             <option value="under_review">Under Review</option>
                             <option value="interview_scheduled">Interview Scheduled</option>
+                            <option value="interview_passed">Interview Passed</option>
+                            <option value="interview_failed">Interview Failed</option>
                             <option value="accepted">Accepted</option>
                             <option value="rejected">Rejected</option>
                         </select>
@@ -1079,8 +1126,8 @@
             <div class="card overflow-hidden mb-8 content-fade-in stagger-delay-1">
                 <div class="p-6 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
                     <div>
-                        <h2 class="text-lg font-bold text-gray-900 dark:text-white">New Applicants (No Scheduled Interviews)</h2>
-                        <p class="text-gray-500 dark:text-gray-400 text-sm">Applicants without scheduled interviews</p>
+                        <h2 class="text-lg font-bold text-gray-900 dark:text-white">Active Applicants</h2>
+                        <p class="text-gray-500 dark:text-gray-400 text-sm">Applicants without scheduled interviews and pending review (Excluding interview passed/failed)</p>
                     </div>
                     <div class="text-sm text-gray-500">
                         Showing {{ $applicants->firstItem() ?? 0 }} to {{ $applicants->lastItem() ?? 0 }} of {{ $applicants->total() ?? 0 }} entries
@@ -1120,6 +1167,8 @@
                                                 'pending' => 'badge-pending',
                                                 'under_review' => 'badge-under-review',
                                                 'interview_scheduled' => 'badge-interview',
+                                                'interview_passed' => 'badge-interview-passed',
+                                                'interview_failed' => 'badge-interview-failed',
                                                 'accepted' => 'badge-accepted',
                                                 'rejected' => 'badge-rejected'
                                             ];
@@ -1151,8 +1200,8 @@
                             <tr>
                                 <td colspan="6" class="text-center py-8 text-gray-500">
                                     <i class="fas fa-inbox text-4xl mb-4 text-gray-300"></i>
-                                    <p class="text-lg">No new applicants found</p>
-                                    <p class="text-sm mt-2">All applicants have scheduled interviews or no applications yet</p>
+                                    <p class="text-lg">No active applicants found</p>
+                                    <p class="text-sm mt-2">All applicants have scheduled interviews, passed/failed interviews, or no applications yet</p>
                                 </td>
                             </tr>
                             @endforelse
@@ -2481,6 +2530,8 @@
                 pending: {{ $pendingReview ?? 0 }},
                 under_review: {{ $applicants->where('status', 'under_review')->count() }},
                 interview_scheduled: {{ $scheduledInterviews ?? 0 }},
+                interview_passed: {{ $interviewPassed ?? 0 }},
+                interview_failed: {{ $interviewFailed ?? 0 }},
                 accepted: {{ $applicants->where('status', 'accepted')->count() }},
                 rejected: {{ $rejected ?? 0 }}
             };
@@ -2488,12 +2539,14 @@
             const chart = new Chart(ctx, {
                 type: 'doughnut',
                 data: {
-                    labels: ['Pending', 'Under Review', 'Interview Scheduled', 'Accepted', 'Rejected'],
+                    labels: ['Pending', 'Under Review', 'Interview Scheduled', 'Interview Passed', 'Interview Failed', 'Accepted', 'Rejected'],
                     datasets: [{
                         data: [
                             statusData.pending,
                             statusData.under_review,
                             statusData.interview_scheduled,
+                            statusData.interview_passed,
+                            statusData.interview_failed,
                             statusData.accepted,
                             statusData.rejected
                         ],
@@ -2502,6 +2555,8 @@
                             '#3b82f6',
                             '#10b981',
                             '#059669',
+                            '#dc2626',
+                            '#8b5cf6',
                             '#ef4444'
                         ],
                         borderWidth: 1

@@ -153,6 +153,9 @@ class Applicant extends Model
             'pending' => 'badge-pending',
             'under_review' => 'badge-under-review',
             'interview_scheduled' => 'badge-interview',
+            'interview_rescheduled' => 'badge-interview',
+            'interview_passed' => 'badge-accepted',
+            'interview_failed' => 'badge-rejected',
             'accepted' => 'badge-accepted',
             'rejected' => 'badge-rejected',
         ];
