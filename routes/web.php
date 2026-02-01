@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\uno\hrm\hrm_manager\DashboardController as HRMManagerDashboardController;
+use App\Http\Controllers\uno\hrm\hrm_manager\OnboardingController; // Added this line
 use App\Http\Controllers\uno\hrm\hrm_staff\ApplicantController;
 use App\Http\Controllers\uno\hrm\hrm_staff\DashboardController as HRMStaffDashboardController;
 use App\Http\Controllers\uno\hrm\hrm_staff\InterviewController;
@@ -53,14 +54,26 @@ Route::prefix('hrm')
         Route::prefix('manager')
             ->middleware('position:manager')
             ->name('manager.')
-            ->controller(HRMManagerDashboardController::class)
             ->group(function () {
-                Route::get('/dashboard', 'dashboard')->name('dashboard');
-                Route::post('/promote/{user}', 'promoteUser')->name('promote');
-                Route::get('/onboarding', 'onboarding')->name('onboarding');
-                Route::get('/payroll', 'payroll')->name('payroll');
-                Route::get('/analytics', 'analytics')->name('analytics');
-                Route::get('/settings', 'settings')->name('settings');
+                // Dashboard Controller Routes
+                Route::controller(HRMManagerDashboardController::class)->group(function () {
+                    Route::get('/dashboard', 'dashboard')->name('dashboard');
+                    Route::post('/promote/{user}', 'promoteUser')->name('promote');
+                    Route::get('/payroll', 'payroll')->name('payroll');
+                    Route::get('/analytics', 'analytics')->name('analytics');
+                    Route::get('/settings', 'settings')->name('settings');
+                });
+
+                // Onboarding Controller Routes
+                Route::controller(OnboardingController::class)->group(function () {
+                    Route::get('/onboarding', 'index')->name('onboarding');
+                    Route::post('/applicants', 'store')->name('applicants.store');
+                    Route::get('/applicants/{id}', 'show')->name('applicants.show');
+                    Route::post('/applicants/{id}/update-status', 'updateStatus')->name('applicants.update-status');
+                    Route::get('/upcoming-interviews', 'getUpcomingInterviews')->name('upcoming-interviews');
+                    Route::get('/statistics', 'getStatistics')->name('statistics');
+                    Route::get('/export-csv', 'exportCsv')->name('export-csv');
+                });
             });
 
         // HRM Staff Routes

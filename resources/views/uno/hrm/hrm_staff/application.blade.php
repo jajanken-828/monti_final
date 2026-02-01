@@ -1127,10 +1127,18 @@
                 <div class="p-6 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
                     <div>
                         <h2 class="text-lg font-bold text-gray-900 dark:text-white">Active Applicants</h2>
-                        <p class="text-gray-500 dark:text-gray-400 text-sm">Applicants without scheduled interviews and pending review (Excluding interview passed/failed)</p>
+                        <p class="text-gray-500 dark:text-gray-400 text-sm">Showing only applicants with status: Pending or Under Review</p>
                     </div>
                     <div class="text-sm text-gray-500">
-                        Showing {{ $applicants->firstItem() ?? 0 }} to {{ $applicants->lastItem() ?? 0 }} of {{ $applicants->total() ?? 0 }} entries
+                        @php
+                            // Filter applicants to only show pending or under_review
+                            $filteredApplicants = $applicants->filter(function($applicant) {
+                                return in_array($applicant->status, ['pending', 'under_review']);
+                            });
+                            $filteredCount = $filteredApplicants->count();
+                            $totalFiltered = $filteredCount;
+                        @endphp
+                        Showing {{ $filteredCount }} entries
                     </div>
                 </div>
                 
@@ -1147,7 +1155,17 @@
                             </tr>
                         </thead>
                         <tbody id="applicants-table-body">
-                            @forelse($applicants as $applicant)
+                            @php
+                                // Filter the applicants collection
+                                $filteredApplicants = collect();
+                                foreach ($applicants as $applicant) {
+                                    if (in_array($applicant->status, ['pending', 'under_review'])) {
+                                        $filteredApplicants->push($applicant);
+                                    }
+                                }
+                            @endphp
+                            
+                            @forelse($filteredApplicants as $applicant)
                                 <tr data-id="{{ $applicant->id }}">
                                     <td>
                                         <div class="font-medium text-gray-900 dark:text-white">{{ $applicant->full_name }}</div>
@@ -1201,7 +1219,7 @@
                                 <td colspan="6" class="text-center py-8 text-gray-500">
                                     <i class="fas fa-inbox text-4xl mb-4 text-gray-300"></i>
                                     <p class="text-lg">No active applicants found</p>
-                                    <p class="text-sm mt-2">All applicants have scheduled interviews, passed/failed interviews, or no applications yet</p>
+                                    <p class="text-sm mt-2">No applicants with status: Pending or Under Review</p>
                                 </td>
                             </tr>
                             @endforelse
@@ -1214,6 +1232,8 @@
                 <div class="p-6 border-t border-gray-200 dark:border-gray-700 flex items-center justify-between">
                     <div class="text-gray-500 dark:text-gray-400 text-sm">
                         Showing {{ $applicants->firstItem() }} to {{ $applicants->lastItem() }} of {{ $applicants->total() }} entries
+                        <br>
+                        <small>Filtered: {{ $filteredCount }} applicants (Pending or Under Review)</small>
                     </div>
                     <div class="flex space-x-2">
                         @if($applicants->onFirstPage())

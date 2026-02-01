@@ -65,17 +65,19 @@
 
     <!-- ✅ HELP SECTION RESTORED -->
     <div class="px-4 pt-6 border-t border-gray-200 dark:border-gray-700">
-        <div class="bg-blue-50 dark:bg-blue-900 rounded-xl p-4">
-            <div class="text-blue-800 dark:text-blue-200 font-medium text-sm mb-2">
-                Need help?
-            </div>
-            <p class="text-blue-600 dark:text-blue-300 text-xs mb-3">
-                Contact our Tech support team for assistance
-            </p>
-            <button
-                class="w-full bg-blue-theme hover:bg-blue-700 text-white py-2 rounded-lg text-xs font-medium transition-colors">
-                Get Help
-            </button>
+    <div class="bg-blue-50 dark:bg-blue-900 rounded-xl p-4">
+        <div class="text-blue-800 dark:text-blue-200 font-medium text-sm mb-1">
+            Human Resource {{ auth()->user()->position }}
         </div>
+
+        <p class="text-blue-700 dark:text-blue-300 text-sm font-semibold">
+            {{ auth()->user()->first_name }} {{ auth()->user()->last_name }}
+        </p>
+
+        <p class="text-blue-600 dark:text-blue-400 text-xs mt-1">
+            {{ auth()->user()->email }}
+        </p>
     </div>
+</div>
+
 </div>

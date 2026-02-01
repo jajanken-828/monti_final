@@ -1308,7 +1308,7 @@
                 <div class="p-6 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
                     <div>
                         <h2 class="text-lg font-bold text-gray-900 dark:text-white">Interview Schedule</h2>
-                        <p class="text-gray-500 dark:text-gray-400 text-sm">All scheduled interviews with applicants</p>
+                        <p class="text-gray-500 dark:text-gray-400 text-sm">Scheduled and rescheduled interviews with applicants</p>
                     </div>
                     <div class="text-sm text-gray-500">
                         Showing {{ $interviews->firstItem() ?? 0 }} to {{ $interviews->lastItem() ?? 0 }} of {{ $interviews->total() ?? 0 }} entries
@@ -1329,114 +1329,123 @@
                             </tr>
                         </thead>
                         <tbody id="interviews-table-body">
-                            @forelse($interviews as $interview)
-                            <tr data-id="{{ $interview->id }}" data-status="{{ $interview->status }}" data-date="{{ $interview->scheduled_date->format('Y-m-d') }}" data-type="{{ $interview->interview_type }}">
-                                <td>
-                                    <div class="flex items-center">
-                                        <div class="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center mr-3">
-                                            <i class="fas fa-user text-blue-600 dark:text-blue-300"></i>
+                            @php
+                                // Filter interviews to only show scheduled and rescheduled statuses
+                                $scheduledInterviews = $interviews->filter(function($interview) {
+                                    return in_array($interview->status, ['scheduled', 'rescheduled']);
+                                });
+                            @endphp
+                            
+                            @if($scheduledInterviews->count() > 0)
+                                @foreach($scheduledInterviews as $interview)
+                                <tr data-id="{{ $interview->id }}" data-status="{{ $interview->status }}" data-date="{{ $interview->scheduled_date->format('Y-m-d') }}" data-type="{{ $interview->interview_type }}">
+                                    <td>
+                                        <div class="flex items-center">
+                                            <div class="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center mr-3">
+                                                <i class="fas fa-user text-blue-600 dark:text-blue-300"></i>
+                                            </div>
+                                            <div>
+                                                <div class="font-medium text-gray-900 dark:text-white">{{ $interview->applicant->full_name ?? 'N/A' }}</div>
+                                                <div class="text-sm text-gray-500">{{ $interview->applicant->email ?? 'N/A' }}</div>
+                                            </div>
                                         </div>
-                                        <div>
-                                            <div class="font-medium text-gray-900 dark:text-white">{{ $interview->applicant->full_name ?? 'N/A' }}</div>
-                                            <div class="text-sm text-gray-500">{{ $interview->applicant->email ?? 'N/A' }}</div>
+                                    </td>
+                                    <td>
+                                        <div class="font-medium">{{ $interview->scheduled_date->format('M d, Y') }}</div>
+                                        <div class="text-sm text-gray-500">
+                                            <i class="fas fa-clock mr-1"></i>
+                                            {{ $interview->scheduled_date->format('h:i A') }}
+                                            @if($interview->duration)
+                                                ({{ $interview->duration }} mins)
+                                            @endif
                                         </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="font-medium">{{ $interview->scheduled_date->format('M d, Y') }}</div>
-                                    <div class="text-sm text-gray-500">
-                                        <i class="fas fa-clock mr-1"></i>
-                                        {{ $interview->scheduled_date->format('h:i A') }}
-                                        @if($interview->duration)
-                                            ({{ $interview->duration }} mins)
+                                    </td>
+                                    <td>
+                                        @php
+                                            $typeBadgeClasses = [
+                                                'in_person' => 'interview-type-in_person',
+                                                'video' => 'interview-type-video',
+                                                'phone' => 'interview-type-phone'
+                                            ];
+                                            $typeLabels = [
+                                                'in_person' => 'In-Person',
+                                                'video' => 'Video Call',
+                                                'phone' => 'Phone Call'
+                                            ];
+                                        @endphp
+                                        <span class="interview-type-badge {{ $typeBadgeClasses[$interview->interview_type] ?? 'interview-type-in_person' }}">
+                                            {{ $typeLabels[$interview->interview_type] ?? $interview->interview_type }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <div class="font-medium">{{ ucwords(str_replace('_', ' ', $interview->applicant->position_applied ?? 'N/A')) }}</div>
+                                    </td>
+                                    <td>
+                                        @php
+                                            $statusClasses = [
+                                                'scheduled' => 'badge-scheduled',
+                                                'completed' => 'badge-completed',
+                                                'rescheduled' => 'badge-rescheduled',
+                                                'cancelled' => 'badge-cancelled'
+                                            ];
+                                        @endphp
+                                        <span class="badge {{ $statusClasses[$interview->status] ?? 'badge-scheduled' }}">
+                                            <span class="status-dot status-dot-{{ $interview->status }}"></span>
+                                            {{ ucwords($interview->status) }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <div class="text-gray-900 dark:text-white">{{ $interview->location ?? 'Not specified' }}</div>
+                                        @if($interview->interview_type == 'video' && $interview->location)
+                                        <div class="text-sm text-gray-500">
+                                            <i class="fas fa-video mr-1"></i> {{ $interview->location }}
+                                        </div>
                                         @endif
-                                    </div>
-                                </td>
-                                <td>
-                                    @php
-                                        $typeBadgeClasses = [
-                                            'in_person' => 'interview-type-in_person',
-                                            'video' => 'interview-type-video',
-                                            'phone' => 'interview-type-phone'
-                                        ];
-                                        $typeLabels = [
-                                            'in_person' => 'In-Person',
-                                            'video' => 'Video Call',
-                                            'phone' => 'Phone Call'
-                                        ];
-                                    @endphp
-                                    <span class="interview-type-badge {{ $typeBadgeClasses[$interview->interview_type] ?? 'interview-type-in_person' }}">
-                                        {{ $typeLabels[$interview->interview_type] ?? $interview->interview_type }}
-                                    </span>
-                                </td>
-                                <td>
-                                    <div class="font-medium">{{ ucwords(str_replace('_', ' ', $interview->applicant->position_applied ?? 'N/A')) }}</div>
-                                </td>
-                                <td>
-                                    @php
-                                        $statusClasses = [
-                                            'scheduled' => 'badge-scheduled',
-                                            'completed' => 'badge-completed',
-                                            'rescheduled' => 'badge-rescheduled',
-                                            'cancelled' => 'badge-cancelled'
-                                        ];
-                                    @endphp
-                                    <span class="badge {{ $statusClasses[$interview->status] ?? 'badge-scheduled' }}">
-                                        <span class="status-dot status-dot-{{ $interview->status }}"></span>
-                                        {{ ucwords($interview->status) }}
-                                    </span>
-                                </td>
-                                <td>
-                                    <div class="text-gray-900 dark:text-white">{{ $interview->location ?? 'Not specified' }}</div>
-                                    @if($interview->interview_type == 'video' && $interview->location)
-                                    <div class="text-sm text-gray-500">
-                                        <i class="fas fa-video mr-1"></i> {{ $interview->location }}
-                                    </div>
-                                    @endif
-                                </td>
-                                <td>
-                                    <div class="flex space-x-2">
-                                        <!-- View Button -->
-                                        <button class="btn btn-sm btn-primary view-interview" data-id="{{ $interview->id }}" title="View Details">
-                                            <i class="fas fa-eye"></i> View
-                                        </button>
-                                        
-                                        <!-- Interview Now Button (for scheduled/rescheduled interviews) -->
-                                        @if(in_array($interview->status, ['scheduled', 'rescheduled']))
-                                        <button class="btn btn-sm btn-interview-now interview-now-btn" data-id="{{ $interview->id }}" title="Start Interview Now">
-                                            <i class="fas fa-video"></i> Interview Now
-                                        </button>
-                                        @endif
-                                        
-                                        <!-- Reschedule Button -->
-                                        <button class="btn btn-sm btn-success reschedule-btn" data-id="{{ $interview->id }}" data-applicant-id="{{ $interview->applicant_id }}" data-name="{{ $interview->applicant->full_name ?? 'Applicant' }}" title="Reschedule">
-                                            <i class="fas fa-calendar-alt"></i> Reschedule
-                                        </button>
-                                        
-                                        <!-- Cancel Button -->
-                                        @if($interview->status == 'scheduled')
-                                        <button class="btn btn-sm btn-danger cancel-interview" data-id="{{ $interview->id }}" title="Cancel Interview">
-                                            <i class="fas fa-times"></i> Cancel
-                                        </button>
-                                        @endif
-                                    </div>
-                                </td>
-                            </tr>
-                            @empty
+                                    </td>
+                                    <td>
+                                        <div class="flex space-x-2">
+                                            <!-- View Button -->
+                                            <button class="btn btn-sm btn-primary view-interview" data-id="{{ $interview->id }}" title="View Details">
+                                                <i class="fas fa-eye"></i> View
+                                            </button>
+                                            
+                                            <!-- Interview Now Button (for scheduled/rescheduled interviews) -->
+                                            @if(in_array($interview->status, ['scheduled', 'rescheduled']))
+                                            <button class="btn btn-sm btn-interview-now interview-now-btn" data-id="{{ $interview->id }}" title="Start Interview Now">
+                                                <i class="fas fa-video"></i> Interview Now
+                                            </button>
+                                            @endif
+                                            
+                                            <!-- Reschedule Button -->
+                                            <button class="btn btn-sm btn-success reschedule-btn" data-id="{{ $interview->id }}" data-applicant-id="{{ $interview->applicant_id }}" data-name="{{ $interview->applicant->full_name ?? 'Applicant' }}" title="Reschedule">
+                                                <i class="fas fa-calendar-alt"></i> Reschedule
+                                            </button>
+                                            
+                                            <!-- Cancel Button -->
+                                            @if($interview->status == 'scheduled')
+                                            <button class="btn btn-sm btn-danger cancel-interview" data-id="{{ $interview->id }}" title="Cancel Interview">
+                                                <i class="fas fa-times"></i> Cancel
+                                            </button>
+                                            @endif
+                                        </div>
+                                    </td>
+                                </tr>
+                                @endforeach
+                            @else
                             <tr>
                                 <td colspan="7" class="text-center py-8">
                                     <div class="empty-state">
                                         <div class="empty-state-icon">
                                             <i class="fas fa-calendar-times"></i>
                                         </div>
-                                        <h3 class="empty-state-title">No interviews scheduled</h3>
+                                        <h3 class="empty-state-title">No scheduled interviews</h3>
                                         <p class="empty-state-description">
-                                            There are no interviews scheduled at the moment. Schedule interviews from the Application Management page.
+                                            There are no scheduled or rescheduled interviews at the moment. Schedule interviews from the Application Management page.
                                         </p>
                                     </div>
                                 </td>
                             </tr>
-                            @endforelse
+                            @endif
                         </tbody>
                     </table>
                 </div>
@@ -1497,6 +1506,7 @@
                 
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     @foreach($todayInterviewsList as $todayInterview)
+                    @if(in_array($todayInterview->status, ['scheduled', 'rescheduled']))
                     <div class="interview-card bg-white dark:bg-gray-800 p-5 rounded-xl border border-gray-200 dark:border-gray-700 today">
                         <div class="flex justify-between items-start mb-3">
                             <div>
@@ -1529,6 +1539,7 @@
                             </button>
                         </div>
                     </div>
+                    @endif
                     @endforeach
                 </div>
             </div>
@@ -1541,6 +1552,7 @@
                 @if($upcomingInterviewsList && count($upcomingInterviewsList) > 0)
                 <div class="interview-timeline">
                     @foreach($upcomingInterviewsList as $upcomingInterview)
+                    @if(in_array($upcomingInterview->status, ['scheduled', 'rescheduled']))
                     @php
                         $isToday = $upcomingInterview->scheduled_date->isToday();
                         $isTomorrow = $upcomingInterview->scheduled_date->isTomorrow();
@@ -1597,6 +1609,7 @@
                             </div>
                         </div>
                     </div>
+                    @endif
                     @endforeach
                 </div>
                 @else
@@ -1606,7 +1619,7 @@
                     </div>
                     <h3 class="empty-state-title">No upcoming interviews</h3>
                     <p class="empty-state-description">
-                        There are no interviews scheduled for the upcoming week.
+                        There are no scheduled or rescheduled interviews for the upcoming week.
                     </p>
                 </div>
                 @endif
