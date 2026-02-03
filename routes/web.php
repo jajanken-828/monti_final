@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 | PUBLIC ROUTES
 |--------------------------------------------------------------------------
 */
-Route::get('/', fn () => view('welcome'));
+Route::get('/', fn () => view('welcome'))->name('home');
 
 /*
 |--------------------------------------------------------------------------
@@ -28,10 +28,15 @@ Route::controller(AuthController::class)->group(function () {
         Route::post('/login', 'login')->name('login.post');
         Route::get('/register', 'showRegister')->name('register');
         Route::post('/register', 'register')->name('register.post');
+        // Use AuthController for showing the application form
+        Route::get('/apply', 'showApply')->name('apply');
     });
 
     Route::post('/logout', 'logout')->middleware('auth')->name('logout');
 });
+
+// Public application submission route - use ApplicantController for storing applications
+Route::post('/apply', [ApplicantController::class, 'store'])->name('apply.store');
 
 /*
 |--------------------------------------------------------------------------

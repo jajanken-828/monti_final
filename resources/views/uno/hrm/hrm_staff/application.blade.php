@@ -852,6 +852,129 @@
             color: #1e293b;
         }
         
+        /* Document preview styles */
+        .document-preview-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .document-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            background-color: #f8fafc;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            transition: all 0.2s ease;
+        }
+        
+        .document-item:hover {
+            background-color: #eff6ff;
+            border-color: #3b82f6;
+        }
+        
+        .document-icon {
+            font-size: 24px;
+            margin-right: 10px;
+            color: #3b82f6;
+        }
+        
+        .document-info {
+            flex: 1;
+        }
+        
+        .document-name {
+            font-weight: 500;
+            font-size: 14px;
+            color: #1e293b;
+        }
+        
+        .document-size {
+            font-size: 12px;
+            color: #64748b;
+        }
+        
+        .document-actions {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .document-action-btn {
+            padding: 6px 12px;
+            background-color: #2563eb;
+            color: white;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.2s;
+        }
+        
+        .document-action-btn:hover {
+            background-color: #1d4ed8;
+        }
+        
+        .document-action-btn.view {
+            background-color: #10b981;
+        }
+        
+        .document-action-btn.view:hover {
+            background-color: #059669;
+        }
+        
+        .document-action-btn.download {
+            background-color: #3b82f6;
+        }
+        
+        .document-action-btn.download:hover {
+            background-color: #2563eb;
+        }
+        
+        /* Image preview modal */
+        .image-preview-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .image-preview-modal.hidden {
+            display: none;
+        }
+        
+        .image-preview-content {
+            max-width: 90vw;
+            max-height: 90vh;
+            position: relative;
+        }
+        
+        .image-preview-img {
+            max-width: 100%;
+            max-height: 90vh;
+            object-fit: contain;
+        }
+        
+        .image-preview-close {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 30px;
+            cursor: pointer;
+        }
+        
         /* Responsive Design */
         @media (max-width: 1024px) {
             .content-loading-overlay {
@@ -927,6 +1050,10 @@
                 flex-direction: column;
                 gap: 8px;
             }
+            
+            .document-preview-container {
+                flex-direction: column;
+            }
         }
         
         @media (max-width: 640px) {
@@ -980,6 +1107,16 @@
         </div>
         <div class="loading-progress-bar">
             <div id="loading-progress-fill" class="loading-progress-fill"></div>
+        </div>
+    </div>
+
+    <!-- Image Preview Modal -->
+    <div id="image-preview-modal" class="image-preview-modal hidden">
+        <div class="image-preview-content">
+            <button class="image-preview-close" id="close-image-preview">
+                <i class="fas fa-times"></i>
+            </button>
+            <img id="previewed-image" class="image-preview-img" src="" alt="Document Preview">
         </div>
     </div>
 
@@ -2049,6 +2186,29 @@
         setupFileUpload('philhealth-file', 'philhealth-preview', 'philhealth-upload-area');
         setupFileUpload('pagibig-file', 'pagibig-preview', 'pagibig-upload-area');
 
+        // Image preview functionality
+        const imagePreviewModal = document.getElementById('image-preview-modal');
+        const previewedImage = document.getElementById('previewed-image');
+        const closeImagePreview = document.getElementById('close-image-preview');
+
+        function previewImage(imageUrl) {
+            previewedImage.src = imageUrl;
+            imagePreviewModal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        closeImagePreview.addEventListener('click', () => {
+            imagePreviewModal.classList.add('hidden');
+            document.body.style.overflow = '';
+        });
+
+        imagePreviewModal.addEventListener('click', (e) => {
+            if (e.target === imagePreviewModal) {
+                imagePreviewModal.classList.add('hidden');
+                document.body.style.overflow = '';
+            }
+        });
+
         // Modal functionality
         const encodeBtn = document.getElementById('encode-applicant-btn');
         const modal = document.getElementById('encode-applicant-modal');
@@ -2177,6 +2337,73 @@
                         });
                     };
                     
+                    // Function to get file icon based on extension
+                    const getFileIcon = (fileName) => {
+                        if (!fileName) return 'fas fa-file';
+                        
+                        const extension = fileName.split('.').pop().toLowerCase();
+                        if (['jpg', 'jpeg', 'png', 'gif', 'bmp'].includes(extension)) {
+                            return 'fas fa-file-image';
+                        } else if (extension === 'pdf') {
+                            return 'fas fa-file-pdf';
+                        } else if (['doc', 'docx'].includes(extension)) {
+                            return 'fas fa-file-word';
+                        } else {
+                            return 'fas fa-file';
+                        }
+                    };
+                    
+                    // Function to format file size
+                    const formatFileSize = (bytes) => {
+                        if (!bytes) return '';
+                        if (bytes < 1024) return bytes + ' bytes';
+                        if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(2) + ' KB';
+                        return (bytes / (1024 * 1024)).toFixed(2) + ' MB';
+                    };
+                    
+                    // Function to create document display HTML
+                    const createDocumentDisplay = (documentName, filePath, fileSize, documentType) => {
+                        if (!filePath) {
+                            return `
+                                <div class="document-item">
+                                    <div class="document-info">
+                                        <div class="document-name">${documentType}: Not uploaded</div>
+                                    </div>
+                                </div>
+                            `;
+                        }
+                        
+                        const fileExtension = filePath.split('.').pop().toLowerCase();
+                        const isImage = ['jpg', 'jpeg', 'png', 'gif', 'bmp'].includes(fileExtension);
+                        const fileName = filePath.split('/').pop();
+                        const fileUrl = `/storage/${filePath}`;
+                        
+                        return `
+                           <div class="document-item flex items-center justify-between bg-white dark:bg-gray-800 p-2 rounded-lg shadow-sm w-80">
+    <div class="document-icon mr-3 text-gray-600 text-xl">
+        <i class="${getFileIcon(fileName)}"></i>
+    </div>
+    <div class="document-info flex-1 overflow-hidden">
+        <div class="document-name font-medium text-gray-900 dark:text-white truncate">${documentType}</div>
+        <div class="document-size text-gray-500 text-sm truncate">
+            ${fileName} ${fileSize ? `(${formatFileSize(fileSize)})` : ''}
+        </div>
+    </div>
+    <div class="document-actions flex items-center space-x-2 ml-3">
+        ${isImage ? `
+        <button type="button" class="document-action-btn view px-2 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 text-xs" onclick="previewImage('${fileUrl}')">
+            <i class="fas fa-eye"></i> View
+        </button>
+        ` : ''}
+        <a href="${fileUrl}" target="_blank" class="document-action-btn download px-2 py-1 bg-green-500 text-white rounded hover:bg-green-600 text-xs">
+            <i class="fas fa-download"></i> Download
+        </a>
+    </div>
+</div>
+
+                        `;
+                    };
+                    
                     // Populate modal
                     document.getElementById('applicant-name').textContent = applicant.full_name;
                     
@@ -2187,7 +2414,7 @@
                                 <div class="space-y-3">
                                     <div>
                                         <span class="text-gray-600 text-sm">Full Name:</span>
-                                        <p class="font-medium">${applicant.full_name}</p>
+                                        <p class="font-medium">${applicant.first_name} ${applicant.middle_name || ''} ${applicant.last_name}</p>
                                     </div>
                                     <div>
                                         <span class="text-gray-600 text-sm">Birth Date:</span>
@@ -2241,11 +2468,11 @@
                                 <div class="space-y-3">
                                     <div>
                                         <span class="text-gray-600 text-sm">Position Applied:</span>
-                                        <p class="font-medium">${applicant.position_applied.replace(/_/g, ' ').toUpperCase()}</p>
+                                        <p class="font-medium">${applicant.position_applied ? applicant.position_applied.replace(/_/g, ' ').toUpperCase() : 'N/A'}</p>
                                     </div>
                                     <div>
                                         <span class="text-gray-600 text-sm">Referral Source:</span>
-                                        <p class="font-medium">${applicant.referral_source.replace(/_/g, ' ').toUpperCase()}</p>
+                                        <p class="font-medium">${applicant.referral_source ? applicant.referral_source.replace(/_/g, ' ').toUpperCase() : 'N/A'}</p>
                                     </div>
                                     <div>
                                         <span class="text-gray-600 text-sm">Available Start Date:</span>
@@ -2259,6 +2486,10 @@
                                         <span class="text-gray-600 text-sm">Notice Period:</span>
                                         <p class="font-medium">${applicant.notice_period ? applicant.notice_period.replace(/_/g, ' ') : 'Immediate'}</p>
                                     </div>
+                                    <div>
+                                        <span class="text-gray-600 text-sm">Textile Experience:</span>
+                                        <p class="font-medium">${applicant.textile_experience === 'yes' ? 'Yes' : 'No'}</p>
+                                    </div>
                                 </div>
                             </div>
                             
@@ -2268,20 +2499,24 @@
                                     <div>
                                         <span class="text-gray-600 text-sm">Application Status:</span>
                                         <span class="badge badge-${applicant.status}">
-                                            ${applicant.status.replace(/_/g, ' ').toUpperCase()}
+                                            ${applicant.status ? applicant.status.replace(/_/g, ' ').toUpperCase() : 'N/A'}
                                         </span>
-                                    </div>
-                                    <div>
-                                        <span class="text-gray-600 text-sm">Textile Experience:</span>
-                                        <p class="font-medium">${applicant.textile_experience ? 'Yes' : 'No'}</p>
                                     </div>
                                     <div>
                                         <span class="text-gray-600 text-sm">Date Applied:</span>
                                         <p class="font-medium">${formatDate(applicant.created_at)}</p>
                                     </div>
                                     <div>
-                                        <span class="text-gray-600 text-sm">Government Documents:</span>
-                                        <p class="font-medium">${applicant.sss_file_path || applicant.philhealth_file_path || applicant.pagibig_file_path ? 'Uploaded' : 'Not uploaded'}</p>
+                                        <span class="text-gray-600 text-sm">Last Updated:</span>
+                                        <p class="font-medium">${formatDate(applicant.updated_at)}</p>
+                                    </div>
+                                    <div>
+                                        <span class="text-gray-600 text-sm mb-2 block">Government Documents:</span>
+                                        <div class="document-preview-container">
+                                            ${createDocumentDisplay('SSS Document', applicant.sss_file_path, applicant.sss_file_size, 'SSS')}
+                                            ${createDocumentDisplay('PhilHealth Document', applicant.philhealth_file_path, applicant.philhealth_file_size, 'PhilHealth')}
+                                            ${createDocumentDisplay('Pag-IBIG Document', applicant.pagibig_file_path, applicant.pagibig_file_size, 'Pag-IBIG')}
+                                        </div>
                                     </div>
                                 </div>
                             </div>

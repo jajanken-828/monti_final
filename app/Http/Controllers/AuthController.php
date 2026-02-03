@@ -99,6 +99,14 @@ class AuthController extends Controller
     }
 
     /**
+     * Show application form
+     */
+    public function showApply()
+    {
+        return view('auth.apply'); // This should work if apply.blade.php is in resources/views/
+    }
+
+    /**
      * Redirect user based on role and position
      */
     private function redirectBasedOnRole(User $user)

@@ -1,395 +1,1278 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-
-        <title>Monti Textile ERP System</title>
-
-        <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
-
-        <!-- Styles / Scripts -->
-        @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
-            @vite(['resources/css/app.css', 'resources/js/app.js'])
-        @else
-            <style>
-                /*! tailwindcss v4.0.7 | MIT License | https://tailwindcss.com */@layer theme{:root,:host{--font-sans:'Instrument Sans',ui-sans-serif,system-ui,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";--font-serif:ui-serif,Georgia,Cambria,"Times New Roman",Times,serif;--font-mono:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;--color-red-50:oklch(.971 .013 17.38);--color-red-100:oklch(.936 .032 17.717);--color-red-200:oklch(.885 .062 18.334);--color-red-300:oklch(.808 .114 19.571);--color-red-400:oklch(.704 .191 22.216);--color-red-500:oklch(.637 .237 25.331);--color-red-600:oklch(.577 .245 27.325);--color-red-700:oklch(.505 .213 27.518);--color-red-800:oklch(.444 .177 26.899);--color-red-900:oklch(.396 .141 25.723);--color-red-950:oklch(.258 .092 26.042);--color-orange-50:oklch(.98 .016 73.684);--color-orange-100:oklch(.954 .038 75.164);--color-orange-200:oklch(.901 .076 70.697);--color-orange-300:oklch(.837 .128 66.29);--color-orange-400:oklch(.75 .183 55.934);--color-orange-500:oklch(.705 .213 47.604);--color-orange-600:oklch(.646 .222 41.116);--color-orange-700:oklch(.553 .195 38.402);--color-orange-800:oklch(.47 .157 37.304);--color-orange-900:oklch(.408 .123 38.172);--color-orange-950:oklch(.266 .079 36.259);--color-amber-50:oklch(.987 .022 95.277);--color-amber-100:oklch(.962 .059 95.617);--color-amber-200:oklch(.924 .12 95.746);--color-amber-300:oklch(.879 .169 91.605);--color-amber-400:oklch(.828 .189 84.429);--color-amber-500:oklch(.769 .188 70.08);--color-amber-600:oklch(.666 .179 58.318);--color-amber-700:oklch(.555 .163 48.998);--color-amber-800:oklch(.473 .137 46.201);--color-amber-900:oklch(.414 .112 45.904);--color-amber-950:oklch(.279 .077 45.635);--color-yellow-50:oklch(.987 .026 102.212);--color-yellow-100:oklch(.973 .071 103.193);--color-yellow-200:oklch(.945 .129 101.54);--color-yellow-300:oklch(.905 .182 98.111);--color-yellow-400:oklch(.852 .199 91.936);--color-yellow-500:oklch(.795 .184 86.047);--color-yellow-600:oklch(.681 .162 75.834);--color-yellow-700:oklch(.554 .135 66.442);--color-yellow-800:oklch(.476 .114 61.907);--color-yellow-900:oklch(.421 .095 57.708);--color-yellow-950:oklch(.286 .066 53.813);--color-lime-50:oklch(.986 .031 120.757);--color-lime-100:oklch(.967 .067 122.328);--color-lime-200:oklch(.938 .127 124.321);--color-lime-300:oklch(.897 .196 126.665);--color-lime-400:oklch(.841 .238 128.85);--color-lime-500:oklch(.768 .233 130.85);--color-lime-600:oklch(.648 .2 131.684);--color-lime-700:oklch(.532 .157 131.589);--color-lime-800:oklch(.453 .124 130.933);--color-lime-900:oklch(.405 .101 131.063);--color-lime-950:oklch(.274 .072 132.109);--color-green-50:oklch(.982 .018 155.826);--color-green-100:oklch(.962 .044 156.743);--color-green-200:oklch(.925 .084 155.995);--color-green-300:oklch(.871 .15 154.449);--color-green-400:oklch(.792 .209 151.711);--color-green-500:oklch(.723 .219 149.579);--color-green-600:oklch(.627 .194 149.214);--color-green-700:oklch(.527 .154 150.069);--color-green-800:oklch(.448 .119 151.328);--color-green-900:oklch(.393 .095 152.535);--color-green-950:oklch(.266 .065 152.934);--color-emerald-50:oklch(.979 .021 166.113);--color-emerald-100:oklch(.95 .052 163.051);--color-emerald-200:oklch(.905 .093 164.15);--color-emerald-300:oklch(.845 .143 164.978);--color-emerald-400:oklch(.765 .177 163.223);--color-emerald-500:oklch(.696 .17 162.48);--color-emerald-600:oklch(.596 .145 163.225);--color-emerald-700:oklch(.508 .118 165.612);--color-emerald-800:oklch(.432 .095 166.913);--color-emerald-900:oklch(.378 .077 168.94);--color-emerald-950:oklch(.262 .051 172.552);--color-teal-50:oklch(.984 .014 180.72);--color-teal-100:oklch(.953 .051 180.801);--color-teal-200:oklch(.91 .096 180.426);--color-teal-300:oklch(.855 .138 181.071);--color-teal-400:oklch(.777 .152 181.912);--color-teal-500:oklch(.704 .14 182.503);--color-teal-600:oklch(.6 .118 184.704);--color-teal-700:oklch(.511 .096 186.391);--color-teal-800:oklch(.437 .078 188.216);--color-teal-900:oklch(.386 .063 188.416);--color-teal-950:oklch(.277 .046 192.524);--color-cyan-50:oklch(.984 .019 200.873);--color-cyan-100:oklch(.956 .045 203.388);--color-cyan-200:oklch(.917 .08 205.041);--color-cyan-300:oklch(.865 .127 207.078);--color-cyan-400:oklch(.789 .154 211.53);--color-cyan-500:oklch(.715 .143 215.221);--color-cyan-600:oklch(.609 .126 221.723);--color-cyan-700:oklch(.52 .105 223.128);--color-cyan-800:oklch(.45 .085 224.283);--color-cyan-900:oklch(.398 .07 227.392);--color-cyan-950:oklch(.302 .056 229.695);--color-sky-50:oklch(.977 .013 236.62);--color-sky-100:oklch(.951 .026 236.824);--color-sky-200:oklch(.901 .058 230.902);--color-sky-300:oklch(.828 .111 230.318);--color-sky-400:oklch(.746 .16 232.661);--color-sky-500:oklch(.685 .169 237.323);--color-sky-600:oklch(.588 .158 241.966);--color-sky-700:oklch(.5 .134 242.749);--color-sky-800:oklch(.443 .11 240.79);--color-sky-900:oklch(.391 .09 240.876);--color-sky-950:oklch(.293 .066 243.157);--color-blue-50:oklch(.97 .014 254.604);--color-blue-100:oklch(.932 .032 255.585);--color-blue-200:oklch(.882 .059 254.128);--color-blue-300:oklch(.809 .105 251.813);--color-blue-400:oklch(.707 .165 254.624);--color-blue-500:oklch(.623 .214 259.815);--color-blue-600:oklch(.546 .245 262.881);--color-blue-700:oklch(.488 .243 264.376);--color-blue-800:oklch(.424 .199 265.638);--color-blue-900:oklch(.379 .146 265.522);--color-blue-950:oklch(.282 .091 267.935);--color-indigo-50:oklch(.962 .018 272.314);--color-indigo-100:oklch(.93 .034 272.788);--color-indigo-200:oklch(.87 .065 274.039);--color-indigo-300:oklch(.785 .115 274.713);--color-indigo-400:oklch(.673 .182 276.935);--color-indigo-500:oklch(.585 .233 277.117);--color-indigo-600:oklch(.511 .262 276.966);--color-indigo-700:oklch(.457 .24 277.023);--color-indigo-800:oklch(.398 .195 277.366);--color-indigo-900:oklch(.359 .144 278.697);--color-indigo-950:oklch(.257 .09 281.288);--color-violet-50:oklch(.969 .016 293.756);--color-violet-100:oklch(.943 .029 294.588);--color-violet-200:oklch(.894 .057 293.283);--color-violet-300:oklch(.811 .111 293.571);--color-violet-400:oklch(.702 .183 293.541);--color-violet-500:oklch(.606 .250 292.717);--color-violet-600:oklch(.541 .281 293.009);--color-violet-700:oklch(.491 .27 292.581);--color-violet-800:oklch(.432 .232 292.759);--color-violet-900:oklch(.38 .189 293.745);--color-violet-950:oklch(.283 .141 291.089);--color-purple-50:oklch(.977 .014 308.299);--color-purple-100:oklch(.946 .033 307.174);--color-purple-200:oklch(.902 .063 306.703);--color-purple-300:oklch(.827 .119 306.383);--color-purple-400:oklch(.714 .203 305.504);--color-purple-500:oklch(.627 .265 303.9);--color-purple-600:oklch(.558 .288 302.321);--color-purple-700:oklch(.496 .265 301.924);--color-purple-800:oklch(.438 .218 303.724);--color-purple-900:oklch(.381 .176 304.987);--color-purple-950:oklch(.291 .149 302.717);--color-fuchsia-50:oklch(.977 .017 320.058);--color-fuchsia-100:oklch(.952 .037 318.852);--color-fuchsia-200:oklch(.903 .076 319.62);--color-fuchsia-300:oklch(.833 .145 321.434);--color-fuchsia-400:oklch(.74 .238 322.16);--color-fuchsia-500:oklch(.667 .295 322.15);--color-fuchsia-600:oklch(.591 .293 322.896);--color-fuchsia-700:oklch(.518 .253 323.949);--color-fuchsia-800:oklch(.452 .211 324.591);--color-fuchsia-900:oklch(.401 .17 325.612);--color-fuchsia-950:oklch(.293 .136 325.661);--color-pink-50:oklch(.971 .014 343.198);--color-pink-100:oklch(.948 .028 342.258);--color-pink-200:oklch(.899 .061 343.231);--color-pink-300:oklch(.823 .12 346.018);--color-pink-400:oklch(.718 .202 349.761);--color-pink-500:oklch(.656 .241 354.308);--color-pink-600:oklch(.592 .249 .584);--color-pink-700:oklch(.525 .223 3.958);--color-pink-800:oklch(.459 .187 3.815);--color-pink-900:oklch(.408 .153 2.432);--color-pink-950:oklch(.284 .109 3.907);--color-rose-50:oklch(.969 .015 12.422);--color-rose-100:oklch(.941 .03 12.58);--color-rose-200:oklch(.892 .058 10.001);--color-rose-300:oklch(.81 .117 11.638);--color-rose-400:oklch(.712 .194 13.428);--color-rose-500:oklch(.645 .246 16.439);--color-rose-600:oklch(.586 .253 17.585);--color-rose-700:oklch(.514 .222 16.935);--color-rose-800:oklch(.455 .188 13.697);--color-rose-900:oklch(.41 .159 10.272);--color-rose-950:oklch(.271 .105 12.094);--color-slate-50:oklch(.984 .003 247.858);--color-slate-100:oklch(.968 .007 247.896);--color-slate-200:oklch(.929 .013 255.508);--color-slate-300:oklch(.869 .022 252.894);--color-slate-400:oklch(.704 .04 256.788);--color-slate-500:oklch(.554 .046 257.417);--color-slate-600:oklch(.446 .043 257.281);--color-slate-700:oklch(.372 .044 257.287);--color-slate-800:oklch(.279 .041 260.031);--color-slate-900:oklch(.208 .042 265.755);--color-slate-950:oklch(.129 .042 264.695);--color-gray-50:oklch(.985 .002 247.839);--color-gray-100:oklch(.967 .003 264.542);--color-gray-200:oklch(.928 .006 264.531);--color-gray-300:oklch(.872 .01 258.338);--color-gray-400:oklch(.707 .022 261.325);--color-gray-500:oklch(.551 .027 264.364);--color-gray-600:oklch(.446 .03 256.802);--color-gray-700:oklch(.373 .034 259.733);--color-gray-800:oklch(.278 .033 256.848);--color-gray-900:oklch(.21 .034 264.665);--color-gray-950:oklch(.13 .028 261.692);--color-zinc-50:oklch(.985 0 0);--color-zinc-100:oklch(.967 .001 286.375);--color-zinc-200:oklch(.92 .004 286.32);--color-zinc-300:oklch(.871 .006 286.286);--color-zinc-400:oklch(.705 .015 286.067);--color-zinc-500:oklch(.552 .016 285.938);--color-zinc-600:oklch(.442 .017 285.786);--color-zinc-700:oklch(.37 .013 285.805);--color-zinc-800:oklch(.274 .006 286.033);--color-zinc-900:oklch(.21 .006 285.885);--color-zinc-950:oklch(.141 .005 285.823);--color-neutral-50:oklch(.985 0 0);--color-neutral-100:oklch(.97 0 0);--color-neutral-200:oklch(.922 0 0);--color-neutral-300:oklch(.87 0 0);--color-neutral-400:oklch(.708 0 0);--color-neutral-500:oklch(.556 0 0);--color-neutral-600:oklch(.439 0 0);--color-neutral-700:oklch(.371 0 0);--color-neutral-800:oklch(.269 0 0);--color-neutral-900:oklch(.205 0 0);--color-neutral-950:oklch(.145 0 0);--color-stone-50:oklch(.985 .001 106.423);--color-stone-100:oklch(.97 .001 106.424);--color-stone-200:oklch(.923 .003 48.717);--color-stone-300:oklch(.869 .005 56.366);--color-stone-400:oklch(.709 .01 56.259);--color-stone-500:oklch(.553 .013 58.071);--color-stone-600:oklch(.444 .011 73.639);--color-stone-700:oklch(.374 .01 67.558);--color-stone-800:oklch(.268 .007 34.298);--color-stone-900:oklch(.216 .006 56.043);--color-stone-950:oklch(.147 .004 49.25);--color-black:#000;--color-white:#fff;--spacing:.25rem;--breakpoint-sm:40rem;--breakpoint-md:48rem;--breakpoint-lg:64rem;--breakpoint-xl:80rem;--breakpoint-2xl:96rem;--container-3xs:16rem;--container-2xs:18rem;--container-xs:20rem;--container-sm:24rem;--container-md:28rem;--container-lg:32rem;--container-xl:36rem;--container-2xl:42rem;--container-3xl:48rem;--container-4xl:56rem;--container-5xl:64rem;--container-6xl:72rem;--container-7xl:80rem;--text-xs:.75rem;--text-xs--line-height:calc(1/.75);--text-sm:.875rem;--text-sm--line-height:calc(1.25/.875);--text-base:1rem;--text-base--line-height: 1.5 ;--text-lg:1.125rem;--text-lg--line-height:calc(1.75/1.125);--text-xl:1.25rem;--text-xl--line-height:calc(1.75/1.25);--text-2xl:1.5rem;--text-2xl--line-height:calc(2/1.5);--text-3xl:1.875rem;--text-3xl--line-height: 1.2 ;--text-4xl:2.25rem;--text-4xl--line-height:calc(2.5/2.25);--text-5xl:3rem;--text-5xl--line-height:1;--text-6xl:3.75rem;--text-6xl--line-height:1;--text-7xl:4.5rem;--text-7xl--line-height:1;--text-8xl:6rem;--text-8xl--line-height:1;--text-9xl:8rem;--text-9xl--line-height:1;--font-weight-thin:100;--font-weight-extralight:200;--font-weight-light:300;--font-weight-normal:400;--font-weight-medium:500;--font-weight-semibold:600;--font-weight-bold:700;--font-weight-extrabold:800;--font-weight-black:900;--tracking-tighter:-.05em;--tracking-tight:-.025em;--tracking-normal:0em;--tracking-wide:.025em;--tracking-wider:.05em;--tracking-widest:.1em;--leading-tight:1.25;--leading-snug:1.375;--leading-normal:1.5;--leading-relaxed:1.625;--leading-loose:2;--radius-xs:.125rem;--radius-sm:.25rem;--radius-md:.375rem;--radius-lg:.5rem;--radius-xl:.75rem;--radius-2xl:1rem;--radius-3xl:1.5rem;--radius-4xl:2rem;--shadow-2xs:0 1px #0000000d;--shadow-xs:0 1px 2px 0 #0000000d;--shadow-sm:0 1px 3px 0 #0000001a,0 1px 2px -1px #0000001a;--shadow-md:0 4px 6px -1px #0000001a,0 2px 4px -2px #0000001a;--shadow-lg:0 10px 15px -3px #0000001a,0 4px 6px -4px #0000001a;--shadow-xl:0 20px 25px -5px #0000001a,0 8px 10px -6px #0000001a;--shadow-2xl:0 25px 50px -12px #00000040;--inset-shadow-2xs:inset 0 1px #0000000d;--inset-shadow-xs:inset 0 1px 1px #0000000d;--inset-shadow-sm:inset 0 2px 4px #0000000d;--drop-shadow-xs:0 1px 1px #0000000d;--drop-shadow-sm:0 1px 2px #00000026;--drop-shadow-md:0 3px 3px #0000001f;--drop-shadow-lg:0 4px 4px #00000026;--drop-shadow-xl:0 9px 7px #0000001a;--drop-shadow-2xl:0 25px 25px #00000026;--ease-in:cubic-bezier(.4,0,1,1);--ease-out:cubic-bezier(0,0,.2,1);--ease-in-out:cubic-bezier(.4,0,.2,1);--animate-spin:spin 1s linear infinite;--animate-ping:ping 1s cubic-bezier(0,0,.2,1)infinite;--animate-pulse:pulse 2s cubic-bezier(.4,0,.6,1)infinite;--animate-bounce:bounce 1s infinite;--blur-xs:4px;--blur-sm:8px;--blur-md:12px;--blur-lg:16px;--blur-xl:24px;--blur-2xl:40px;--blur-3xl:64px;--perspective-dramatic:100px;--perspective-near:300px;--perspective-normal:500px;--perspective-midrange:800px;--perspective-distant:1200px;--aspect-video:16/9;--default-transition-duration:.15s;--default-transition-timing-function:cubic-bezier(.4,0,.2,1);--default-font-family:var(--font-sans);--default-font-feature-settings:var(--font-sans--font-feature-settings);--default-font-variation-settings:var(--font-sans--font-variation-settings);--default-mono-font-family:var(--font-mono);--default-mono-font-feature-settings:var(--font-mono--font-feature-settings);--default-mono-font-variation-settings:var(--font-mono--font-variation-settings)}}@layer base{*,:after,:before,::backdrop{box-sizing:border-box;border:0 solid;margin:0;padding:0}::file-selector-button{box-sizing:border-box;border:0 solid;margin:0;padding:0}html,:host{-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;line-height:1.5;font-family:var(--default-font-family,ui-sans-serif,system-ui,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji");font-feature-settings:var(--default-font-feature-settings,normal);font-variation-settings:var(--default-font-variation-settings,normal);-webkit-tap-highlight-color:transparent}body{line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;-webkit-text-decoration:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,samp,pre{font-family:var(--default-mono-font-family,ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace);font-feature-settings:var(--default-mono-font-feature-settings,normal);font-variation-settings:var(--default-mono-font-variation-settings,normal);font-size:1em}small{font-size:80%}sub,sup{vertical-align:baseline;font-size:75%;line-height:0;position:relative}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}:-moz-focusring{outline:auto}progress{vertical-align:baseline}summary{display:list-item}ol,ul,menu{list-style:none}img,svg,video,canvas,audio,iframe,embed,object{vertical-align:middle;display:block}img,video{max-width:100%;height:auto}button,input,select,optgroup,textarea{font:inherit;font-feature-settings:inherit;font-variation-settings:inherit;letter-spacing:inherit;color:inherit;opacity:1;background-color:#0000;border-radius:0}::file-selector-button{font:inherit;font-feature-settings:inherit;font-variation-settings:inherit;letter-spacing:inherit;color:inherit;opacity:1;background-color:#0000;border-radius:0}:where(select:is([multiple],[size])) optgroup{font-weight:bolder}:where(select:is([multiple],[size])) optgroup option{padding-inline-start:20px}::file-selector-button{margin-inline-end:4px}::placeholder{opacity:1;color:color-mix(in oklab,currentColor 50%,transparent)}textarea{resize:vertical}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-date-and-time-value{min-height:1lh;text-align:inherit}::-webkit-datetime-edit{display:inline-flex}::-webkit-datetime-edit-fields-wrapper{padding:0}::-webkit-datetime-edit{padding-block:0}::-webkit-datetime-edit-year-field{padding-block:0}::-webkit-datetime-edit-month-field{padding-block:0}::-webkit-datetime-edit-day-field{padding-block:0}::-webkit-datetime-edit-hour-field{padding-block:0}::-webkit-datetime-edit-minute-field{padding-block:0}::-webkit-datetime-edit-second-field{padding-block:0}::-webkit-datetime-edit-millisecond-field{padding-block:0}::-webkit-datetime-edit-meridiem-field{padding-block:0}:-moz-ui-invalid{box-shadow:none}button,input:where([type=button],[type=reset],[type=submit]){-webkit-appearance:button;-moz-appearance:button;appearance:button}::file-selector-button{-webkit-appearance:button;-moz-appearance:button;appearance:button}::-webkit-inner-spin-button{height:auto}::-webkit-outer-spin-button{height:auto}[hidden]:where(:not([hidden=until-found])){display:none!important}}@layer components;@layer utilities{.absolute{position:absolute}.relative{position:relative}.static{position:static}.inset-0{inset:calc(var(--spacing)*0)}.-mt-\[4\.9rem\]{margin-top:-4.9rem}.-mb-px{margin-bottom:-1px}.mb-1{margin-bottom:calc(var(--spacing)*1)}.mb-2{margin-bottom:calc(var(--spacing)*2)}.mb-4{margin-bottom:calc(var(--spacing)*4)}.mb-6{margin-bottom:calc(var(--spacing)*6)}.-ml-8{margin-left:calc(var(--spacing)*-8)}.flex{display:flex}.hidden{display:none}.inline-block{display:inline-block}.inline-flex{display:inline-flex}.table{display:table}.aspect-\[335\/376\]{aspect-ratio:335/376}.h-1{height:calc(var(--spacing)*1)}.h-1\.5{height:calc(var(--spacing)*1.5)}.h-2{height:calc(var(--spacing)*2)}.h-2\.5{height:calc(var(--spacing)*2.5)}.h-3{height:calc(var(--spacing)*3)}.h-3\.5{height:calc(var(--spacing)*3.5)}.h-14{height:calc(var(--spacing)*14)}.h-14\.5{height:calc(var(--spacing)*14.5)}.min-h-screen{min-height:100vh}.w-1{width:calc(var(--spacing)*1)}.w-1\.5{width:calc(var(--spacing)*1.5)}.w-2{width:calc(var(--spacing)*2)}.w-2\.5{width:calc(var(--spacing)*2.5)}.w-3{width:calc(var(--spacing)*3)}.w-3\.5{width:calc(var(--spacing)*3.5)}.w-\[448px\]{width:448px}.w-full{width:100%}.max-w-\[335px\]{max-width:335px}.max-w-none{max-width:none}.flex-1{flex:1}.shrink-0{flex-shrink:0}.translate-y-0{--tw-translate-y:calc(var(--spacing)*0);translate:var(--tw-translate-x)var(--tw-translate-y)}.transform{transform:var(--tw-rotate-x)var(--tw-rotate-y)var(--tw-rotate-z)var(--tw-skew-x)var(--tw-skew-y)}.flex-col{flex-direction:column}.flex-col-reverse{flex-direction:column-reverse}.items-center{align-items:center}.justify-center{justify-content:center}.justify-end{justify-content:flex-end}.gap-3{gap:calc(var(--spacing)*3)}.gap-4{gap:calc(var(--spacing)*4)}:where(.space-x-1>:not(:last-child)){--tw-space-x-reverse:0;margin-inline-start:calc(calc(var(--spacing)*1)*var(--tw-space-x-reverse));margin-inline-end:calc(calc(var(--spacing)*1)*calc(1 - var(--tw-space-x-reverse)))}.overflow-hidden{overflow:hidden}.rounded-full{border-radius:3.40282e38px}.rounded-sm{border-radius:var(--radius-sm)}.rounded-t-lg{border-top-left-radius:var(--radius-lg);border-top-right-radius:var(--radius-lg)}.rounded-br-lg{border-bottom-right-radius:var(--radius-lg)}.rounded-bl-lg{border-bottom-left-radius:var(--radius-lg)}.border{border-style:var(--tw-border-style);border-width:1px}.border-\[\#19140035\]{border-color:#19140035}.border-\[\#e3e3e0\]{border-color:#e3e3e0}.border-black{border-color:var(--color-black)}.border-transparent{border-color:#0000}.bg-\[\#1b1b18\]{background-color:#1b1b18}.bg-\[\#FDFDFC\]{background-color:#fdfdfc}.bg-\[\#dbdbd7\]{background-color:#dbdbd7}.bg-\[\#fff2f2\]{background-color:#fff2f2}.bg-white{background-color:var(--color-white)}.p-6{padding:calc(var(--spacing)*6)}.px-5{padding-inline:calc(var(--spacing)*5)}.py-1{padding-block:calc(var(--spacing)*1)}.py-1\.5{padding-block:calc(var(--spacing)*1.5)}.py-2{padding-block:calc(var(--spacing)*2)}.pb-12{padding-bottom:calc(var(--spacing)*12)}.text-sm{font-size:var(--text-sm);line-height:var(--tw-leading,var(--text-sm--line-height))}.text-\[13px\]{font-size:13px}.leading-\[20px\]{--tw-leading:20px;line-height:20px}.leading-normal{--tw-leading:var(--leading-normal);line-height:var(--leading-normal)}.font-medium{--tw-font-weight:var(--font-weight-medium);font-weight:var(--font-weight-medium)}.text-\[\#1b1b18\]{color:#1b1b18}.text-\[\#706f6c\]{color:#706f6c}.text-\[\#F53003\],.text-\[\#f53003\]{color:#f53003}.text-white{color:var(--color-white)}.underline{text-decoration-line:underline}.underline-offset-4{text-underline-offset:4px}.opacity-100{opacity:1}.shadow-\[0px_0px_1px_0px_rgba\(0\,0\,0\,0\.03\)\,0px_1px_2px_0px_rgba\(0\,0\,0\,0\.06\)\]{--tw-shadow:0px 0px 1px 0px var(--tw-shadow-color,#00000008),0px 1px 2px 0px var(--tw-shadow-color,#0000000f);box-shadow:var(--tw-inset-shadow),var(--tw-inset-ring-shadow),var(--tw-ring-offset-shadow),var(--tw-ring-shadow),var(--tw-shadow)}.shadow-\[inset_0px_0px_0px_1px_rgba\(26\,26\,0\,0\.16\)\]{--tw-shadow:inset 0px 0px 0px 1px var(--tw-shadow-color,#1a1a0029);box-shadow:var(--tw-inset-shadow),var(--tw-inset-ring-shadow),var(--tw-ring-offset-shadow),var(--tw-ring-shadow),var(--tw-shadow)}.\!filter{filter:var(--tw-blur,)var(--tw-brightness,)var(--tw-contrast,)var(--tw-grayscale,)var(--tw-hue-rotate,)var(--tw-invert,)var(--tw-saturate,)var(--tw-sepia,)var(--tw-drop-shadow,)!important}.filter{filter:var(--tw-blur,)var(--tw-brightness,)var(--tw-contrast,)var(--tw-grayscale,)var(--tw-hue-rotate,)var(--tw-invert,)var(--tw-saturate,)var(--tw-sepia,)var(--tw-drop-shadow,)}.transition-all{transition-property:all;transition-timing-function:var(--tw-ease,var(--default-transition-timing-function));transition-duration:var(--tw-duration,var(--default-transition-duration))}.transition-opacity{transition-property:opacity;transition-timing-function:var(--tw-ease,var(--default-transition-timing-function));transition-duration:var(--tw-duration,var(--default-transition-duration))}.delay-300{transition-delay:.3s}.duration-750{--tw-duration:.75s;transition-duration:.75s}.not-has-\[nav\]\:hidden:not(:has(:is(nav))){display:none}.before\:absolute:before{content:var(--tw-content);position:absolute}.before\:top-0:before{content:var(--tw-content);top:calc(var(--spacing)*0)}.before\:top-1\/2:before{content:var(--tw-content);top:50%}.before\:bottom-0:before{content:var(--tw-content);bottom:calc(var(--spacing)*0)}.before\:bottom-1\/2:before{content:var(--tw-content);bottom:50%}.before\:left-\[0\.4rem\]:before{content:var(--tw-content);left:.4rem}.before\:border-l:before{content:var(--tw-content);border-left-style:var(--tw-border-style);border-left-width:1px}.before\:border-\[\#e3e3e0\]:before{content:var(--tw-content);border-color:#e3e3e0}@media (hover:hover){.hover\:border-\[\#1915014a\]:hover{border-color:#1915014a}.hover\:border-\[\#19140035\]:hover{border-color:#19140035}.hover\:border-black:hover{border-color:var(--color-black)}.hover\:bg-black:hover{background-color:var(--color-black)}}@media (width>=64rem){.lg\:-mt-\[6\.6rem\]{margin-top:-6.6rem}.lg\:mb-0{margin-bottom:calc(var(--spacing)*0)}.lg\:mb-6{margin-bottom:calc(var(--spacing)*6)}.lg\:-ml-px{margin-left:-1px}.lg\:ml-0{margin-left:calc(var(--spacing)*0)}.lg\:block{display:block}.lg\:aspect-auto{aspect-ratio:auto}.lg\:w-\[438px\]{width:438px}.lg\:max-w-4xl{max-width:var(--container-4xl)}.lg\:grow{flex-grow:1}.lg\:flex-row{flex-direction:row}.lg\:justify-center{justify-content:center}.lg\:rounded-t-none{border-top-left-radius:0;border-top-right-radius:0}.lg\:rounded-tl-lg{border-top-left-radius:var(--radius-lg)}.lg\:rounded-r-lg{border-top-right-radius:var(--radius-lg);border-bottom-right-radius:var(--radius-lg)}.lg\:rounded-br-none{border-bottom-right-radius:0}.lg\:p-8{padding:calc(var(--spacing)*8)}.lg\:p-20{padding:calc(var(--spacing)*20)}}@media (prefers-color-scheme:dark){.dark\:block{display:block}.dark\:hidden{display:none}.dark\:border-\[\#3E3E3A\]{border-color:#3e3e3a}.dark\:border-\[\#eeeeec\]{border-color:#eeeeec}.dark\:bg-\[\#0a0a0a\]{background-color:#0a0a0a}.dark\:bg-\[\#1D0002\]{background-color:#1d0002}.dark\:bg-\[\#3E3E3A\]{background-color:#3e3e3a}.dark\:bg-\[\#161615\]{background-color:#161615}.dark\:bg-\[\#eeeeec\]{background-color:#eeeeec}.dark\:text-\[\#1C1C1A\]{color:#1c1c1a}.dark\:text-\[\#A1A09A\]{color:#a1a09a}.dark\:text-\[\#EDEDEC\]{color:#ededec}.dark\:text-\[\#F61500\]{color:#f61500}.dark\:text-\[\#FF4433\]{color:#f43}.dark\:shadow-\[inset_0px_0px_0px_1px_\#fffaed2d\]{--tw-shadow:inset 0px 0px 0px 1px var(--tw-shadow-color,#fffaed2d);box-shadow:var(--tw-inset-shadow),var(--tw-inset-ring-shadow),var(--tw-ring-offset-shadow),var(--tw-ring-shadow),var(--tw-shadow)}.dark\:before\:border-\[\#3E3E3A\]:before{content:var(--tw-content);border-color:#3e3e3a}@media (hover:hover){.dark\:hover\:border-\[\#3E3E3A\]:hover{border-color:#3e3e3a}.dark\:hover\:border-\[\#62605b\]:hover{border-color:#62605b}.dark\:hover\:border-white:hover{border-color:var(--color-white)}.dark\:hover\:bg-white:hover{background-color:var(--color-white)}}}@starting-style{.starting\:translate-y-4{--tw-translate-y:calc(var(--spacing)*4);translate:var(--tw-translate-x)var(--tw-translate-y)}}@starting-style{.starting\:translate-y-6{--tw-translate-y:calc(var(--spacing)*6);translate:var(--tw-translate-x)var(--tw-translate-y)}}@starting-style{.starting\:opacity-0{opacity:0}}}@keyframes spin{to{transform:rotate(360deg)}}@keyframes ping{75%,to{opacity:0;transform:scale(2)}}@keyframes pulse{50%{opacity:.5}}@keyframes bounce{0%,to{animation-timing-function:cubic-bezier(.8,0,1,1);transform:translateY(-25%)}50%{animation-timing-function:cubic-bezier(0,0,.2,1);transform:none}}@property --tw-translate-x{syntax:"*";inherits:false;initial-value:0}@property --tw-translate-y{syntax:"*";inherits:false;initial-value:0}@property --tw-translate-z{syntax:"*";inherits:false;initial-value:0}@property --tw-rotate-x{syntax:"*";inherits:false;initial-value:rotateX(0)}@property --tw-rotate-y{syntax:"*";inherits:false;initial-value:rotateY(0)}@property --tw-rotate-z{syntax:"*";inherits:false;initial-value:rotateZ(0)}@property --tw-skew-x{syntax:"*";inherits:false;initial-value:skewX(0)}@property --tw-skew-y{syntax:"*";inherits:false;initial-value:skewY(0)}@property --tw-space-x-reverse{syntax:"*";inherits:false;initial-value:0}@property --tw-border-style{syntax:"*";inherits:false;initial-value:solid}@property --tw-leading{syntax:"*";inherits:false}@property --tw-font-weight{syntax:"*";inherits:false}@property --tw-shadow{syntax:"*";inherits:false;initial-value:0 0 #0000}@property --tw-shadow-color{syntax:"*";inherits:false}@property --tw-inset-shadow{syntax:"*";inherits:false;initial-value:0 0 #0000}@property --tw-inset-shadow-color{syntax:"*";inherits:false}@property --tw-ring-color{syntax:"*";inherits:false}@property --tw-ring-shadow{syntax:"*";inherits:false;initial-value:0 0 #0000}@property --tw-inset-ring-color{syntax:"*";inherits:false}@property --tw-inset-ring-shadow{syntax:"*";inherits:false;initial-value:0 0 #0000}@property --tw-ring-inset{syntax:"*";inherits:false}@property --tw-ring-offset-width{syntax:"<length>";inherits:false;initial-value:0}@property --tw-ring-offset-color{syntax:"*";inherits:false;initial-value:#fff}@property --tw-ring-offset-shadow{syntax:"*";inherits:false;initial-value:0 0 #0000}@property --tw-blur{syntax:"*";inherits:false}@property --tw-brightness{syntax:"*";inherits:false}@property --tw-contrast{syntax:"*";inherits:false}@property --tw-grayscale{syntax:"*";inherits:false}@property --tw-hue-rotate{syntax:"*";inherits:false}@property --tw-invert{syntax:"*";inherits:false}@property --tw-opacity{syntax:"*";inherits:false}@property --tw-saturate{syntax:"*";inherits:false}@property --tw-sepia{syntax:"*";inherits:false}@property --tw-drop-shadow{syntax:"*";inherits:false}@property --tw-duration{syntax:"*";inherits:false}@property --tw-content{syntax:"*";inherits:false;initial-value:""}
-            </style>
-        @endif
-
-        <!-- Custom color overrides for blue/yellow theme -->
-        <style>
-            .bg-blue-theme { background-color: #2563eb; }
-            .bg-yellow-theme { background-color: #fbbf24; }
-            .text-blue-theme { color: #2563eb; }
-            .text-yellow-theme { color: #fbbf24; }
-            .border-blue-theme { border-color: #2563eb; }
-            .border-yellow-theme { border-color: #fbbf24; }
-            .hover\:bg-blue-theme:hover { background-color: #1d4ed8; }
-            .hover\:bg-yellow-theme:hover { background-color: #f59e0b; }
-            .dark .bg-blue-theme { background-color: #1e40af; }
-            .dark .bg-yellow-theme { background-color: #d97706; }
-            .dark .text-blue-theme { color: #60a5fa; }
-            .dark .text-yellow-theme { color: #fbbf24; }
-            
-            /* Loading overlay styles */
-            #loading-overlay {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                z-index: 9999;
-                transition: opacity 0.5s ease;
-            }
-            
-            #loading-overlay.hidden {
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Monti Textile - Premium Textile Solutions with modern designs and quality materials">
+    <title>Monti Textile | Modern Textile Solutions</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #2563EB;
+            --secondary: #F59E0B;
+            --accent: #60A5FA;
+            --accent2: #FBBF24;
+            --light: #FFFFFF;
+            --light-gray: #F8FAFC;
+            --dark: #1E293B;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            overflow-x: hidden;
+            background-color: var(--light);
+            color: var(--dark);
+        }
+        
+        h1, h2, h3, h4, .logo {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 800;
+        }
+        
+        /* Enhanced Preloader */
+        #preloader {
+            transition: opacity 0.8s ease-in-out, visibility 0.8s ease-in-out;
+        }
+        
+        .loader-circle {
+            animation: loader-rotate 2s linear infinite;
+        }
+        
+        @keyframes loader-rotate {
+            0% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(180deg) scale(1.1); }
+            100% { transform: rotate(360deg) scale(1); }
+        }
+        
+        .loader-pulse {
+            animation: loader-pulse 1.5s ease-in-out infinite;
+        }
+        
+        @keyframes loader-pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(0.95); }
+        }
+        
+        /* Particle Background */
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+        
+        .particle {
+            position: absolute;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            animation: float-particle 20s infinite linear;
+            filter: blur(2px);
+        }
+        
+        /* Custom Animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            33% { transform: translateY(-25px) rotate(8deg); }
+            66% { transform: translateY(15px) rotate(-8deg); }
+        }
+        
+        @keyframes float-particle {
+            0% { transform: translateY(0) translateX(0); opacity: 0; }
+            10% { opacity: 0.8; }
+            90% { opacity: 0.8; }
+            100% { transform: translateY(-100vh) translateX(100px); opacity: 0; }
+        }
+        
+        @keyframes fadeInUp {
+            from {
                 opacity: 0;
-                pointer-events: none;
+                transform: translateY(60px) scale(0.95);
             }
-            
-            .loading-spinner {
-                width: 70px;
-                height: 70px;
-                border: 5px solid rgba(255, 255, 255, 0.3);
-                border-radius: 50%;
-                border-top-color: #fbbf24;
-                animation: spin 1s linear infinite;
-                margin-bottom: 20px;
-            }
-            
-            .loading-text {
-                color: white;
-                font-size: 1.2rem;
-                font-weight: 500;
-                margin-top: 15px;
-                text-align: center;
-            }
-            
-            .loading-subtext {
-                color: rgba(255, 255, 255, 0.8);
-                font-size: 0.9rem;
-                margin-top: 5px;
-                text-align: center;
-            }
-            
-            .loading-progress {
-                width: 200px;
-                height: 4px;
-                background: rgba(255, 255, 255, 0.2);
-                border-radius: 2px;
-                margin-top: 20px;
-                overflow: hidden;
-            }
-            
-            .loading-progress-bar {
-                height: 100%;
-                width: 0%;
-                background: #fbbf24;
-                border-radius: 2px;
-                animation: progress 3s linear forwards;
-            }
-            
-            @keyframes spin {
-                0% { transform: rotate(0deg); }
-                100% { transform: rotate(360deg); }
-            }
-            
-            @keyframes progress {
-                0% { width: 0%; }
-                100% { width: 100%; }
-            }
-            
-            .content-wrapper {
-                opacity: 0;
-                transition: opacity 0.5s ease;
-            }
-            
-            .content-wrapper.loaded {
+            to {
                 opacity: 1;
+                transform: translateY(0) scale(1);
             }
-        </style>
-    </head>
-    <body class="bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200">
-        <!-- Loading Overlay -->
-        <div id="loading-overlay">
-            <div class="loading-spinner"></div>
-            <div class="flex flex-col items-center">
-                <div class="w-16 h-16 rounded-full bg-white flex items-center justify-center mb-4">
-                    <span class="text-blue-theme font-bold text-2xl">MT</span>
+        }
+        
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-120px) skewX(10deg);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0) skewX(0);
+            }
+        }
+        
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(120px) skewX(-10deg);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0) skewX(0);
+            }
+        }
+        
+        @keyframes pulse-glow {
+            0%, 100% { 
+                box-shadow: 0 0 15px rgba(37, 99, 235, 0.6),
+                           0 0 30px rgba(37, 99, 235, 0.3),
+                           inset 0 0 20px rgba(245, 158, 11, 0.2); 
+            }
+            50% { 
+                box-shadow: 0 0 25px rgba(37, 99, 235, 0.9),
+                           0 0 50px rgba(37, 99, 235, 0.5),
+                           inset 0 0 30px rgba(245, 158, 11, 0.4); 
+            }
+        }
+        
+        @keyframes shimmer {
+            0% { background-position: -1000px 0; }
+            100% { background-position: 1000px 0; }
+        }
+        
+        @keyframes spin-slow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        @keyframes wave {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            25% { transform: translateY(-20px) rotate(8deg); }
+            75% { transform: translateY(15px) rotate(-8deg); }
+        }
+        
+        @keyframes neon-glow {
+            0%, 100% { 
+                text-shadow: 0 0 10px rgba(37, 99, 235, 0.8),
+                           0 0 20px rgba(37, 99, 235, 0.6),
+                           0 0 30px rgba(245, 158, 11, 0.4);
+            }
+            50% { 
+                text-shadow: 0 0 20px rgba(37, 99, 235, 1),
+                           0 0 30px rgba(37, 99, 235, 0.8),
+                           0 0 40px rgba(245, 158, 11, 0.6);
+            }
+        }
+        
+        @keyframes gradient-shift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        @keyframes morph {
+            0%, 100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+            33% { border-radius: 40% 60% 70% 30% / 40% 70% 30% 60%; }
+            66% { border-radius: 70% 30% 50% 50% / 30% 50% 50% 70%; }
+        }
+        
+        @keyframes ripple {
+            0% { transform: scale(0); opacity: 1; }
+            100% { transform: scale(4); opacity: 0; }
+        }
+        
+        @keyframes bounce-smooth {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+        
+        /* Animation Classes */
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        .animate-fade-in-up {
+            animation: fadeInUp 1s ease-out forwards;
+        }
+        
+        .animate-slide-left {
+            animation: slideInLeft 1s ease-out forwards;
+        }
+        
+        .animate-slide-right {
+            animation: slideInRight 1s ease-out forwards;
+        }
+        
+        .animate-pulse-glow {
+            animation: pulse-glow 3s infinite;
+        }
+        
+        .animate-shimmer {
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(255,255,255,0.9), 
+                transparent);
+            background-size: 1000px 100%;
+            animation: shimmer 3s infinite;
+        }
+        
+        .animate-spin-slow {
+            animation: spin-slow 25s linear infinite;
+        }
+        
+        .animate-wave {
+            animation: wave 4s ease-in-out infinite;
+        }
+        
+        .animate-neon-glow {
+            animation: neon-glow 2s infinite;
+        }
+        
+        .animate-gradient-shift {
+            background-size: 200% 200%;
+            animation: gradient-shift 5s ease infinite;
+        }
+        
+        .animate-morph {
+            animation: morph 8s ease-in-out infinite;
+        }
+        
+        .animate-ripple {
+            animation: ripple 1.5s linear infinite;
+        }
+        
+        .animate-bounce-smooth {
+            animation: bounce-smooth 2s ease-in-out infinite;
+        }
+        
+        /* Enhanced Styling */
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+        }
+        
+        .blue-yellow-gradient {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+        }
+        
+        .blue-yellow-gradient-reverse {
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%);
+        }
+        
+        .blue-gradient {
+            background: linear-gradient(135deg, #1D4ED8 0%, #3B82F6 50%, #60A5FA 100%);
+        }
+        
+        .yellow-gradient {
+            background: linear-gradient(135deg, #F59E0B 0%, #FBBF24 50%, #FCD34D 100%);
+        }
+        
+        .text-gradient {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        /* Enhanced 3D Card Effect */
+        .card-3d {
+            transform-style: preserve-3d;
+            perspective: 1500px;
+            transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+                        box-shadow 0.4s ease;
+        }
+        
+        .card-3d:hover {
+            transform: translateY(-25px) rotateX(5deg) rotateY(5deg) scale(1.02);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
+        }
+        
+        .card-3d-inner {
+            transform: translateZ(30px);
+        }
+        
+        /* Fabric Pattern Overlays */
+        .fabric-overlay {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .fabric-overlay::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ffffff' fill-opacity='0.15' fill-rule='evenodd'/%3E%3C/svg%3E");
+            opacity: 0.3;
+            pointer-events: none;
+        }
+        
+        /* Scroll Animation Classes */
+        .fade-on-scroll {
+            opacity: 0;
+            transform: translateY(60px) scale(0.95);
+            transition: all 1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .fade-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+        
+        /* Enhanced Button Hover Effects */
+        .btn-hover-effect {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-hover-effect::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+        
+        .btn-hover-effect:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+        
+        /* Navbar Shadow on Scroll */
+        .navbar-scrolled {
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            background: rgba(255, 255, 255, 0.95);
+        }
+        
+        /* Enhanced Loading Text */
+        .loading-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2563EB;
+            margin-top: 2rem;
+            animation: loading-pulse 1.5s ease-in-out infinite;
+        }
+        
+        @keyframes loading-pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .parallax-bg {
+                background-attachment: scroll;
+            }
+            
+            h1 {
+                font-size: 2.5rem !important;
+            }
+            
+            h2 {
+                font-size: 2rem !important;
+            }
+        }
+    </style>
+</head>
+<body class="bg-white overflow-x-hidden">
+    <!-- Enhanced Preloader with 3 Second Duration -->
+    <div id="preloader" class="fixed inset-0 bg-gradient-to-br from-blue-50 via-white to-yellow-50 z-50 flex items-center justify-center">
+        <div class="text-center">
+            <div class="relative">
+                <div class="w-40 h-40 blue-yellow-gradient rounded-full animate-morph flex items-center justify-center loader-circle">
+                    <div class="w-32 h-32 bg-white rounded-full flex items-center justify-center loader-pulse">
+                        <i class="fas fa-tshirt text-5xl text-gradient"></i>
+                    </div>
                 </div>
-                <div class="loading-text">Monti Textile ERP System</div>
-                <div class="loading-subtext">Initializing manufacturing modules...</div>
-                <div class="loading-progress">
-                    <div class="loading-progress-bar"></div>
+                <div class="absolute inset-0 blue-yellow-gradient rounded-full opacity-30 animate-ping"></div>
+                <div class="absolute inset-0 blue-yellow-gradient-reverse rounded-full opacity-20 animate-ping" style="animation-delay: 0.5s;"></div>
+            </div>
+            <div class="loading-text mt-8">
+                Loading Excellence...
+            </div>
+            <div class="mt-4 flex justify-center space-x-2">
+                <div class="w-3 h-3 bg-blue-500 rounded-full animate-bounce"></div>
+                <div class="w-3 h-3 bg-blue-500 rounded-full animate-bounce" style="animation-delay: 0.2s;"></div>
+                <div class="w-3 h-3 bg-yellow-500 rounded-full animate-bounce" style="animation-delay: 0.4s;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav id="navbar" class="fixed w-full z-40 glass-effect py-4 transition-all duration-300">
+        <div class="container mx-auto px-6">
+            <div class="flex justify-between items-center">
+                <a href="#" class="logo text-2xl font-bold text-dark flex items-center">
+                    <div class="w-12 h-12 blue-gradient rounded-full flex items-center justify-center mr-3 animate-pulse-glow">
+                        <i class="fas fa-tshirt text-white text-xl"></i>
+                    </div>
+                    <span>MONTI<span class="text-gradient">TEXTILE</span></span>
+                </a>
+                
+                <div class="hidden md:flex space-x-10">
+                    <a href="#home" class="nav-link text-dark hover:text-gradient font-medium transition-all duration-300 relative group">
+                        <span class="relative z-10">Home</span>
+                        <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-500 to-yellow-500 group-hover:w-full transition-all duration-300"></span>
+                    </a>
+                    <a href="#about" class="nav-link text-dark hover:text-gradient font-medium transition-all duration-300 relative group">
+                        <span class="relative z-10">About</span>
+                        <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-500 to-yellow-500 group-hover:w-full transition-all duration-300"></span>
+                    </a>
+                    <a href="#fabrics" class="nav-link text-dark hover:text-gradient font-medium transition-all duration-300 relative group">
+                        <span class="relative z-10">Fabrics</span>
+                        <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-500 to-yellow-500 group-hover:w-full transition-all duration-300"></span>
+                    </a>
+                    <a href="#collections" class="nav-link text-dark hover:text-gradient font-medium transition-all duration-300 relative group">
+                        <span class="relative z-10">Collections</span>
+                        <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-500 to-yellow-500 group-hover:w-full transition-all duration-300"></span>
+                    </a>
+                    <a href="#sustainability" class="nav-link text-dark hover:text-gradient font-medium transition-all duration-300 relative group">
+                        <span class="relative z-10">Sustainability</span>
+                        <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-500 to-yellow-500 group-hover:w-full transition-all duration-300"></span>
+                    </a>
+                    <a href="#contact" class="nav-link text-dark hover:text-gradient font-medium transition-all duration-300 relative group">
+                        <span class="relative z-10">Contact</span>
+                        <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-500 to-yellow-500 group-hover:w-full transition-all duration-300"></span>
+                    </a>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <a href="{{ route('apply') }}" class="btn-hover-effect relative overflow-hidden blue-gradient text-white px-8 py-3 rounded-full font-medium hover:shadow-2xl transition-all duration-300 group transform hover:scale-105">
+                        <span class="relative z-10">Apply Now</span>
+                        <div class="absolute inset-0 bg-gradient-to-r from-blue-600 to-yellow-500 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-500"></div>
+                    </a>
+                    <button id="mobile-menu-button" class="md:hidden text-dark">
+                        <div class="w-10 h-10 rounded-full blue-gradient flex items-center justify-center">
+                            <i class="fas fa-bars text-white"></i>
+                        </div>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="md:hidden mt-4 hidden">
+                <div class="flex flex-col space-y-4 bg-white p-6 rounded-2xl shadow-2xl">
+                    <a href="#home" class="mobile-link text-dark hover:text-gradient font-medium py-2 border-b border-gray-100 transition-all duration-300">Home</a>
+                    <a href="#about" class="mobile-link text-dark hover:text-gradient font-medium py-2 border-b border-gray-100 transition-all duration-300">About</a>
+                    <a href="#fabrics" class="mobile-link text-dark hover:text-gradient font-medium py-2 border-b border-gray-100 transition-all duration-300">Fabrics</a>
+                    <a href="#collections" class="mobile-link text-dark hover:text-gradient font-medium py-2 border-b border-gray-100 transition-all duration-300">Collections</a>
+                    <a href="#sustainability" class="mobile-link text-dark hover:text-gradient font-medium py-2 border-b border-gray-100 transition-all duration-300">Sustainability</a>
+                    <a href="#contact" class="mobile-link text-dark hover:text-gradient font-medium py-2 transition-all duration-300">Contact</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="min-h-screen pt-24 pb-20 md:pt-32 md:pb-28 relative overflow-hidden">
+        <!-- Animated Background -->
+        <div class="particles" id="particles-js"></div>
+        
+        <div class="absolute inset-0 blue-gradient opacity-5"></div>
+        
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="flex flex-col lg:flex-row items-center">
+                <div class="lg:w-1/2 mb-16 lg:mb-0">
+                    <div class="fade-on-scroll">
+                        <h1 class="text-3xl md:text-7xl lg:text-8xl font-bold mb-8 leading-tight">
+                            WEAVING THE FUTURE OF TEXTILES
+                        </h1>
+                        <p class="text-xl text-gray-600 mb-10 max-w-2xl leading-relaxed">
+                            Monti Textile revolutionizes the textile industry with innovative fabrics that blend cutting-edge technology, sustainable practices, and breathtaking design.
+                        </p>
+                        
+                        <div class="flex flex-wrap gap-6 mb-16">
+                            <a href="#collections" class="btn-hover-effect group relative overflow-hidden blue-gradient text-white px-10 py-4 rounded-full font-bold text-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
+                                <span class="relative z-10 flex items-center">
+                                    <i class="fas fa-gem mr-3"></i> Explore Collections
+                                    <i class="fas fa-arrow-right ml-3 group-hover:translate-x-2 transition-transform duration-300"></i>
+                                </span>
+                                <div class="absolute inset-0 bg-gradient-to-r from-blue-600 to-yellow-500 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-500"></div>
+                            </a>
+                            
+                            <a href="#about" class="btn-hover-effect group relative overflow-hidden border-2 border-blue-500 text-blue-600 px-10 py-4 rounded-full font-bold text-lg hover:text-white transition-all duration-300 transform hover:scale-105">
+                                <span class="relative z-10 flex items-center">
+                                    <i class="fas fa-play-circle mr-3"></i> Our Story
+                                </span>
+                                <div class="absolute inset-0 bg-blue-500 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-500"></div>
+                            </a>
+                        </div>
+                        
+                        <div class="grid grid-cols-2 md:grid-cols-3 gap-6">
+                            <div class="bg-white p-6 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
+                                <div class="w-16 h-16 blue-gradient rounded-full flex items-center justify-center mb-4 mx-auto animate-pulse-glow">
+                                    <i class="fas fa-leaf text-white text-2xl"></i>
+                                </div>
+                                <h3 class="font-bold text-center text-gray-800">Eco-Friendly</h3>
+                                <p class="text-sm text-center text-gray-600">Sustainable materials</p>
+                            </div>
+                            
+                            <div class="bg-white p-6 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
+                                <div class="w-16 h-16 yellow-gradient rounded-full flex items-center justify-center mb-4 mx-auto animate-pulse-glow">
+                                    <i class="fas fa-award text-white text-2xl"></i>
+                                </div>
+                                <h3 class="font-bold text-center text-gray-800">Premium Quality</h3>
+                                <p class="text-sm text-center text-gray-600">Award-winning fabrics</p>
+                            </div>
+                            
+                            <div class="bg-white p-6 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
+                                <div class="w-16 h-16 blue-gradient rounded-full flex items-center justify-center mb-4 mx-auto animate-pulse-glow">
+                                    <i class="fas fa-shipping-fast text-white text-2xl"></i>
+                                </div>
+                                <h3 class="font-bold text-center text-gray-800">Global Shipping</h3>
+                                <p class="text-sm text-center text-gray-600">Fast delivery worldwide</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="lg:w-1/2 flex justify-center relative">
+                    <div class="relative">
+                        <!-- Main floating element -->
+                        <div class="w-96 h-96 blue-yellow-gradient animate-gradient-shift rounded-full animate-float relative overflow-hidden shadow-2xl">
+                            <div class="absolute inset-8 bg-white rounded-full"></div>
+                            <div class="absolute inset-16 bg-gradient-to-br from-blue-50 to-yellow-50 rounded-full flex items-center justify-center">
+                                <i class="fas fa-tshirt text-gradient text-9xl animate-spin-slow"></i>
+                            </div>
+                        </div>
+                        
+                        <!-- Floating fabric elements -->
+                        <div class="absolute top-0 left-0 w-32 h-32 bg-blue-500/20 rounded-2xl -rotate-12 animate-wave shadow-lg"></div>
+                        <div class="absolute bottom-10 -right-10 w-40 h-40 bg-yellow-500/20 rounded-3xl rotate-12 animate-wave shadow-lg" style="animation-delay: 1s;"></div>
+                        <div class="absolute top-1/2 -left-16 w-24 h-24 bg-blue-500/30 rounded-xl -rotate-45 animate-wave shadow-lg" style="animation-delay: 2s;"></div>
+                        <div class="absolute bottom-20 left-20 w-20 h-20 bg-yellow-500/30 rounded-full rotate-45 animate-wave shadow-lg" style="animation-delay: 3s;"></div>
+                        
+                        <!-- Ripple effects -->
+                        <div class="absolute inset-0 border-4 border-blue-500/30 rounded-full animate-ping"></div>
+                        <div class="absolute inset-8 border-4 border-yellow-500/30 rounded-full animate-ping" style="animation-delay: 0.5s;"></div>
+                    </div>
                 </div>
             </div>
         </div>
         
-        <!-- Main Content Wrapper - Now matches the original body layout -->
-        <div class="content-wrapper flex p-6 lg:p-8 items-center lg:justify-center min-h-screen flex-col w-full">
-            <header class="w-full lg:max-w-4xl max-w-[335px] text-sm mb-6 not-has-[nav]:hidden">
-                @if (Route::has('login'))
-                    <nav class="flex items-center justify-between gap-4">
-                        <div class="flex items-center gap-2">
-                            <div class="w-8 h-8 rounded-full bg-blue-theme flex items-center justify-center">
-                                <span class="text-white font-bold">MT</span>
+        <!-- Scroll indicator -->
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2">
+            <div class="w-10 h-16 border-2 border-blue-500 rounded-full flex justify-center">
+                <div class="w-1 h-3 bg-gradient-to-b from-blue-500 to-yellow-500 rounded-full mt-2 animate-bounce-smooth"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-24 bg-gradient-to-b from-white to-blue-50 relative overflow-hidden">
+        <!-- Background pattern -->
+        <div class="absolute inset-0 opacity-5 fabric-overlay"></div>
+        
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="text-center mb-20 fade-on-scroll">
+                <h2 class="text-5xl md:text-6xl font-bold mb-6">
+                    <span class="text-dark">Crafting</span> 
+                    <span class="text-gradient">Excellence</span>
+                </h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+                    For over two decades, Monti Textile has been pioneering textile innovation, blending artisanal craftsmanship with cutting-edge technology.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                <div class="fade-on-scroll">
+                    <div class="grid grid-cols-2 gap-8 mb-12">
+                        <div class="card-3d bg-white p-8 rounded-3xl shadow-xl hover:shadow-2xl">
+                            <div class="text-5xl text-gradient mb-6">
+                                <i class="fas fa-palette"></i>
                             </div>
-                            <span class="font-semibold text-blue-theme">Monti Textile ERP</span>
+                            <h3 class="text-2xl font-bold mb-4">Color Innovation</h3>
+                            <p class="text-gray-600">Revolutionary dyeing techniques that deliver vibrant, long-lasting colors.</p>
                         </div>
                         
-                        <div class="flex items-center gap-4">
-                            @auth
-                                <a
-                                    href="{{ url('/dashboard') }}"
-                                    class="inline-block px-5 py-1.5 text-blue-theme border-blue-theme border hover:bg-blue-theme hover:text-white rounded-sm text-sm leading-normal transition-colors"
-                                >
-                                    Dashboard
-                                </a>
-                            @else
-                                <a
-                                    href="{{ route('login') }}"
-                                    class="inline-block px-5 py-1.5 text-blue-theme border border-transparent hover:border-blue-theme rounded-sm text-sm leading-normal transition-colors"
-                                >
-                                    Employee Login
-                                </a>
-
-                                @if (Route::has('register'))
-                                    <a
-                                        href="{{ route('register') }}"
-                                        class="inline-block px-5 py-1.5 bg-blue-theme text-white border-blue-theme border hover:bg-blue-700 rounded-sm text-sm leading-normal transition-colors">
-                                        Register
-                                    </a>
-                                @endif
-                            @endauth
+                        <div class="card-3d bg-white p-8 rounded-3xl shadow-xl hover:shadow-2xl">
+                            <div class="text-5xl text-gradient mb-6">
+                                <i class="fas fa-industry"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold mb-4">Smart Weaving</h3>
+                            <p class="text-gray-600">AI-powered looms for unprecedented precision and pattern complexity.</p>
                         </div>
-                    </nav>
-                @endif
-            </header>
-            <div class="flex items-center justify-center w-full transition-opacity opacity-100 duration-750 lg:grow starting:opacity-0">
-                <main class="flex max-w-[335px] w-full flex-col-reverse lg:max-w-4xl lg:flex-row">
-                    <div class="text-[13px] leading-[20px] flex-1 p-6 pb-12 lg:p-20 bg-white dark:bg-gray-800 shadow-[inset_0px_0px_0px_1px_rgba(37,99,235,0.1)] dark:shadow-[inset_0px_0px_0px_1px_rgba(59,130,246,0.2)] rounded-bl-lg rounded-br-lg lg:rounded-tl-lg lg:rounded-br-none">
-                        <h1 class="mb-1 font-medium text-2xl text-blue-theme">Welcome to Monti Textile ERP</h1>
-                        <p class="mb-2 text-gray-600 dark:text-gray-400">Streamline your textile and fabric manufacturing operations with our comprehensive ERP solution. <br>Manage production, inventory, and orders seamlessly.</p>
                         
-                        <div class="mb-4 lg:mb-6">
-                            <h2 class="font-medium text-lg mb-3 text-blue-theme">Get Started Today</h2>
-                            <ul class="flex flex-col mb-4 lg:mb-6">
-                                <li class="flex items-center gap-4 py-2 relative before:border-l before:border-gray-200 dark:before:border-gray-700 before:top-1/2 before:bottom-0 before:left-[0.4rem] before:absolute">
-                                    <span class="relative py-1 bg-white dark:bg-gray-800">
-                                        <span class="flex items-center justify-center rounded-full bg-white dark:bg-gray-800 shadow-[0px_0px_1px_0px_rgba(0,0,0,0.03),0px_1px_2px_0px_rgba(0,0,0,0.06)] w-3.5 h-3.5 border dark:border-gray-700 border-gray-200">
-                                            <span class="rounded-full bg-yellow-theme w-1.5 h-1.5"></span>
-                                        </span>
-                                    </span>
-                                    <span>
-                                        Monitor real-time
-                                        <a href="#" class="inline-flex items-center space-x-1 font-medium underline underline-offset-4 text-blue-theme ml-1">
-                                            <span>Production Status</span>
-                                            <svg width="10" height="11" viewBox="0 0 10 11" fill="none" class="w-2.5 h-2.5">
-                                                <path d="M7.70833 6.95834V2.79167H3.54167M2.5 8L7.5 3.00001" stroke="currentColor" stroke-linecap="square"/>
-                                            </svg>
-                                        </a>
-                                    </span>
-                                </li>
-                                <li class="flex items-center gap-4 py-2 relative before:border-l before:border-gray-200 dark:before:border-gray-700 before:bottom-1/2 before:top-0 before:left-[0.4rem] before:absolute">
-                                    <span class="relative py-1 bg-white dark:bg-gray-800">
-                                        <span class="flex items-center justify-center rounded-full bg-white dark:bg-gray-800 shadow-[0px_0px_1px_0px_rgba(0,0,0,0.03),0px_1px_2px_0px_rgba(0,0,0,0.06)] w-3.5 h-3.5 border dark:border-gray-700 border-gray-200">
-                                            <span class="rounded-full bg-yellow-theme w-1.5 h-1.5"></span>
-                                        </span>
-                                    </span>
-                                    <span>
-                                        Track inventory with
-                                        <a href="#" class="inline-flex items-center space-x-1 font-medium underline underline-offset-4 text-blue-theme ml-1">
-                                            <span>Smart Analytics</span>
-                                            <svg width="10" height="11" viewBox="0 0 10 11" fill="none" class="w-2.5 h-2.5">
-                                                <path d="M7.70833 6.95834V2.79167H3.54167M2.5 8L7.5 3.00001" stroke="currentColor" stroke-linecap="square"/>
-                                            </svg>
-                                        </a>
-                                    </span>
-                                </li>
-                                <li class="flex items-center gap-4 py-2">
-                                    <span class="relative py-1 bg-white dark:bg-gray-800">
-                                        <span class="flex items-center justify-center rounded-full bg-white dark:bg-gray-800 shadow-[0px_0px_1px_0px_rgba(0,0,0,0.03),0px_1px_2px_0px_rgba(0,0,0,0.06)] w-3.5 h-3.5 border dark:border-gray-700 border-gray-200">
-                                            <span class="rounded-full bg-yellow-theme w-1.5 h-1.5"></span>
-                                        </span>
-                                    </span>
-                                    <span>
-                                        Optimize supply chain with
-                                        <a href="#" class="inline-flex items-center space-x-1 font-medium underline underline-offset-4 text-blue-theme ml-1">
-                                            <span>Order Management</span>
-                                            <svg width="10" height="11" viewBox="0 0 10 11" fill="none" class="w-2.5 h-2.5">
-                                                <path d="M7.70833 6.95834V2.79167H3.54167M2.5 8L7.5 3.00001" stroke="currentColor" stroke-linecap="square"/>
-                                            </svg>
-                                        </a>
-                                    </span>
-                                </li>
-                            </ul>
-                        </div>
-
-                        <div class="mb-6">
-                            <h2 class="font-medium text-lg mb-3 text-blue-theme">ERP Features</h2>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
-                                <div class="flex items-center gap-2">
-                                    <div class="w-2 h-2 rounded-full bg-yellow-theme"></div>
-                                    <span>Production Scheduling</span>
-                                </div>
-                                <div class="flex items-center gap-2">
-                                    <div class="w-2 h-2 rounded-full bg-yellow-theme"></div>
-                                    <span>Inventory Management</span>
-                                </div>
-                                <div class="flex items-center gap-2">
-                                    <div class="w-2 h-2 rounded-full bg-yellow-theme"></div>
-                                    <span>Quality Control</span>
-                                </div>
-                                <div class="flex items-center gap-2">
-                                    <div class="w-2 h-2 rounded-full bg-yellow-theme"></div>
-                                    <span>Order Processing</span>
-                                </div>
-                                <div class="flex items-center gap-2">
-                                    <div class="w-2 h-2 rounded-full bg-yellow-theme"></div>
-                                    <span>Fabric Grading</span>
-                                </div>
-                                <div class="flex items-center gap-2">
-                                    <div class="w-2 h-2 rounded-full bg-yellow-theme"></div>
-                                    <span>Shipping & Logistics</span>
-                                </div>
+                        <div class="card-3d bg-white p-8 rounded-3xl shadow-xl hover:shadow-2xl">
+                            <div class="text-5xl text-gradient mb-6">
+                                <i class="fas fa-microscope"></i>
                             </div>
+                            <h3 class="text-2xl font-bold mb-4">Nano Technology</h3>
+                            <p class="text-gray-600">Advanced fabric treatments for stain resistance and enhanced durability.</p>
                         </div>
-
-                        <div class="mb-6">
-                            <h2 class="font-medium text-lg mb-3 text-blue-theme">Modules</h2>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
-                                <div class="flex items-center gap-2">
-                                    <div class="w-2 h-2 rounded-full bg-blue-theme"></div>
-                                    <span>Yarn & Raw Material</span>
-                                </div>
-                                <div class="flex items-center gap-2">
-                                    <div class="w-2 h-2 rounded-full bg-blue-theme"></div>
-                                    <span>Weaving & Knitting</span>
-                                </div>
-                                <div class="flex items-center gap-2">
-                                    <div class="w-2 h-2 rounded-full bg-blue-theme"></div>
-                                    <span>Dyeing & Printing</span>
-                                </div>
-                                <div class="flex items-center gap-2">
-                                    <div class="w-2 h-2 rounded-full bg-blue-theme"></div>
-                                    <span>Finishing Department</span>
-                                </div>
+                        
+                        <div class="card-3d bg-white p-8 rounded-3xl shadow-xl hover:shadow-2xl">
+                            <div class="text-5xl text-gradient mb-6">
+                                <i class="fas fa-recycle"></i>
                             </div>
+                            <h3 class="text-2xl font-bold mb-4">Circular Design</h3>
+                            <p class="text-gray-600">Closed-loop systems ensuring zero waste in our production process.</p>
                         </div>
                     </div>
-                    
-                    <div class="bg-gradient-to-br from-blue-50 to-yellow-50 dark:from-blue-950 dark:to-gray-900 relative lg:-ml-px -mb-px lg:mb-0 rounded-t-lg lg:rounded-t-none lg:rounded-r-lg aspect-[335/376] lg:aspect-auto w-full lg:w-[438px] shrink-0 overflow-hidden">
-                        <!-- Monti Textile Logo -->
-                        <div class="absolute top-8 left-8">
-                            <div class="flex items-center gap-3">
-                                <div class="w-12 h-12 rounded-full bg-blue-theme flex items-center justify-center shadow-lg">
-                                    <span class="text-white font-bold text-xl">MT</span>
+                </div>
+                
+                <div class="fade-on-scroll" style="animation-delay: 0.3s;">
+                    <div class="relative">
+                        <div class="bg-gradient-to-br from-blue-500 to-yellow-500 p-1 rounded-3xl">
+                            <div class="bg-white p-8 rounded-3xl">
+                                <div class="grid grid-cols-3 gap-8 text-center">
+                                    <div>
+                                        <div class="text-5xl font-bold text-gradient mb-2 counter" data-target="22">0</div>
+                                        <div class="text-gray-600 text-sm">Years Experience</div>
+                                    </div>
+                                    <div>
+                                        <div class="text-5xl font-bold text-gradient mb-2 counter" data-target="500">0</div>
+                                        <div class="text-gray-600 text-sm">Fabric Varieties</div>
+                                    </div>
+                                    <div>
+                                        <div class="text-5xl font-bold text-gradient mb-2 counter" data-target="10000">0</div>
+                                        <div class="text-gray-600 text-sm">Happy Clients</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-12 bg-white p-8 rounded-3xl shadow-xl transform hover:-translate-y-2 transition-all duration-300">
+                            <h3 class="text-2xl font-bold mb-6 text-gradient">Our Mission</h3>
+                            <p class="text-gray-600 mb-6 leading-relaxed">
+                                To redefine textile manufacturing through sustainable innovation, creating fabrics that inspire designers while preserving our planet.
+                            </p>
+                            <div class="flex items-center">
+                                <div class="w-12 h-12 blue-gradient rounded-full flex items-center justify-center mr-4 animate-pulse-glow">
+                                    <i class="fas fa-bullseye text-white"></i>
                                 </div>
                                 <div>
-                                    <div class="text-2xl font-bold text-blue-theme">Monti Textile</div>
-                                    <div class="text-sm text-gray-600 dark:text-gray-400">ERP System</div>
+                                    <h4 class="font-bold">Vision 2030</h4>
+                                    <p class="text-sm text-gray-600">100% renewable energy & zero-waste production</p>
                                 </div>
                             </div>
                         </div>
-
-                        <!-- Textile Manufacturing Graphic -->
-                        <div class="absolute inset-0 flex items-center justify-center">
-                            <div class="relative w-64 h-64">
-                                <!-- Fabric Roll -->
-                                <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                                    <div class="w-40 h-32 bg-white dark:bg-gray-800 rounded-lg shadow-xl rotate-6 border-2 border-blue-100 dark:border-blue-900">
-                                        <div class="absolute inset-0 p-4">
-                                            <div class="h-2 bg-yellow-theme rounded mb-2"></div>
-                                            <div class="h-2 bg-blue-theme rounded mb-2 w-3/4"></div>
-                                            <div class="h-2 bg-yellow-theme rounded mb-2 w-1/2"></div>
-                                            <div class="h-2 bg-blue-theme rounded mb-2"></div>
-                                            <div class="h-2 bg-yellow-theme rounded mb-2 w-2/3"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <!-- Spool Icon -->
-                                <div class="absolute top-8 left-12">
-                                    <div class="w-16 h-8 bg-yellow-theme rounded-t-lg">
-                                        <div class="w-12 h-6 bg-yellow-200 mx-auto mt-1 rounded"></div>
-                                    </div>
-                                    <div class="w-4 h-4 bg-yellow-600 rounded-full mx-auto mt-1"></div>
-                                </div>
-                                
-                                <!-- Quality Control Check -->
-                                <div class="absolute bottom-12 right-12">
-                                    <div class="w-20 h-20 rounded-full border-4 border-blue-200 dark:border-blue-800 flex items-center justify-center">
-                                        <div class="w-16 h-16 rounded-full border-4 border-green-500 border-t-transparent flex items-center justify-center">
-                                            <span class="text-green-500 font-bold">✓</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Manufacturing Stats -->
-                        <div class="absolute bottom-8 left-0 right-0 px-8">
-                            <div class="flex justify-between">
-                                <div class="text-center">
-                                    <div class="text-2xl font-bold text-blue-theme">5K+</div>
-                                    <div class="text-sm text-gray-600 dark:text-gray-400">Rolls Daily</div>
-                                </div>
-                                <div class="text-center">
-                                    <div class="text-2xl font-bold text-yellow-theme">99.8%</div>
-                                    <div class="text-sm text-gray-600 dark:text-gray-400">Quality Rate</div>
-                                </div>
-                                <div class="text-center">
-                                    <div class="text-2xl font-bold text-blue-theme">24/7</div>
-                                    <div class="text-sm text-gray-600 dark:text-gray-400">Production</div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="absolute inset-0 rounded-t-lg lg:rounded-t-none lg:rounded-r-lg shadow-[inset_0px_0px_0px_1px_rgba(37,99,235,0.1)] dark:shadow-[inset_0px_0px_0px_1px_rgba(59,130,246,0.2)]"></div>
                     </div>
-                </main>
+                </div>
             </div>
-
-            <footer class="mt-8 text-center text-gray-500 dark:text-gray-400 text-sm">
-                <p>© 2026 Monti Textile Manufacturing ERP System. All rights reserved.</p>
-                
-            </footer>
-
-            @if (Route::has('login'))
-                <div class="h-14.5 hidden lg:block"></div>
-            @endif
         </div>
+    </section>
 
-        <!-- JavaScript for lazy loading -->
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                const loadingOverlay = document.getElementById('loading-overlay');
-                const contentWrapper = document.querySelector('.content-wrapper');
+    <!-- Fabric Showcase -->
+    <section id="fabrics" class="py-24 bg-gradient-to-b from-blue-50 to-white relative overflow-hidden">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-20 fade-on-scroll">
+                <h2 class="text-5xl md:text-6xl font-bold mb-6">
+                    <span class="text-gradient">Signature</span> 
+                    <span class="text-dark">Fabrics</span>
+                </h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+                    Experience our revolutionary fabric collection, where innovation meets unparalleled quality and sustainability.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+                <div class="card-3d group bg-white rounded-3xl shadow-xl overflow-hidden fade-on-scroll">
+                    <div class="h-64 relative overflow-hidden">
+                        <div class="absolute inset-0 blue-gradient animate-gradient-shift flex items-center justify-center">
+                            <i class="fas fa-water text-white text-8xl opacity-30"></i>
+                        </div>
+                        <div class="absolute inset-0 animate-shimmer"></div>
+                        <div class="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full">
+                            <span class="text-gradient font-bold">Best Seller</span>
+                        </div>
+                    </div>
+                    <div class="p-8">
+                        <h3 class="text-2xl font-bold mb-3 group-hover:text-gradient transition-colors duration-300">AquaWeave™ Cotton</h3>
+                        <p class="text-gray-600 mb-6">Self-cleaning nanotechnology with enhanced breathability and UV protection.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-2xl font-bold text-gradient">$29.99/yd</span>
+                            <button class="btn-hover-effect group relative overflow-hidden blue-gradient text-white px-6 py-3 rounded-full font-medium hover:shadow-lg transition-all duration-300 transform hover:scale-105">
+                                <span class="relative z-10">View Details</span>
+                                <div class="absolute inset-0 bg-gradient-to-r from-blue-600 to-yellow-500 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-500"></div>
+                            </button>
+                        </div>
+                    </div>
+                </div>
                 
-                // Hide the content initially
-                contentWrapper.style.opacity = '0';
-                contentWrapper.style.pointerEvents = 'none';
+                <div class="card-3d group bg-white rounded-3xl shadow-xl overflow-hidden fade-on-scroll" style="animation-delay: 0.2s;">
+                    <div class="h-64 relative overflow-hidden">
+                        <div class="absolute inset-0 yellow-gradient animate-gradient-shift flex items-center justify-center">
+                            <i class="fas fa-gem text-white text-8xl opacity-30"></i>
+                        </div>
+                        <div class="absolute inset-0 animate-shimmer"></div>
+                        <div class="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full">
+                            <span class="text-gradient font-bold">Luxury</span>
+                        </div>
+                    </div>
+                    <div class="p-8">
+                        <h3 class="text-2xl font-bold mb-3 group-hover:text-gradient transition-colors duration-300">SolarSilk™ Blend</h3>
+                        <p class="text-gray-600 mb-6">Temperature-regulating smart fabric with built-in solar-reactive pigments.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-2xl font-bold text-gradient">$59.99/yd</span>
+                            <button class="btn-hover-effect group relative overflow-hidden blue-gradient text-white px-6 py-3 rounded-full font-medium hover:shadow-lg transition-all duration-300 transform hover:scale-105">
+                                <span class="relative z-10">View Details</span>
+                                <div class="absolute inset-0 bg-gradient-to-r from-blue-600 to-yellow-500 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-500"></div>
+                            </button>
+                        </div>
+                    </div>
+                </div>
                 
-                // Show content and hide overlay after 3 seconds
-                setTimeout(function() {
-                    loadingOverlay.classList.add('hidden');
+                <div class="card-3d group bg-white rounded-3xl shadow-xl overflow-hidden fade-on-scroll" style="animation-delay: 0.4s;">
+                    <div class="h-64 relative overflow-hidden">
+                        <div class="absolute inset-0 blue-gradient animate-gradient-shift flex items-center justify-center">
+                            <i class="fas fa-leaf text-white text-8xl opacity-30"></i>
+                        </div>
+                        <div class="absolute inset-0 animate-shimmer"></div>
+                        <div class="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full">
+                            <span class="text-gradient font-bold">Eco-Friendly</span>
+                        </div>
+                    </div>
+                    <div class="p-8">
+                        <h3 class="text-2xl font-bold mb-3 group-hover:text-gradient transition-colors duration-300">BioLinen™ Pro</h3>
+                        <p class="text-gray-600 mb-6">100% biodegradable performance linen with natural antimicrobial properties.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-2xl font-bold text-gradient">$39.99/yd</span>
+                            <button class="btn-hover-effect group relative overflow-hidden blue-gradient text-white px-6 py-3 rounded-full font-medium hover:shadow-lg transition-all duration-300 transform hover:scale-105">
+                                <span class="relative z-10">View Details</span>
+                                <div class="absolute inset-0 bg-gradient-to-r from-blue-600 to-yellow-500 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-500"></div>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Collections Section -->
+    <section id="collections" class="py-24 relative overflow-hidden">
+        <div class="absolute inset-0 blue-gradient opacity-10"></div>
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="text-center mb-20 fade-on-scroll">
+                <h2 class="text-5xl md:text-6xl font-bold mb-6">
+                    <span class="text-dark">2023</span> 
+                    <span class="text-gradient animate-neon-glow">Collections</span>
+                </h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+                    Discover our limited edition collections that push the boundaries of textile design and innovation.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-20">
+                <div class="fade-on-scroll">
+                    <div class="relative">
+                        <div class="bg-gradient-to-br from-blue-500 to-yellow-500 p-1 rounded-3xl">
+                            <div class="bg-white p-2 rounded-3xl">
+                                <div class="h-96 rounded-2xl bg-gradient-to-br from-blue-100 to-yellow-100 flex items-center justify-center overflow-hidden">
+                                    <i class="fas fa-tshirt text-gradient text-9xl animate-float"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="absolute -bottom-6 -right-6 w-48 h-48 bg-gradient-to-br from-yellow-500 to-blue-500 rounded-full opacity-20 animate-pulse"></div>
+                    </div>
+                </div>
+                
+                <div class="fade-on-scroll" style="animation-delay: 0.3s;">
+                    <h3 class="text-4xl font-bold mb-6">
+                        <span class="text-gradient">Nebula</span> 
+                        <span class="text-dark">Collection</span>
+                    </h3>
+                    <p class="text-gray-600 mb-8 text-lg leading-relaxed">
+                        Inspired by cosmic phenomena, this collection features fabrics that change color with temperature and light exposure. Each piece tells a unique story through its dynamic patterns.
+                    </p>
                     
-                    // Small delay before showing content for smoother transition
-                    setTimeout(function() {
-                        contentWrapper.classList.add('loaded');
-                        contentWrapper.style.opacity = '1';
-                        contentWrapper.style.pointerEvents = 'all';
-                    }, 300);
-                }, 3000);
+                    <div class="space-y-6">
+                        <div class="flex items-center transform hover:translate-x-2 transition-transform duration-300">
+                            <div class="w-12 h-12 blue-gradient rounded-full flex items-center justify-center mr-4 animate-pulse-glow">
+                                <i class="fas fa-palette text-white"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-lg">Chromatic Shift Technology</h4>
+                                <p class="text-gray-600">Colors transform with environmental changes</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center transform hover:translate-x-2 transition-transform duration-300">
+                            <div class="w-12 h-12 yellow-gradient rounded-full flex items-center justify-center mr-4 animate-pulse-glow">
+                                <i class="fas fa-microchip text-white"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-lg">Smart Fiber Integration</h4>
+                                <p class="text-gray-600">Embedded micro-technology for enhanced functionality</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center transform hover:translate-x-2 transition-transform duration-300">
+                            <div class="w-12 h-12 blue-gradient rounded-full flex items-center justify-center mr-4 animate-pulse-glow">
+                                <i class="fas fa-recycle text-white"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-lg">Zero Waste Production</h4>
+                                <p class="text-gray-600">100% sustainable manufacturing process</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button class="btn-hover-effect group mt-10 relative overflow-hidden blue-gradient text-white px-10 py-4 rounded-full font-bold text-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
+                        <span class="relative z-10 flex items-center">
+                            Explore Collection
+                            <i class="fas fa-arrow-right ml-3 group-hover:translate-x-2 transition-transform duration-300"></i>
+                        </span>
+                        <div class="absolute inset-0 bg-gradient-to-r from-blue-600 to-yellow-500 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-500"></div>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sustainability Section -->
+    <section id="sustainability" class="py-24 bg-gradient-to-b from-white to-blue-50 relative overflow-hidden">
+        <div class="absolute inset-0 fabric-overlay"></div>
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="text-center mb-20 fade-on-scroll">
+                <h2 class="text-5xl md:text-6xl font-bold mb-6">
+                    <span class="text-gradient">Sustainable</span> 
+                    <span class="text-dark">Innovation</span>
+                </h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+                    We're committed to revolutionizing the textile industry through eco-conscious practices and groundbreaking sustainability initiatives.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-10 mb-16">
+                <div class="fade-on-scroll">
+                    <div class="bg-white rounded-3xl p-8 shadow-xl h-full transform hover:-translate-y-3 transition-all duration-300">
+                        <div class="w-20 h-20 blue-gradient rounded-full flex items-center justify-center mb-6 animate-pulse-glow">
+                            <i class="fas fa-tint text-white text-3xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-4">Water Conservation</h3>
+                        <p class="text-gray-600 mb-6 leading-relaxed">Our closed-loop system recycles 95% of water used in production, saving millions of gallons annually.</p>
+                        <div class="text-4xl font-bold text-gradient">92%</div>
+                        <div class="text-gray-600">Water recycled</div>
+                    </div>
+                </div>
+                
+                <div class="fade-on-scroll" style="animation-delay: 0.2s;">
+                    <div class="bg-white rounded-3xl p-8 shadow-xl h-full transform hover:-translate-y-3 transition-all duration-300">
+                        <div class="w-20 h-20 yellow-gradient rounded-full flex items-center justify-center mb-6 animate-pulse-glow">
+                            <i class="fas fa-solar-panel text-white text-3xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-4">Renewable Energy</h3>
+                        <p class="text-gray-600 mb-6 leading-relaxed">Our factories are powered by 100% renewable energy sources, significantly reducing carbon emissions.</p>
+                        <div class="text-4xl font-bold text-gradient">100%</div>
+                        <div class="text-gray-600">Renewable energy</div>
+                    </div>
+                </div>
+                
+                <div class="fade-on-scroll" style="animation-delay: 0.4s;">
+                    <div class="bg-white rounded-3xl p-8 shadow-xl h-full transform hover:-translate-y-3 transition-all duration-300">
+                        <div class="w-20 h-20 blue-gradient rounded-full flex items-center justify-center mb-6 animate-pulse-glow">
+                            <i class="fas fa-recycle text-white text-3xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-4">Circular Economy</h3>
+                        <p class="text-gray-600 mb-6 leading-relaxed">We've implemented a zero-waste production model that repurposes all textile waste into new materials.</p>
+                        <div class="text-4xl font-bold text-gradient">78%</div>
+                        <div class="text-gray-600">Waste reduction</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact CTA -->
+    <section id="contact" class="py-24 relative overflow-hidden">
+        <div class="absolute inset-0 blue-gradient opacity-90"></div>
+        <div class="particles" id="contact-particles"></div>
+        
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="max-w-4xl mx-auto text-center fade-on-scroll">
+                <h2 class="text-5xl md:text-6xl font-bold text-white mb-8">
+                    Ready to <span class="text-yellow-300">Transform</span> Your Vision?
+                </h2>
+                <p class="text-xl text-white/90 mb-12 max-w-2xl mx-auto leading-relaxed">
+                    Connect with our team of textile experts. Let's create something extraordinary together.
+                </p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+                    <div class="bg-white/10 backdrop-blur-sm p-8 rounded-3xl border border-white/20 transform hover:-translate-y-2 transition-all duration-300">
+                        <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center mb-6 mx-auto">
+                            <i class="fas fa-phone text-blue-600 text-2xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-4">Call Us</h3>
+                        <p class="text-white/80 mb-4">Speak directly with our textile specialists</p>
+                        <a href="tel:+15551234567" class="text-2xl font-bold text-white hover:text-yellow-300 transition-colors duration-300">+1 (555) 123-4567</a>
+                    </div>
+                    
+                    <div class="bg-white/10 backdrop-blur-sm p-8 rounded-3xl border border-white/20 transform hover:-translate-y-2 transition-all duration-300">
+                        <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center mb-6 mx-auto">
+                            <i class="fas fa-envelope text-blue-600 text-2xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-4">Email Us</h3>
+                        <p class="text-white/80 mb-4">Get a response within 24 hours</p>
+                        <a href="mailto:info@montitextile.com" class="text-2xl font-bold text-white hover:text-yellow-300 transition-colors duration-300">info@montitextile.com</a>
+                    </div>
+                </div>
+                
+                <div class="bg-white/10 backdrop-blur-sm p-8 rounded-3xl border border-white/20 max-w-2xl mx-auto transform hover:-translate-y-2 transition-all duration-300">
+                    <h3 class="text-2xl font-bold text-white mb-6">Request a Sample Kit</h3>
+                    <p class="text-white/80 mb-6">Experience our fabrics firsthand with our premium sample kit.</p>
+                    <button class="btn-hover-effect group relative overflow-hidden bg-white text-blue-600 px-10 py-4 rounded-full font-bold text-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
+                        <span class="relative z-10 flex items-center justify-center">
+                            <i class="fas fa-box-open mr-3"></i> Get Free Samples
+                        </span>
+                        <div class="absolute inset-0 bg-yellow-300 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-500"></div>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-16 relative overflow-hidden">
+        <div class="absolute inset-0 opacity-5 fabric-overlay"></div>
+        
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+                <div>
+                    <a href="#" class="logo text-2xl font-bold text-white flex items-center mb-6">
+                        <div class="w-12 h-12 blue-gradient rounded-full flex items-center justify-center mr-3 animate-pulse-glow">
+                            <i class="fas fa-tshirt text-white text-xl"></i>
+                        </div>
+                        <span>MONTI<span class="text-blue-400">TEXTILE</span></span>
+                    </a>
+                    <p class="text-gray-400 mb-6">Weaving innovation into every thread since 2001.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-blue-600 transition-all duration-300 transform hover:scale-110">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-pink-600 transition-all duration-300 transform hover:scale-110">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-blue-400 transition-all duration-300 transform hover:scale-110">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-blue-700 transition-all duration-300 transform hover:scale-110">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="text-xl font-bold mb-6 text-white">Quick Links</h4>
+                    <ul class="space-y-3">
+                        <li><a href="{{ route('login') }}" class="text-gray-400 hover:text-white transition-all duration-300 hover:translate-x-2 inline-block">Employee Login</a></li>
+                        <li><a href="#about" class="text-gray-400 hover:text-white transition-all duration-300 hover:translate-x-2 inline-block">About Us</a></li>
+                        <li><a href="#fabrics" class="text-gray-400 hover:text-white transition-all duration-300 hover:translate-x-2 inline-block">Fabrics</a></li>
+                        <li><a href="#collections" class="text-gray-400 hover:text-white transition-all duration-300 hover:translate-x-2 inline-block">Collections</a></li>
+                        <li><a href="#sustainability" class="text-gray-400 hover:text-white transition-all duration-300 hover:translate-x-2 inline-block">Sustainability</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-xl font-bold mb-6 text-white">Services</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-all duration-300 hover:translate-x-2 inline-block">Custom Fabric Design</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-all duration-300 hover:translate-x-2 inline-block">Bulk Orders</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-all duration-300 hover:translate-x-2 inline-block">Sample Kits</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-all duration-300 hover:translate-x-2 inline-block">Consultation</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-all duration-300 hover:translate-x-2 inline-block">Technical Support</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-xl font-bold mb-6 text-white">Contact Info</h4>
+                    <ul class="space-y-4">
+                        <li class="flex items-start">
+                            <i class="fas fa-map-marker-alt text-blue-400 mt-1 mr-3"></i>
+                            <span class="text-gray-400">123 Innovation Drive, Textile City, TC 10101</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-phone text-blue-400 mr-3"></i>
+                            <span class="text-gray-400">+1 (555) 123-4567</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-envelope text-blue-400 mr-3"></i>
+                            <span class="text-gray-400">info@montitextile.com</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 pt-8 text-center">
+                <p class="text-gray-500">&copy; 2023 Monti Textile. All rights reserved. | <a href="#" class="hover:text-white transition-colors duration-300">Privacy Policy</a> | <a href="#" class="hover:text-white transition-colors duration-300">Terms of Service</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button id="back-to-top" class="fixed bottom-8 right-8 w-14 h-14 blue-gradient text-white rounded-full shadow-2xl hover:shadow-xl transition-all duration-300 opacity-0 transform translate-y-10 z-40 group">
+        <i class="fas fa-arrow-up text-xl group-hover:-translate-y-1 transition-transform duration-300"></i>
+    </button>
+
+    <!-- Ripple Effect Container -->
+    <div id="ripple-container" class="fixed inset-0 pointer-events-none z-30"></div>
+
+    <script>
+        // Enhanced Preloader with 3 Second Duration
+        window.addEventListener('load', function() {
+            setTimeout(() => {
+                const preloader = document.getElementById('preloader');
+                preloader.style.opacity = '0';
+                preloader.style.visibility = 'hidden';
+                setTimeout(() => {
+                    preloader.style.display = 'none';
+                }, 800);
+            }, 3000); // 3 seconds delay
+        });
+
+        // Particle System
+        function createParticles(containerId, count = 30) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            
+            for (let i = 0; i < count; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                // Random properties
+                const size = Math.random() * 20 + 5;
+                const left = Math.random() * 100;
+                const delay = Math.random() * 20;
+                const duration = Math.random() * 10 + 15;
+                
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.left = `${left}%`;
+                particle.style.animationDelay = `${delay}s`;
+                particle.style.animationDuration = `${duration}s`;
+                
+                // Random gradient
+                const colors = [
+                    'linear-gradient(135deg, #2563EB, #60A5FA)',
+                    'linear-gradient(135deg, #F59E0B, #FBBF24)',
+                    'linear-gradient(135deg, #2563EB, #F59E0B)'
+                ];
+                particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+                
+                container.appendChild(particle);
+            }
+        }
+
+        // Navbar Scroll Effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 50) {
+                navbar.classList.add('navbar-scrolled');
+            } else {
+                navbar.classList.remove('navbar-scrolled');
+            }
+        });
+
+        // Mobile menu toggle
+        document.getElementById('mobile-menu-button').addEventListener('click', function() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+            this.querySelector('i').classList.toggle('fa-bars');
+            this.querySelector('i').classList.toggle('fa-times');
+        });
+
+        // Back to top button
+        const backToTopButton = document.getElementById('back-to-top');
+        
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 300) {
+                backToTopButton.classList.remove('opacity-0', 'translate-y-10');
+                backToTopButton.classList.add('opacity-100', 'translate-y-0');
+            } else {
+                backToTopButton.classList.remove('opacity-100', 'translate-y-0');
+                backToTopButton.classList.add('opacity-0', 'translate-y-10');
+            }
+        });
+
+        backToTopButton.addEventListener('click', function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
             });
-        </script>
-    </body>
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    // Close mobile menu if open
+                    document.getElementById('mobile-menu').classList.add('hidden');
+                    document.getElementById('mobile-menu-button').querySelector('i').classList.add('fa-bars');
+                    document.getElementById('mobile-menu-button').querySelector('i').classList.remove('fa-times');
+                    
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Scroll animation for elements
+        const fadeElements = document.querySelectorAll('.fade-on-scroll');
+        
+        const fadeInOnScroll = function() {
+            fadeElements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const elementVisible = 150;
+                
+                if (elementTop < window.innerHeight - elementVisible) {
+                    element.classList.add('visible');
+                }
+            });
+        };
+
+        // Check on load and scroll
+        window.addEventListener('load', fadeInOnScroll);
+        window.addEventListener('scroll', fadeInOnScroll);
+
+        // Counter animation
+        const counters = document.querySelectorAll('.counter');
+        const speed = 200;
+        let counterStarted = false;
+
+        const startCounter = () => {
+            if (counterStarted) return;
+            counterStarted = true;
+            
+            counters.forEach(counter => {
+                const updateCount = () => {
+                    const target = +counter.getAttribute('data-target');
+                    const count = +counter.innerText.replace(/,/g, '');
+                    
+                    const inc = target / speed;
+                    
+                    if (count < target) {
+                        counter.innerText = Math.ceil(count + inc).toLocaleString();
+                        setTimeout(updateCount, 10);
+                    } else {
+                        counter.innerText = target.toLocaleString();
+                    }
+                };
+                updateCount();
+            });
+        };
+
+        // Start counter when in view
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && !counterStarted) {
+                    startCounter();
+                }
+            });
+        }, { threshold: 0.5 });
+
+        counters.forEach(counter => {
+            observer.observe(counter);
+        });
+
+        // Ripple effect
+        document.addEventListener('click', function(e) {
+            if (e.target.closest('button, a')) {
+                const rippleContainer = document.getElementById('ripple-container');
+                const ripple = document.createElement('div');
+                
+                ripple.className = 'absolute rounded-full bg-gradient-to-r from-blue-500/30 to-yellow-500/30 animate-ripple';
+                ripple.style.left = `${e.clientX}px`;
+                ripple.style.top = `${e.clientY}px`;
+                ripple.style.width = '10px';
+                ripple.style.height = '10px';
+                
+                rippleContainer.appendChild(ripple);
+                
+                setTimeout(() => {
+                    ripple.remove();
+                }, 1500);
+            }
+        });
+
+        // Enhanced hover effect for cards
+        const cards = document.querySelectorAll('.card-3d');
+        cards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                const rotateY = ((x - centerX) / centerX) * 8;
+                const rotateX = ((centerY - y) / centerY) * 8;
+                
+                card.style.transform = `perspective(1500px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(15px)`;
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(1500px) rotateX(0) rotateY(0) translateZ(0)';
+            });
+        });
+
+        // Create particles after DOM loads
+        document.addEventListener('DOMContentLoaded', () => {
+            createParticles('particles-js', 40);
+            createParticles('contact-particles', 25);
+        });
+
+        // Parallax effect for hero section
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const hero = document.querySelector('#home');
+            if (hero && scrolled < window.innerHeight) {
+                hero.style.transform = `translateY(${scrolled * 0.4}px)`;
+                hero.style.opacity = 1 - (scrolled / window.innerHeight) * 0.3;
+            }
+        });
+
+        // Enhanced active navigation highlighting
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= sectionTop - 100) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('text-gradient');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('text-gradient');
+                }
+            });
+        });
+    </script>
+</body>
 </html>

@@ -2193,7 +2193,9 @@
                         };
                         
                         // Populate modal
-                        document.getElementById('interview-applicant-name').textContent = interview.applicant?.full_name || 'N/A';
+                        document.getElementById('interview-applicant-name').textContent =
+    `${interview.applicant?.first_name || 'N/A'} ${interview.applicant?.middle_name || 'N/A'} ${interview.applicant?.last_name || 'N/A'}`;
+
                         
                         const detailsHtml = `
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -2230,7 +2232,7 @@
                                     <div class="space-y-3">
                                         <div>
                                             <span class="text-gray-600 text-sm">Applicant Name:</span>
-                                            <p class="font-medium">${interview.applicant?.full_name || 'N/A'}</p>
+                                            <p class="font-medium">${interview.applicant?.first_name || 'N/A'} ${interview.applicant?.middle_name || 'N/A'} ${interview.applicant?.last_name || 'N/A'}</p>
                                         </div>
                                         <div>
                                             <span class="text-gray-600 text-sm">Position Applied:</span>
